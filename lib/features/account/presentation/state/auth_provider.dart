@@ -41,9 +41,7 @@ class AuthProvider extends ChangeNotifier {
     required String email,
     required String password,
     required String displayName,
-    required UserRole role,
-    String? district,
-    bool isFamilyAssisted = false,
+    required AccountPurpose primaryPurpose,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -54,9 +52,7 @@ class AuthProvider extends ChangeNotifier {
         email: email,
         password: password,
         displayName: displayName,
-        role: role,
-        district: district,
-        isFamilyAssisted: isFamilyAssisted,
+        primaryPurpose: primaryPurpose,
       );
       _isLoading = false;
       notifyListeners();

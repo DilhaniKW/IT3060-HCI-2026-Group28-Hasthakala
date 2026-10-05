@@ -1,3 +1,10 @@
+import '../utils/firestore_converters.dart';
+
+/// products/{productId} - I11 writes (Member 3 or an authorised supporter),
+/// I02-I04 read (Member 1). LOCKED Firestore field names: see
+/// docs/FIREBASE_SCHEMA.md. Some Dart property names differ from the stored
+/// field names for compatibility with existing code:
+///   id -> productId, priceLkr -> price, district -> originDistrict.
 class ProductModel {
   final String id;
   final String artisanId;
@@ -5,14 +12,19 @@ class ProductModel {
   final String title;
   final String description;
   final double priceLkr;
-  final String category; // Pottery, Batik, Wood Carving, Brassware, Mask, Cane/Bamboo
+  final String category;
+  final String materials;
   final List<String> imageUrls;
   final int stockQuantity;
-  final String district; // Origin district (e.g. Kegalle, Kandy, Ambalangoda)
-  final double rating;
-  final int reviewCount;
+  final String district;
   final bool isAvailable;
   final DateTime createdAt;
+  final DateTime updatedAt;
+  final String? updatedBy;
+
+  /// Display-only values calculated from `reviews`. NOT stored on products.
+  final double rating;
+  final int reviewCount;
 
   ProductModel({
     required this.id,
@@ -23,30 +35,35 @@ class ProductModel {
     required this.priceLkr,
     required this.category,
     required this.imageUrls,
+    this.materials = '',
     this.stockQuantity = 1,
     required this.district,
     this.rating = 0.0,
     this.reviewCount = 0,
     this.isAvailable = true,
+    this.updatedBy,
     DateTime? createdAt,
-  }) : createdAt = createdAt ?? DateTime.now();
+    DateTime? updatedAt,
+  })  : createdAt = createdAt ?? DateTime.now(),
+        updatedAt = updatedAt ?? DateTime.now();
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'productId': id,
       'artisanId': artisanId,
       'artisanName': artisanName,
       'title': title,
       'description': description,
-      'priceLkr': priceLkr,
       'category': category,
-      'imageUrls': imageUrls,
+      'materials': materials,
+      'originDistrict': district,
+      'price': priceLkr,
       'stockQuantity': stockQuantity,
-      'district': district,
-      'rating': rating,
-      'reviewCount': reviewCount,
       'isAvailable': isAvailable,
-      'createdAt': createdAt.toIso8601String(),
+      'imageUrls': imageUrls,
+      'createdAt': FirestoreConverters.toTimestamp(createdAt),
+      'updatedAt': FirestoreConverters.toTimestamp(updatedAt),
+      'updatedBy': updatedBy,
     };
   }
 
@@ -57,17 +74,16 @@ class ProductModel {
       artisanName: map['artisanName'] ?? '',
       title: map['title'] ?? '',
       description: map['description'] ?? '',
-      priceLkr: (map['priceLkr'] as num?)?.toDouble() ?? 0.0,
-      category: map['category'] ?? 'General',
-      imageUrls: List<String>.from(map['imageUrls'] ?? []),
-      stockQuantity: (map['stockQuantity'] as num?)?.toInt() ?? 1,
-      district: map['district'] ?? 'Sri Lanka',
-      rating: (map['rating'] as num?)?.toDouble() ?? 0.0,
-      reviewCount: (map['reviewCount'] as num?)?.toInt() ?? 0,
+      priceLkr: (map['price'] as num?)?.toDouble() ?? 0.0,
+      category: map['category'] ?? 'other',
+      materials: map['materials'] ?? '',
+      imageUrls: List<String>.from(map['imageUrls'] ?? const []),
+      stockQuantity: (map['stockQuantity'] as num?)?.toInt() ?? 0,
+      district: map['originDistrict'] ?? '',
       isAvailable: map['isAvailable'] ?? true,
-      createdAt: map['createdAt'] != null
-          ? DateTime.tryParse(map['createdAt']) ?? DateTime.now()
-          : DateTime.now(),
+      updatedBy: map['updatedBy'],
+      createdAt: FirestoreConverters.toDateTime(map['createdAt']),
+      updatedAt: FirestoreConverters.toDateTime(map['updatedAt']),
     );
   }
 }

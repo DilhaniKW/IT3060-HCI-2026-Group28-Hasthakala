@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget {
         children: [
           ProfileAvatarWidget(
             name: user?.displayName ?? 'Hasthakala Artisan',
-            imageUrl: user?.profileImageUrl,
+            imageUrl: user?.photoUrl,
             onCameraTap: () {},
           ),
           const SizedBox(height: 16),
@@ -43,15 +43,10 @@ class ProfileScreen extends StatelessWidget {
           const Divider(),
           const SizedBox(height: 12),
           ListTile(
-            leading: const Icon(Icons.location_city, color: AppColors.primary),
-            title: const Text('Origin District'),
-            trailing: Text(user?.district ?? 'Kandy',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          ListTile(
             leading: const Icon(Icons.badge_outlined, color: AppColors.secondary),
-            title: const Text('Account Role'),
-            trailing: Text((user?.role.name ?? 'buyer').toUpperCase(),
+            title: const Text('Started as'),
+            trailing: Text(
+                (user?.startedAsSeller ?? false) ? 'SELLER' : 'BUYER',
                 style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           ListTile(

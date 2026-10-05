@@ -91,8 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             _passwordController.text,
                           );
                           if (success && mounted) {
-                            // Direct based on role
-                            final isArtisan = auth.currentUser?.role.name == 'artisan';
+                            // TEMPORARY routing until context resolution (D1) is added
+                            final isArtisan = auth.currentUser?.startedAsSeller ?? false;
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

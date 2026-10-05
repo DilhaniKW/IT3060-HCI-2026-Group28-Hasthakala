@@ -3,7 +3,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/user_model.dart';
 
 class RoleSelectorCard extends StatelessWidget {
-  final UserRole role;
+  final AccountPurpose role;
   final String title;
   final String description;
   final IconData icon;

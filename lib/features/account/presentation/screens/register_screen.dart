@@ -25,9 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _districtController = TextEditingController();
-  UserRole _selectedRole = UserRole.buyer;
-  bool _isFamilyAssisted = false;
+  AccountPurpose _selectedRole = AccountPurpose.shop;
 
   @override
   Widget build(BuildContext context) {
@@ -46,21 +44,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 12),
                 RoleSelectorCard(
-                  role: UserRole.buyer,
+                  role: AccountPurpose.shop,
                   title: 'Craft Enthusiast / Buyer',
                   description: 'Discover authentic handmade items, order, and support local artisans.',
                   icon: Icons.shopping_bag_outlined,
-                  isSelected: _selectedRole == UserRole.buyer,
-                  onSelect: () => setState(() => _selectedRole = UserRole.buyer),
+                  isSelected: _selectedRole == AccountPurpose.shop,
+                  onSelect: () => setState(() => _selectedRole = AccountPurpose.shop),
                 ),
                 const SizedBox(height: 10),
                 RoleSelectorCard(
-                  role: UserRole.artisan,
+                  role: AccountPurpose.sell,
                   title: 'Sri Lankan Artisan / Maker',
                   description: 'Showcase your heritage craft, sell directly, and connect with buyers.',
                   icon: Icons.brush_outlined,
-                  isSelected: _selectedRole == UserRole.artisan,
-                  onSelect: () => setState(() => _selectedRole = UserRole.artisan),
+                  isSelected: _selectedRole == AccountPurpose.sell,
+                  onSelect: () => setState(() => _selectedRole = AccountPurpose.sell),
                 ),
                 const SizedBox(height: 20),
                 CustomTextField(
@@ -85,23 +83,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _passwordController,
                   validator: InputValidators.validatePassword,
                 ),
-                const SizedBox(height: 14),
-                CustomTextField(
-                  label: 'District / Region',
-                  hint: 'e.g. Kandy / Galle / Kegalle',
-                  controller: _districtController,
-                ),
-                if (_selectedRole == UserRole.artisan) ...[
-                  const SizedBox(height: 14),
-                  CheckboxListTile(
-                    title: const Text('Family Assisted Account'),
-                    subtitle: const Text('Allow a designated family member or youth to help manage orders & chats'),
-                    value: _isFamilyAssisted,
-                    activeColor: AppColors.primary,
-                    contentPadding: EdgeInsets.zero,
-                    onChanged: (val) => setState(() => _isFamilyAssisted = val ?? false),
-                  ),
-                ],
                 const SizedBox(height: 24),
                 CustomButton(
                   text: 'Register Account',
@@ -112,15 +93,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         email: _emailController.text,
                         password: _passwordController.text,
                         displayName: _nameController.text,
-                        role: _selectedRole,
-                        district: _districtController.text,
-                        isFamilyAssisted: _isFamilyAssisted,
+                        primaryPurpose: _selectedRole,
                       );
                       if (success && mounted) {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => _selectedRole == UserRole.artisan
+                            builder: (_) => _selectedRole == AccountPurpose.sell
                                 ? const ArtisanDashboardScreen()
                                 : const HomeScreen(),
                           ),

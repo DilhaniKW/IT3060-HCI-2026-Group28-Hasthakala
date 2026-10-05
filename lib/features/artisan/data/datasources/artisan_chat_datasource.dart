@@ -13,7 +13,7 @@ class ArtisanChatDataSource {
   Stream<List<ChatMessageModel>> streamConversation(String chatId) {
     return _firestoreService.instance
         .collection(FirestoreCollections.chatMessages(chatId))
-        .orderBy('timestamp', descending: false)
+        .orderBy('sentAt', descending: false)
         .snapshots()
         .map((snapshot) =>
             snapshot.docs.map((doc) => ChatMessageModel.fromMap(doc.data(), doc.id)).toList());

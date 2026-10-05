@@ -13,9 +13,9 @@ class OrderStatusStepper extends StatelessWidget {
         return 0;
       case OrderStatus.confirmed:
         return 1;
-      case OrderStatus.crafting:
+      case OrderStatus.preparing:
         return 2;
-      case OrderStatus.dispatched:
+      case OrderStatus.shipped:
         return 3;
       case OrderStatus.delivered:
         return 4;

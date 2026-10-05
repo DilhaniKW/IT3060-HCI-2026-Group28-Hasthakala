@@ -1,62 +1,81 @@
-enum UserRole { buyer, artisan, admin }
+import '../utils/firestore_converters.dart';
 
+/// Answer to "How will you start using HASTHAKALA?" (I01 onboarding).
+/// This is NOT a permission. What a user may do is decided by their
+/// contexts (artisan profile, support grants) and enforced by
+/// Firestore security rules (NFR3).
+enum AccountPurpose { shop, sell }
+
+/// users/{uid} - LOCKED field names, see docs/FIREBASE_SCHEMA.md.
 class UserModel {
   final String uid;
   final String email;
   final String displayName;
-  final String? phoneNumber;
-  final String? profileImageUrl;
-  final UserRole role;
-  final String? bio; // For artisans
-  final String? district; // Sri Lankan District (e.g. Kandy, Galle)
-  final bool isFamilyAssisted; // Support for elder artisans
+  final String? phone;
+  final String? photoUrl;
+  final AccountPurpose primaryPurpose;
+  final String preferredLanguage;
+  final Map<String, dynamic>? defaultDeliveryAddress;
   final DateTime createdAt;
+  final DateTime updatedAt;
 
   UserModel({
     required this.uid,
     required this.email,
     required this.displayName,
-    this.phoneNumber,
-    this.profileImageUrl,
-    required this.role,
-    this.bio,
-    this.district,
-    this.isFamilyAssisted = false,
+    this.phone,
+    this.photoUrl,
+    this.primaryPurpose = AccountPurpose.shop,
+    this.preferredLanguage = 'en',
+    this.defaultDeliveryAddress,
     DateTime? createdAt,
-  }) : createdAt = createdAt ?? DateTime.now();
+    DateTime? updatedAt,
+  })  : createdAt = createdAt ?? DateTime.now(),
+        updatedAt = updatedAt ?? DateTime.now();
+
+  bool get startedAsSeller => primaryPurpose == AccountPurpose.sell;
+
+  @Deprecated('Not part of users/{uid}. Use ArtisanProfileModel.location.')
+  String? get district => null;
+
+  @Deprecated('Not part of users/{uid}. Use ArtisanProfileModel.about.')
+  String? get bio => null;
 
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'email': email,
       'displayName': displayName,
-      'phoneNumber': phoneNumber,
-      'profileImageUrl': profileImageUrl,
-      'role': role.name,
-      'bio': bio,
-      'district': district,
-      'isFamilyAssisted': isFamilyAssisted,
-      'createdAt': createdAt.toIso8601String(),
+      'phone': phone,
+      'photoUrl': photoUrl,
+      'primaryPurpose': primaryPurpose.name,
+      'preferredLanguage': preferredLanguage,
+      'defaultDeliveryAddress': defaultDeliveryAddress,
+      'createdAt': FirestoreConverters.toTimestamp(createdAt),
+      'updatedAt': FirestoreConverters.toTimestamp(updatedAt),
     };
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map, String docId) {
+    // Early test accounts stored 'role' instead of 'primaryPurpose'.
+    final purposeName =
+        map['primaryPurpose'] ?? (map['role'] == 'artisan' ? 'sell' : 'shop');
+    final address = map['defaultDeliveryAddress'];
     return UserModel(
       uid: docId,
       email: map['email'] ?? '',
       displayName: map['displayName'] ?? '',
-      phoneNumber: map['phoneNumber'],
-      profileImageUrl: map['profileImageUrl'],
-      role: UserRole.values.firstWhere(
-        (r) => r.name == map['role'],
-        orElse: () => UserRole.buyer,
+      phone: map['phone'],
+      photoUrl: map['photoUrl'],
+      primaryPurpose: AccountPurpose.values.firstWhere(
+        (p) => p.name == purposeName,
+        orElse: () => AccountPurpose.shop,
       ),
-      bio: map['bio'],
-      district: map['district'],
-      isFamilyAssisted: map['isFamilyAssisted'] ?? false,
-      createdAt: map['createdAt'] != null
-          ? DateTime.tryParse(map['createdAt']) ?? DateTime.now()
-          : DateTime.now(),
+      preferredLanguage: map['preferredLanguage'] ?? 'en',
+      defaultDeliveryAddress:
+          address == null ? null : Map<String, dynamic>.from(address),
+      createdAt: FirestoreConverters.toDateTime(map['createdAt']),
+      updatedAt: FirestoreConverters.toDateTime(map['updatedAt']),
     );
   }
 }

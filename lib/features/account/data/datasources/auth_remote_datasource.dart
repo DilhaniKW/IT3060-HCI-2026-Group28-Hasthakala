@@ -38,9 +38,7 @@ class AuthRemoteDataSource {
     required String email,
     required String password,
     required String displayName,
-    required UserRole role,
-    String? district,
-    bool isFamilyAssisted = false,
+    required AccountPurpose primaryPurpose,
   }) async {
     final credential = await _authService.signUpWithEmailAndPassword(
       email: email,
@@ -51,10 +49,8 @@ class AuthRemoteDataSource {
     final newUser = UserModel(
       uid: uid,
       email: email,
-      displayName: displayName,
-      role: role,
-      district: district,
-      isFamilyAssisted: isFamilyAssisted,
+      displayName: displayName.trim(),
+      primaryPurpose: primaryPurpose,
     );
 
     await _firestoreService.setDocument(
