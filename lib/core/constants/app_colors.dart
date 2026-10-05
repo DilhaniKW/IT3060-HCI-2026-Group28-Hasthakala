@@ -1,39 +1,44 @@
 import 'package:flutter/material.dart';
 
-/// App-wide Color Palette inspired by traditional Sri Lankan artisan crafts
-/// (Terracotta pottery, Ochre masks, Brass metalware, Handloom fabrics).
+/// Hasthakala design system colours ("Heritage Clay & Ceylon Earth").
+/// Source: Hasthakala UI/UX & Colour System Specification + Milestone 02 hi-fi.
+/// Rule: no pure black (#000000) or pure white (#FFFFFF) anywhere in the app.
 class AppColors {
-  // Primary Earthy Tones
-  static const Color primary = Color(0xFF8B3A2B); // Terracotta Red / Clay
-  static const Color primaryLight = Color(0xFFBD6856);
-  static const Color primaryDark = Color(0xFF5E1E13);
+  // Primary - Terracotta Clay: main actions (Sign In, Add to Cart, Save), active nav tab
+  static const Color primary = Color(0xFFB85028);
+  static const Color primaryLight = Color(0xFFD9805C);
+  static const Color primaryDark = Color(0xFF8E3A1B);
 
-  // Secondary Warm Tones
-  static const Color secondary = Color(0xFFD49B35); // Ochre / Ceylon Brass
-  static const Color secondaryLight = Color(0xFFEBC16F);
-  static const Color secondaryDark = Color(0xFF9E6D15);
+  // Text/icons placed ON a primary-coloured button (Raw Linen, not white)
+  static const Color onPrimary = Color(0xFFFAF7F2);
 
-  // Accent & Craft Accents
-  static const Color accent = Color(0xFF2E6B55); // Ceylon Forest Green
-  static const Color accentLight = Color(0xFF58957C);
+  // Accent - Golden Ochre: ratings, badges, highlights.
+  // NOT use for normal-size text on Raw Linen (contrast ~3:1, fails WCAG AA).
+  static const Color secondary = Color(0xFFD97706);
+  static const Color secondaryLight = Color(0xFFF2B266);
+  static const Color secondaryDark = Color(0xFFA85A04);
 
-  // Neutral Colors
-  static const Color background = Color(0xFFF9F7F2); // Warm Parchment / Linen
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color cardBg = Color(0xFFFFFFFF);
+  // Trust - Ceylon Forest Green: "Verified Artisan", order complete, success
+  static const Color accent = Color(0xFF264E36);
+  static const Color accentLight = Color(0xFF4F7A5E);
 
-  // Text Colors
-  static const Color textPrimary = Color(0xFF1E1E1E);
-  static const Color textSecondary = Color(0xFF6B6864);
-  static const Color textMuted = Color(0xFF9E9B96);
+  // Backgrounds - Raw Linen (screens) and a warm off-white for cards/fields
+  static const Color background = Color(0xFFFAF7F2);
+  static const Color surface = Color(0xFFFFFCF8);
+  static const Color cardBg = Color(0xFFFFFCF8);
 
-  // Status & Feedback
-  static const Color success = Color(0xFF2E7D32);
+  // Text - Charcoal Ironwood and lighter tints of it
+  static const Color textPrimary = Color(0xFF1C1917);
+  static const Color textSecondary = Color(0xFF57534E);
+  static const Color textMuted = Color(0xFF8A847D); 
+
+  // Status & feedback
+  static const Color success = Color(0xFF264E36); // trust green
   static const Color error = Color(0xFFC62828);
-  static const Color warning = Color(0xFFF57C00);
-  static const Color info = Color(0xFF0288D1);
+  static const Color warning = Color(0xFFD97706); // ochre
+  static const Color info = Color(0xFF264E36);
 
-  // Borders & Dividers
-  static const Color border = Color(0xFFE2DDD5);
-  static const Color divider = Color(0xFFECE7DF);
+  // Borders & dividers - warm neutrals
+  static const Color border = Color(0xFFE7DFD6);
+  static const Color divider = Color(0xFFEFE8E0);
 }
