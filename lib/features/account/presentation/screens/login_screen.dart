@@ -4,8 +4,6 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/input_validators.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_field.dart';
-import '../../../artisan/presentation/screens/artisan_dashboard_screen.dart';
-import '../../../discovery/presentation/screens/home_screen.dart';
 import '../state/auth_provider.dart';
 import 'register_screen.dart';
 
@@ -90,44 +88,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             _emailController.text,
                             _passwordController.text,
                           );
-                          if (success && mounted) {
-                            // TEMPORARY routing until context resolution (D1) is added
-                            final isArtisan = auth.currentUser?.startedAsSeller ?? false;
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => isArtisan
-                                    ? const ArtisanDashboardScreen()
-                                    : const HomeScreen(),
-                              ),
-                            );
-                          }
+                          // On success the AuthGate shows the next screen;
+                          // on failure auth.errorMessage is displayed above.
+                          if (!success) _passwordController.clear();
                         }
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    // Quick Demo bypass button (for team testing without firebase keys setup yet)
-                    CustomButton(
-                      text: 'Explore As Guest (Buyer)',
-                      isOutlined: true,
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => const HomeScreen()),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 10),
-                    CustomButton(
-                      text: 'Open Artisan Hub (Demo)',
-                      isOutlined: true,
-                      backgroundColor: AppColors.secondary,
-                      textColor: AppColors.secondaryDark,
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => const ArtisanDashboardScreen()),
-                        );
                       },
                     ),
                     const SizedBox(height: 24),

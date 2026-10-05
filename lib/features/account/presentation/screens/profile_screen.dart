@@ -6,7 +6,6 @@ import '../../../../core/widgets/custom_button.dart';
 import '../state/auth_provider.dart';
 import '../widgets/profile_avatar_widget.dart';
 import 'family_support_settings_screen.dart';
-import 'login_screen.dart';
 
 /// Assigned to: WANIGATHUNGA Y. J.
 /// Branch: feature/account-support
@@ -65,6 +64,16 @@ class ProfileScreen extends StatelessWidget {
               );
             },
           ),
+          if (auth.availableContextCount > 1)
+            ListTile(
+              leading: const Icon(Icons.swap_horiz, color: AppColors.primary),
+              title: const Text('Switch context'),
+              subtitle: const Text('Continue as buyer, artisan or supporter'),
+              onTap: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                auth.switchContext();
+              },
+            ),
           const SizedBox(height: 32),
           CustomButton(
             text: 'Sign Out',
@@ -72,14 +81,8 @@ class ProfileScreen extends StatelessWidget {
             textColor: AppColors.error,
             backgroundColor: AppColors.error,
             onPressed: () async {
-              await auth.logout();
-              if (context.mounted) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
-                  (route) => false,
-                );
-              }
+              Navigator.of(context).popUntil((route) => route.isFirst);
+              await auth.logout(); // AuthGate then shows the sign-in screen
             },
           ),
         ],

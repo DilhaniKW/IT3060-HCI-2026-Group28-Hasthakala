@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'config/routes/app_routes.dart';
+import 'core/navigation/auth_gate.dart';
 import 'config/routes/route_generator.dart';
 import 'core/theme/app_theme.dart';
 import 'features/account/presentation/state/auth_provider.dart';
@@ -26,7 +26,8 @@ class HasthakalaApp extends StatelessWidget {
         title: 'Hasthakala',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        initialRoute: AppRoutes.splash,
+        // AuthGate picks the first screen from the sign-in state (I01, D1).
+        home: const AuthGate(),
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

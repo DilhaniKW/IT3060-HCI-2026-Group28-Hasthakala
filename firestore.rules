@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Hasthakala Firestore security rules - v1.1
+// Hasthakala Firestore security rules - v1.2
 // NFR3: access is enforced here, not only by hiding buttons in the app.
 // Field names follow docs/FIREBASE_SCHEMA.md (locked).
 service cloud.firestore {
@@ -62,7 +62,15 @@ service cloud.firestore {
     match /reviews/{doc=**}       { allow read, write: if signedIn(); }
 
     // ---------- I13 Family Assistance ----------
-    // supportGrants / supportInvites are blocked until the I13 authorisation
-    // model is implemented. Everything not listed above is denied by default.
+    // Read: only the artisan or the supporter named in the grant
+    // (used at sign-in to find "Supporting <artisan>" contexts).
+    // Writes stay blocked until the I13 authorisation model is implemented.
+    match /supportGrants/{grantId} {
+      allow read: if signedIn()
+        && (resource.data.supporterId == request.auth.uid
+            || resource.data.artisanId == request.auth.uid);
+      allow write: if false;
+    }
+    // supportInvites: blocked until I13. Everything not listed is denied.
   }
 }

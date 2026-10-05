@@ -6,8 +6,6 @@ import '../../../../core/utils/input_validators.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/custom_text_field.dart';
-import '../../../artisan/presentation/screens/artisan_dashboard_screen.dart';
-import '../../../discovery/presentation/screens/home_screen.dart';
 import '../state/auth_provider.dart';
 import '../widgets/role_selector_card.dart';
 
@@ -95,16 +93,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         displayName: _nameController.text,
                         primaryPurpose: _selectedRole,
                       );
-                      if (success && mounted) {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => _selectedRole == AccountPurpose.sell
-                                ? const ArtisanDashboardScreen()
-                                : const HomeScreen(),
-                          ),
-                          (route) => false,
-                        );
+                      // Return to the root; the AuthGate then shows artisan
+                      // setup (Sell) or the buyer home (Shop).
+                      if (success && context.mounted) {
+                        Navigator.of(context).popUntil((route) => route.isFirst);
                       }
                     }
                   },
