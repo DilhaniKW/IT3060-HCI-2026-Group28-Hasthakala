@@ -1,0 +1,36 @@
+rules_version = '2';
+
+// Hasthakala Firestore security rules - v1
+// NFR3: access is enforced here, not only by hiding buttons in the app.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isSelf(uid) { return signedIn() && request.auth.uid == uid; }
+
+    // I01 Entry/Auth - FINAL rules for user account documents.
+    // A user can only see/edit their own document; role is chosen once
+    // (buyer or artisan) and cannot be self-assigned as admin or changed later.
+    match /users/{uid} {
+      allow read: if isSelf(uid);
+      allow create: if isSelf(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.role in ['buyer', 'artisan'];
+      allow update: if isSelf(uid)
+        && request.resource.data.role == resource.data.role;
+      allow delete: if false;
+    }
+
+    // TEMPORARY development rules (v1) - signed-in users only.
+    // MUST be replaced with owner/role-based rules (v2) before functional testing.
+    match /products/{doc=**}   { allow read, write: if signedIn(); }
+    match /orders/{doc=**}     { allow read, write: if signedIn(); }
+    match /carts/{doc=**}      { allow read, write: if signedIn(); }
+    match /chats/{doc=**}      { allow read, write: if signedIn(); }
+    match /categories/{doc=**} { allow read, write: if signedIn(); }
+    match /reviews/{doc=**}    { allow read, write: if signedIn(); }
+
+    // I13 Family Assistance - blocked until the support-grant model is designed.
+    // Everything not listed above is denied by default.
+  }
+}
