@@ -1,5 +1,5 @@
-import '../../../core/constants/firestore_collections.dart';
-import '../../../core/services/firebase/firestore_service.dart';
+import '../../../../core/constants/firestore_collections.dart';
+import '../../../../core/services/firebase/firestore_service.dart';
 
 /// Assigned to: WANIGATHUNGA Y. J.
 /// Branch: feature/account-support

@@ -1,7 +1,7 @@
-import '../../../core/constants/firestore_collections.dart';
-import '../../../core/services/firebase/firestore_service.dart';
-import '../../../core/shared_models/product_model.dart';
-import '../../../core/shared_models/user_model.dart';
+import '../../../../core/constants/firestore_collections.dart';
+import '../../../../core/services/firebase/firestore_service.dart';
+import '../../../../core/shared_models/product_model.dart';
+import '../../../../core/shared_models/user_model.dart';
 
 /// Assigned to: JAYAWARDANA V. K. A.
 /// Branch: feature/buyer-discovery

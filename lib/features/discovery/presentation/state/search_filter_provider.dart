@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/shared_models/product_model.dart';
+import '../../../../core/shared_models/product_model.dart';
 import '../../data/datasources/discovery_remote_datasource.dart';
 
 /// Assigned to: JAYAWARDANA V. K. A.

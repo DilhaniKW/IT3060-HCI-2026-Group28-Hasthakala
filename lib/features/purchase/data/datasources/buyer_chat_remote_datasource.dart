@@ -1,6 +1,6 @@
-import '../../../core/constants/firestore_collections.dart';
-import '../../../core/services/firebase/firestore_service.dart';
-import '../../../core/shared_models/chat_message_model.dart';
+import '../../../../core/constants/firestore_collections.dart';
+import '../../../../core/services/firebase/firestore_service.dart';
+import '../../../../core/shared_models/chat_message_model.dart';
 
 /// Assigned to: DISSANAYAKE D. M. S. D.
 /// Branch: feature/buyer-purchase

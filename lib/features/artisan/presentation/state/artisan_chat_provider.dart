@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/shared_models/chat_message_model.dart';
+import '../../../../core/shared_models/chat_message_model.dart';
 import '../../data/datasources/artisan_chat_datasource.dart';
 
 /// Assigned to: KUMARI R. P. G. D.

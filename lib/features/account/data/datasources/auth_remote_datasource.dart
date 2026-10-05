@@ -1,7 +1,7 @@
-import '../../../core/constants/firestore_collections.dart';
-import '../../../core/services/firebase/firebase_auth_service.dart';
-import '../../../core/services/firebase/firestore_service.dart';
-import '../../../core/shared_models/user_model.dart';
+import '../../../../core/constants/firestore_collections.dart';
+import '../../../../core/services/firebase/firebase_auth_service.dart';
+import '../../../../core/services/firebase/firestore_service.dart';
+import '../../../../core/shared_models/user_model.dart';
 
 /// Assigned to: WANIGATHUNGA Y. J.
 /// Branch: feature/account-support

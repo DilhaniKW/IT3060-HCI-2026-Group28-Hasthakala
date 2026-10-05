@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/shared_models/order_model.dart';
+import '../../../../core/shared_models/order_model.dart';
 import '../../data/datasources/cart_remote_datasource.dart';
 
 /// Assigned to: DISSANAYAKE D. M. S. D.

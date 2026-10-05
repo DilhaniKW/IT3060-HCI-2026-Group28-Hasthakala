@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/shared_models/product_model.dart';
+import '../../../../core/shared_models/product_model.dart';
 import '../../data/datasources/artisan_product_datasource.dart';
 
 /// Assigned to: KUMARI R. P. G. D.

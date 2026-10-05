@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/shared_models/chat_message_model.dart';
+import '../../../../core/shared_models/chat_message_model.dart';
 import '../../data/datasources/buyer_chat_remote_datasource.dart';
 
 /// Assigned to: DISSANAYAKE D. M. S. D.

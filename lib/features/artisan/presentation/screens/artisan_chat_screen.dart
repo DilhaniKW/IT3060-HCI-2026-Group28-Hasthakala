@@ -4,7 +4,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/empty_state_view.dart';
 import '../../../../core/widgets/loading_indicator.dart';
-import '../../purchase/presentation/widgets/chat_bubble.dart';
+import '../../../purchase/presentation/widgets/chat_bubble.dart';
 import '../state/artisan_chat_provider.dart';
 
 /// Assigned to: KUMARI R. P. G. D.

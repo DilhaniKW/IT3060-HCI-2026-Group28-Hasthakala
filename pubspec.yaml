@@ -14,23 +14,23 @@ dependencies:
   provider: ^6.1.2
 
   # Firebase Services
-  firebase_core: ^3.6.0
-  firebase_auth: ^5.3.1
-  cloud_firestore: ^5.4.4
-  firebase_storage: ^12.3.2
+  firebase_core: ^4.15.0
+  firebase_auth: ^6.7.0
+  cloud_firestore: ^6.10.0
+  firebase_storage: ^13.6.0
 
   # Utilities & Helpers
-  intl: ^0.19.0
+  intl: ^0.20.3
   uuid: ^4.5.1
-  cached_network_image: ^3.4.1
+  cached_network_image: ^4.0.4
 
   # UI & Icons
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

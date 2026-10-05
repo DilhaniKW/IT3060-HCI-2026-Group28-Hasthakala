@@ -1,4 +1,4 @@
-package com.example.hasthakala
+package lk.hasthakala.app
 
 import io.flutter.embedding.android.FlutterActivity
 

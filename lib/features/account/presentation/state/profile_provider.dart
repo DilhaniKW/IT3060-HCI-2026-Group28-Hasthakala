@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../core/shared_models/user_model.dart';
+import '../../../../core/shared_models/user_model.dart';
 import '../../data/datasources/profile_remote_datasource.dart';
 
 /// Assigned to: WANIGATHUNGA Y. J.
