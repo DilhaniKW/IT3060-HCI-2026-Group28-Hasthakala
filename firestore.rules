@@ -1,6 +1,6 @@
 rules_version = '2';
 
-// Hasthakala Firestore security rules - v1.3
+// Hasthakala Firestore security rules - v1.4
 // NFR3: access is enforced here, not only by hiding buttons in the app.
 // Field names follow docs/FIREBASE_SCHEMA.md (locked).
 service cloud.firestore {
@@ -121,6 +121,9 @@ service cloud.firestore {
         (resource.data.artisanId == request.auth.uid
           && changed().hasOnly(['status'])
           && request.resource.data.status == 'revoked')
+        // owner renamed their artisan profile
+        || (resource.data.artisanId == request.auth.uid
+          && changed().hasOnly(['artisanName']))
         // invitee marks it accepted, in the same write that creates the grant
         || (resource.data.status == 'pending'
           && changed().hasOnly(['status', 'acceptedBy'])
@@ -141,7 +144,7 @@ service cloud.firestore {
       allow update: if signedIn() && (
         // owner edits permissions or revokes
         (resource.data.artisanId == request.auth.uid
-          && changed().hasOnly(['scopes', 'status', 'updatedAt'])
+          && changed().hasOnly(['scopes', 'status', 'updatedAt', 'artisanName'])
           && validScopes(request.resource.data.scopes)
           && request.resource.data.status in ['active', 'revoked'])
         // supporter re-accepts a NEW invite (e.g. after a revoke)

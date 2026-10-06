@@ -326,6 +326,22 @@ class AuthProvider extends ChangeNotifier {
     await refreshSession();
   }
 
+  // re-read only users/{uid} (e.g. after the name changed) without
+  // leaving the current context
+  Future<void> reloadCurrentUser() async {
+    final uid = _currentUser?.uid;
+    if (uid == null) return;
+    try {
+      final user = await _authDataSource.fetchUser(uid);
+      if (user != null) {
+        _currentUser = user;
+        notifyListeners();
+      }
+    } catch (_) {
+      // keep the old copy; it refreshes on next sign in
+    }
+  }
+
   // reload user + contexts, e.g. after accepting an invite
   Future<void> refreshSession() async {
     final uid = _currentUser?.uid;

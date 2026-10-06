@@ -28,16 +28,44 @@ class ArtisanProfileRemoteDataSource {
       'updatedAt': Timestamp.now(),
     });
 
-    // products keep a copy of the artisan name, so keep it in sync
+    await _syncArtisanName(profile.artisanUid, profile.displayName);
+  }
+
+  // The artisan name is copied into a few other documents (account, products,
+  // support grants, pending invites). Update them all so every screen shows
+  // the same name.
+  Future<void> _syncArtisanName(String uid, String name) async {
+    final batch = _db.batch();
+    final now = Timestamp.now();
+
+    batch.update(_db.collection(FirestoreCollections.users).doc(uid),
+        {'displayName': name, 'updatedAt': now});
+
     final products = await _db
         .collection(FirestoreCollections.products)
-        .where('artisanId', isEqualTo: profile.artisanUid)
+        .where('artisanId', isEqualTo: uid)
         .get();
-    if (products.docs.isEmpty) return;
-    final batch = _db.batch();
-    for (final p in products.docs) {
-      batch.update(p.reference, {'artisanName': profile.displayName});
+    for (final d in products.docs) {
+      batch.update(d.reference, {'artisanName': name});
     }
+
+    final grants = await _db
+        .collection(FirestoreCollections.supportGrants)
+        .where('artisanId', isEqualTo: uid)
+        .get();
+    for (final d in grants.docs) {
+      batch.update(d.reference, {'artisanName': name, 'updatedAt': now});
+    }
+
+    final invites = await _db
+        .collection(FirestoreCollections.supportInvites)
+        .where('artisanId', isEqualTo: uid)
+        .where('status', isEqualTo: 'pending')
+        .get();
+    for (final d in invites.docs) {
+      batch.update(d.reference, {'artisanName': name});
+    }
+
     await batch.commit();
   }
 }

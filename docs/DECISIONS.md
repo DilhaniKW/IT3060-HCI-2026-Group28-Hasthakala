@@ -29,3 +29,4 @@
 | I01d | 06 Oct | Circular logo asset `assets/images/hasthakala_logo.png` (27 KB) | Logo should be circular; emblem without wordmark stays readable when small | I01, branding |
 | I13e | 06 Oct | Permission labels use plain words (Manage products / Manage orders / Respond to customers) without interface codes | Interface codes mean nothing to real users (match between system and real world) | I13 |
 | I13f | 06 Oct | Copy-to-clipboard invitation message (no extra package) | Family members already use WhatsApp/SMS (Milestone 01 F4/F7) | I13 |
+| I05c | 06 Oct | Saving the artisan name also updates the account name, products, support grants and pending invites (one batch); rules v1.4 let the owner change `artisanName` on grants/invites | The name was showing old values on the supporter banner, "Continue as", invites (consistency, NFR4) | I05, I13, rules |
