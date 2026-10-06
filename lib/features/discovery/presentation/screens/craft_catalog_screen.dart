@@ -177,7 +177,10 @@ class _CraftCatalogScreenState extends State<CraftCatalogScreen> {
               itemCount: filteredList.length,
               itemBuilder: (context, index) {
                 final product = filteredList[index];
-                return ProductCard(product: product);
+                return ProductCard(
+                  product: product,
+                  onTap: () => Navigator.pushNamed(context, '/product-details', arguments: product),
+                );
               },
             ),
           ),
