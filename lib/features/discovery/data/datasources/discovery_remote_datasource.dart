@@ -29,36 +29,51 @@ class DiscoveryRemoteDataSource {
     String? district,
     double? maxPrice,
   }) async {
-    final snapshot = await _firestoreService.instance
-        .collection(FirestoreCollections.products)
-        .where('isAvailable', isEqualTo: true)
-        .get();
+    try {
+      final snapshot = await _firestoreService.instance
+          .collection(FirestoreCollections.products)
+          .where('isAvailable', isEqualTo: true)
+          .get()
+          .timeout(const Duration(seconds: 3));
 
-    return snapshot.docs
-        .map((doc) => ProductModel.fromMap(doc.data(), doc.id))
-        .where((product) {
-          final matchesQuery = query == null ||
-              query.isEmpty ||
-              product.title.toLowerCase().contains(query.toLowerCase()) ||
-              product.description.toLowerCase().contains(query.toLowerCase());
-          final matchesCategory =
-              category == null || category.isEmpty || product.category == category;
-          final matchesDistrict =
-              district == null || district.isEmpty || product.district == district;
-          final matchesPrice = maxPrice == null || product.priceLkr <= maxPrice;
+      return snapshot.docs
+          .map((doc) => ProductModel.fromMap(doc.data(), doc.id))
+          .where((product) {
+            final matchesQuery = query == null ||
+                query.isEmpty ||
+                product.title.toLowerCase().contains(query.toLowerCase()) ||
+                product.description.toLowerCase().contains(query.toLowerCase());
+            final matchesCategory =
+                category == null || category.isEmpty || product.category == category;
+            final matchesDistrict =
+                district == null || district.isEmpty || product.district == district;
+            final matchesPrice = maxPrice == null || product.priceLkr <= maxPrice;
 
-          return matchesQuery && matchesCategory && matchesDistrict && matchesPrice;
-        })
-        .toList();
+            return matchesQuery && matchesCategory && matchesDistrict && matchesPrice;
+          })
+          .toList();
+    } catch (_) {
+      return [];
+    }
   }
 
   /// Get public artisan profile
   Future<UserModel?> getArtisanProfile(String artisanId) async {
-    final doc = await _firestoreService.getDocument(
-      collection: FirestoreCollections.users,
-      docId: artisanId,
-    );
-    if (!doc.exists || doc.data() == null) return null;
-    return UserModel.fromMap(doc.data()!, doc.id);
+    try {
+      if (artisanId.isEmpty || artisanId.startsWith('artisan_') || artisanId.startsWith('sample_')) {
+        return null;
+      }
+      final doc = await _firestoreService
+          .getDocument(
+            collection: FirestoreCollections.users,
+            docId: artisanId,
+          )
+          .timeout(const Duration(seconds: 2));
+
+      if (!doc.exists || doc.data() == null) return null;
+      return UserModel.fromMap(doc.data()!, doc.id);
+    } catch (_) {
+      return null;
+    }
   }
 }
