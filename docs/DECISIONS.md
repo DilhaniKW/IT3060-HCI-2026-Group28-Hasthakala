@@ -24,3 +24,6 @@
 | I01a | 06 Oct | Sign-out asks for confirmation (from I01 wireframe "Sign out?") | Error prevention | I01 |
 | I05a | 06 Oct | Saving the artisan name also updates `artisanName` on that artisan's products | Products keep a copy of the name; keeps buyer-facing data consistent (NFR4) | I05, I11 data |
 | I05b | 06 Oct | A save that gets no server reply in 10 s is shown as "You're offline" | Firestore queues offline writes instead of failing; matches I05_HF_15 | I05 |
+| I01b | 06 Oct | Sign up in two steps: Create Account makes the Auth account; users/{uid} is written after "How will you start using HASTHAKALA?" | Matches hi-fi order; if the app closes in between, next launch returns to the purpose screen | I01 |
+| I01c | 06 Oct | Intro screen shown on first launch only (`shared_preferences`) | Hi-fi frame 2; not repeated every time | I01 |
+| I01d | 06 Oct | Circular logo asset `assets/images/hasthakala_logo.png` (27 KB) | Logo should be circular; emblem without wordmark stays readable when small | I01, branding |

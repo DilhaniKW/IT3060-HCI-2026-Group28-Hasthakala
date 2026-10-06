@@ -6,6 +6,7 @@ import 'core/theme/app_theme.dart';
 import 'features/account/presentation/state/artisan_profile_provider.dart';
 import 'features/account/presentation/state/auth_provider.dart';
 import 'features/account/presentation/state/family_support_provider.dart';
+import 'features/account/presentation/state/onboarding_provider.dart';
 import 'features/artisan/presentation/state/artisan_dashboard_provider.dart';
 import 'features/artisan/presentation/state/artisan_orders_provider.dart';
 import 'features/discovery/presentation/state/discovery_provider.dart';
@@ -18,6 +19,7 @@ class HasthakalaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => OnboardingProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => FamilySupportProvider()), // I13
         ChangeNotifierProvider(create: (_) => ArtisanProfileProvider()), // I05

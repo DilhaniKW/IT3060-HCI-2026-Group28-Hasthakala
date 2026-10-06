@@ -38,34 +38,47 @@ class AuthRemoteDataSource {
     );
   }
 
-  /// CREATE Firebase Auth account + users/{uid}
-  Future<UserModel> register({
+  // step 1 of sign up: only the Firebase Auth account (Create Account screen)
+  Future<String> createAccount({
     required String email,
     required String password,
     required String displayName,
-    required AccountPurpose primaryPurpose,
   }) async {
     final credential = await _authService.signUpWithEmailAndPassword(
       email: email,
       password: password,
     );
-    final uid = credential.user!.uid;
+    final user = credential.user!;
+    await user.updateDisplayName(displayName.trim());
+    return user.uid;
+  }
 
+  // details of the signed-in Firebase Auth account (used before users/{uid} exists)
+  ({String uid, String email, String name})? get authAccount {
+    final user = _authService.currentUser;
+    if (user == null) return null;
+    return (uid: user.uid, email: user.email ?? '', name: user.displayName ?? '');
+  }
+
+  // step 2 of sign up: users/{uid} once they pick Shop or Sell
+  Future<void> createUserDocument({
+    required String uid,
+    required String email,
+    required String displayName,
+    required AccountPurpose primaryPurpose,
+  }) async {
     final newUser = UserModel(
       uid: uid,
       email: email.trim(),
       displayName: displayName.trim(),
       primaryPurpose: primaryPurpose,
     );
-
     await _firestoreService.setDocument(
       collection: FirestoreCollections.users,
       docId: uid,
       data: newUser.toMap(),
       merge: false,
     );
-
-    return newUser;
   }
 
   Future<void> sendPasswordReset(String email) =>

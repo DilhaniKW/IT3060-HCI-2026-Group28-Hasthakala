@@ -62,3 +62,10 @@ Firestore rules, Storage rules strategy, allowed/denied cases).
 - Profile hub now has My Artisan Profile + Family Assistance for artisans (I05_HF_01).
 - Preview Public Profile opens Member 1's public profile screen (needs their switch to ArtisanProfileModel).
 - Photo upload not included (DV6).
+
+## Session 4 - 06 Oct 2026 - I01 sign-in / sign-up flow (logic)
+- First-launch intro, Welcome Back (logo, show/hide password, forgot password), Signing you in.
+- Create Account (name, email, password, confirm, terms) -> Account Created -> How will you start -> You're all set / Your artisan setup has started.
+- Reset password + Check your email (real Firebase reset email).
+- New package: shared_preferences (only for the intro screen).
+- Visual polish against the report hi-fi still to do.

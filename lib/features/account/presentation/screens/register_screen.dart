@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/shared_models/user_model.dart';
-import '../../../../core/utils/input_validators.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/widgets/custom_text_field.dart';
-import '../state/auth_provider.dart';
-import '../widgets/role_selector_card.dart';
 
-/// Assigned to: WANIGATHUNGA Y. J.
-/// Branch: feature/account-support
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/utils/input_validators.dart';
+import '../state/auth_provider.dart';
+
+// I01 Create Account (hi-fi frame 13). Shop/Sell is chosen on the next screen.
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -20,91 +15,176 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  AccountPurpose _selectedRole = AccountPurpose.shop;
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmController = TextEditingController();
+  bool _hidePassword = true;
+  bool _hideConfirm = true;
+  bool _acceptedTerms = false;
+  String? _termsError;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _create() async {
+    final formOk = _formKey.currentState!.validate();
+    setState(() => _termsError =
+        _acceptedTerms ? null : 'Please agree to the Terms & Conditions to continue.');
+    if (!formOk || !_acceptedTerms) return;
+
+    final auth = context.read<AuthProvider>();
+    final ok = await auth.createAccount(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+      displayName: _nameController.text.trim(),
+    );
+    // AuthGate shows "Account Created!" underneath this screen
+    if (ok && mounted) Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  void _showTerms() {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Terms & Conditions'),
+        content: const SingleChildScrollView(
+          child: Text(
+            'HASTHAKALA is a student project marketplace (IT3060, Group 28).\n\n'
+            '- Use accurate information about yourself and your products.\n'
+            '- Only share support access with people you trust.\n'
+            '- Test accounts and data may be removed at the end of the project.\n'
+            '- Your data is stored in Firebase and used only for this app.',
+          ),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Close')),
+        ],
+      ),
+    );
+  }
+
+  InputDecoration _passwordDecoration(String label, bool hidden, VoidCallback toggle) {
+    return InputDecoration(
+      labelText: label,
+      suffixIcon: IconButton(
+        tooltip: hidden ? 'Show password' : 'Hide password',
+        icon: Icon(hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+        onPressed: toggle,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
+
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Create Account'),
-      body: Consumer<AuthProvider>(
-        builder: (context, auth, _) {
-          return Form(
-            key: _formKey,
-            child: ListView(
-              padding: const EdgeInsets.all(20),
+      appBar: AppBar(),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+          children: [
+            const Text('Create Your Account',
+                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700)),
+            const SizedBox(height: 4),
+            const Text('Join our community of artisans and craft lovers.',
+                style: TextStyle(color: AppColors.textSecondary)),
+            const SizedBox(height: 24),
+            if (auth.errorMessage != null) ...[
+              Text(auth.errorMessage!, style: const TextStyle(color: AppColors.error)),
+              const SizedBox(height: 12),
+            ],
+            TextFormField(
+              controller: _nameController,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(labelText: 'Full Name'),
+              validator: (v) =>
+                  (v == null || v.trim().length < 2) ? 'Please enter your full name' : null,
+            ),
+            const SizedBox(height: 14),
+            TextFormField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(labelText: 'Email Address'),
+              validator: InputValidators.validateEmail,
+            ),
+            const SizedBox(height: 14),
+            TextFormField(
+              controller: _passwordController,
+              obscureText: _hidePassword,
+              textInputAction: TextInputAction.next,
+              decoration: _passwordDecoration(
+                  'Password', _hidePassword, () => setState(() => _hidePassword = !_hidePassword)),
+              validator: InputValidators.validatePassword,
+            ),
+            const SizedBox(height: 14),
+            TextFormField(
+              controller: _confirmController,
+              obscureText: _hideConfirm,
+              decoration: _passwordDecoration('Confirm Password', _hideConfirm,
+                  () => setState(() => _hideConfirm = !_hideConfirm)),
+              validator: (v) =>
+                  v != _passwordController.text ? 'Passwords do not match' : null,
+            ),
+            const SizedBox(height: 10),
+            Row(
               children: [
-                const Text(
-                  'Select Account Type',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Checkbox(
+                  value: _acceptedTerms,
+                  onChanged: (v) => setState(() {
+                    _acceptedTerms = v ?? false;
+                    if (_acceptedTerms) _termsError = null;
+                  }),
                 ),
-                const SizedBox(height: 12),
-                RoleSelectorCard(
-                  role: AccountPurpose.shop,
-                  title: 'Craft Enthusiast / Buyer',
-                  description: 'Discover authentic handmade items, order, and support local artisans.',
-                  icon: Icons.shopping_bag_outlined,
-                  isSelected: _selectedRole == AccountPurpose.shop,
-                  onSelect: () => setState(() => _selectedRole = AccountPurpose.shop),
-                ),
-                const SizedBox(height: 10),
-                RoleSelectorCard(
-                  role: AccountPurpose.sell,
-                  title: 'Sri Lankan Artisan / Maker',
-                  description: 'Showcase your heritage craft, sell directly, and connect with buyers.',
-                  icon: Icons.brush_outlined,
-                  isSelected: _selectedRole == AccountPurpose.sell,
-                  onSelect: () => setState(() => _selectedRole = AccountPurpose.sell),
-                ),
-                const SizedBox(height: 20),
-                CustomTextField(
-                  label: 'Full Name / Workshop Name',
-                  hint: 'Sunil Gamage Pottery Works',
-                  controller: _nameController,
-                  validator: (v) => InputValidators.validateRequired(v, 'Name'),
-                ),
-                const SizedBox(height: 14),
-                CustomTextField(
-                  label: 'Email Address',
-                  hint: 'artisan@hasthakala.lk',
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: InputValidators.validateEmail,
-                ),
-                const SizedBox(height: 14),
-                CustomTextField(
-                  label: 'Password',
-                  hint: '••••••••',
-                  obscureText: true,
-                  controller: _passwordController,
-                  validator: InputValidators.validatePassword,
-                ),
-                const SizedBox(height: 24),
-                CustomButton(
-                  text: 'Register Account',
-                  isLoading: auth.isLoading,
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      final success = await auth.register(
-                        email: _emailController.text,
-                        password: _passwordController.text,
-                        displayName: _nameController.text,
-                        primaryPurpose: _selectedRole,
-                      );
-                      // Return to the root; the AuthGate then shows artisan
-                      // setup (Sell) or the buyer home (Shop).
-                      if (success && context.mounted) {
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                      }
-                    }
-                  },
+                const Text('I agree to the '),
+                GestureDetector(
+                  onTap: _showTerms,
+                  child: const Text('Terms & Conditions',
+                      style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline)),
                 ),
               ],
             ),
-          );
-        },
+            if (_termsError != null)
+              Text(_termsError!, style: const TextStyle(color: AppColors.error, fontSize: 12)),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: auth.isLoading ? null : _create,
+              child: auth.isLoading
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.onPrimary))
+                  : const Text('Create Account'),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Already have an account?'),
+                TextButton(
+                  onPressed: () {
+                    auth.clearError();
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Sign In'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

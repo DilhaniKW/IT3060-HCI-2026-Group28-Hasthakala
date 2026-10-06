@@ -51,6 +51,9 @@ class AuthProvider extends ChangeNotifier {
   String? _errorMessage;
   bool _supportAccessLost = false;
   bool _justCreatedArtisanProfile = false;
+  bool _needsPurpose = false;
+  bool _justRegistered = false;
+  AccountPurpose? _purposeJustChosen;
   String? _lostArtisanName;
 
   // ---------- Getters used across the app ----------
@@ -65,6 +68,11 @@ class AuthProvider extends ChangeNotifier {
   // set when the artisan revokes access during a supporter session
   bool get supportAccessLost => _supportAccessLost;
   bool get justCreatedArtisanProfile => _justCreatedArtisanProfile;
+
+  // signed in but no users/{uid} yet -> "How will you start using HASTHAKALA?"
+  bool get needsPurpose => _needsPurpose;
+  bool get justRegistered => _justRegistered;
+  AccountPurpose? get purposeJustChosen => _purposeJustChosen;
   String? get lostArtisanName => _lostArtisanName;
   List<SupportGrantModel> get supportGrants => List.unmodifiable(_supportGrants);
   AppContextType? get activeContext => _activeContext;
@@ -88,6 +96,8 @@ class AuthProvider extends ChangeNotifier {
       !needsArtisanSetup &&
       !_supportAccessLost &&
       !_justCreatedArtisanProfile &&
+      !_needsPurpose &&
+      _purposeJustChosen == null &&
       _activeContext == null &&
       availableContextCount > 1;
 
@@ -125,10 +135,14 @@ class AuthProvider extends ChangeNotifier {
     try {
       final user = await _authDataSource.fetchUser(uid);
       if (user == null) {
-        _errorMessage = 'We could not find your account details. Please sign in again.';
-        await _authDataSource.logout();
+        // account exists but sign up wasn't finished (no Shop/Sell choice yet)
+        _currentUser = null;
+        _needsPurpose = true;
+        _status = AuthStatus.signedIn;
+        notifyListeners();
         return;
       }
+      _needsPurpose = false;
       _currentUser = user;
       _hasArtisanProfile = await _contextDataSource.hasArtisanProfile(uid);
       try {
@@ -155,6 +169,9 @@ class AuthProvider extends ChangeNotifier {
     _grantSubscription = null;
     _supportAccessLost = false;
     _lostArtisanName = null;
+    _needsPurpose = false;
+    _justRegistered = false;
+    _purposeJustChosen = null;
     _currentUser = null;
     _hasArtisanProfile = false;
     _supportGrants = [];
@@ -182,25 +199,26 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> register({
+  // Create Account: makes the Firebase Auth account only.
+  // The users/{uid} document is written after "How will you start" (choosePurpose).
+  Future<bool> createAccount({
     required String email,
     required String password,
     required String displayName,
-    required AccountPurpose primaryPurpose,
   }) async {
     _isLoading = true;
     _isRegistering = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      final user = await _authDataSource.register(
+      final uid = await _authDataSource.createAccount(
         email: email,
         password: password,
         displayName: displayName,
-        primaryPurpose: primaryPurpose,
       );
       _isRegistering = false;
-      await _loadSession(user.uid);
+      _justRegistered = true;
+      await _loadSession(uid);
       return true;
     } on AuthException catch (e) {
       _errorMessage = e.message;
@@ -210,6 +228,64 @@ class AuthProvider extends ChangeNotifier {
       return false;
     } finally {
       _isRegistering = false;
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // Continue on "Account Created!"
+  void continueAfterAccountCreated() {
+    _justRegistered = false;
+    notifyListeners();
+  }
+
+  // "How will you start using HASTHAKALA?" - writes users/{uid}
+  Future<bool> choosePurpose(AccountPurpose purpose) async {
+    final account = _authDataSource.authAccount;
+    if (account == null) return false;
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      await _authDataSource.createUserDocument(
+        uid: account.uid,
+        email: account.email,
+        displayName: account.name,
+        primaryPurpose: purpose,
+      );
+      _needsPurpose = false;
+      _purposeJustChosen = purpose;
+      await _loadSession(account.uid);
+      return true;
+    } catch (_) {
+      _errorMessage = 'We could not save your choice. Check your connection and try again.';
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // Continue on "You're all set!" / "Your artisan setup has started!"
+  void finishPurposeConfirmation() {
+    _purposeJustChosen = null;
+    notifyListeners();
+  }
+
+  Future<bool> sendPasswordReset(String email) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      await _authDataSource.sendPasswordReset(email);
+      return true;
+    } on AuthException catch (e) {
+      _errorMessage = e.message;
+      return false;
+    } catch (_) {
+      _errorMessage = 'We could not send the reset link. Please try again.';
+      return false;
+    } finally {
       _isLoading = false;
       notifyListeners();
     }
