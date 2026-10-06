@@ -55,3 +55,10 @@ Firestore rules, Storage rules strategy, allowed/denied cases).
 - AuthProvider listens to the active grant, so permission changes and revokes apply straight away.
 - New "Support access is no longer available" screen.
 - To check with Member 3: a supporter with only the communication permission can't open the Orders tab, so can't reach order chats yet.
+
+## Session 3 - 06 Oct 2026 - I05 Manage Artisan Profile
+- My Artisan Profile (read, live), Edit Artisan Profile (update), Profile updated, Artisan profile created.
+- Edit screen states from the wireframes: validation messages, saving, save failed, offline, discard changes.
+- Profile hub now has My Artisan Profile + Family Assistance for artisans (I05_HF_01).
+- Preview Public Profile opens Member 1's public profile screen (needs their switch to ArtisanProfileModel).
+- Photo upload not included (DV6).

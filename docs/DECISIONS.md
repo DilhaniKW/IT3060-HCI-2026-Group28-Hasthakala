@@ -22,3 +22,5 @@
 | I13c | 06 Oct | Revoke keeps the grant with status `revoked` (not deleted) | Audit trail; re-invite reactivates via a new invite | I13 |
 | I13d | 06 Oct | supportGrants gains optional field `inviteCode` (additive) | Rules check a grant against its invite | Schema S1 |
 | I01a | 06 Oct | Sign-out asks for confirmation (from I01 wireframe "Sign out?") | Error prevention | I01 |
+| I05a | 06 Oct | Saving the artisan name also updates `artisanName` on that artisan's products | Products keep a copy of the name; keeps buyer-facing data consistent (NFR4) | I05, I11 data |
+| I05b | 06 Oct | A save that gets no server reply in 10 s is shown as "You're offline" | Firestore queues offline writes instead of failing; matches I05_HF_15 | I05 |

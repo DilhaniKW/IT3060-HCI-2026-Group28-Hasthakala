@@ -6,6 +6,7 @@ import '../state/auth_provider.dart';
 import '../widgets/profile_avatar_widget.dart';
 import 'accept_support_invitation_screen.dart';
 import 'family_assistance_screen.dart';
+import 'my_artisan_profile_screen.dart';
 
 /// Profile tab (Member 4) - the entry point to I05 Manage and I13.
 /// What it shows depends on the active context (decision D1).
@@ -43,21 +44,31 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          ProfileAvatarWidget(
-            name: user?.displayName ?? '',
-            imageUrl: user?.photoUrl,
-            onCameraTap: () {},
-          ),
-          const SizedBox(height: 12),
-          Text(user?.displayName ?? '',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          Text(user?.email ?? '',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
-          const SizedBox(height: 24),
+          // artisan profile hub follows I05_HF_01 (no account header)
+          if (!auth.isArtisanContext) ...[
+            ProfileAvatarWidget(
+              name: user?.displayName ?? '',
+              imageUrl: user?.photoUrl,
+              onCameraTap: () {},
+            ),
+            const SizedBox(height: 12),
+            Text(user?.displayName ?? '',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(user?.email ?? '',
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+            const SizedBox(height: 24),
+          ],
 
-          // ---- Artisan (owner) ----
+          if (auth.isArtisanContext)
+            _MenuCard(
+              icon: Icons.person_outline,
+              title: 'My Artisan Profile',
+              subtitle: 'View and manage your public artisan information',
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const MyArtisanProfileScreen())),
+            ),
           if (auth.isArtisanContext)
             _MenuCard(
               icon: Icons.people_alt_outlined,
@@ -77,7 +88,6 @@ class ProfileScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const AcceptSupportInvitationScreen())),
             ),
 
-          // ---- Supporter ----
           if (auth.isSupporterContext && auth.activeGrant != null)
             _MenuCard(
               icon: Icons.verified_user_outlined,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../features/account/presentation/screens/artisan_profile_created_screen.dart';
 import '../../features/account/presentation/screens/artisan_profile_setup_screen.dart';
 import '../../features/account/presentation/screens/checking_access_screen.dart';
 import '../../features/account/presentation/screens/context_selection_screen.dart';
@@ -29,6 +30,7 @@ class AuthGate extends StatelessWidget {
       case AuthStatus.signedIn:
         if (auth.needsArtisanSetup) return const ArtisanProfileSetupScreen();
         if (auth.supportAccessLost) return const SupportAccessRemovedScreen();
+        if (auth.justCreatedArtisanProfile) return const ArtisanProfileCreatedScreen();
         if (auth.needsContextChoice) return const ContextSelectionScreen();
         switch (auth.activeContext) {
           case AppContextType.buyer:

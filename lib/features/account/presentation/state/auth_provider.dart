@@ -50,6 +50,7 @@ class AuthProvider extends ChangeNotifier {
   bool _isRegistering = false;
   String? _errorMessage;
   bool _supportAccessLost = false;
+  bool _justCreatedArtisanProfile = false;
   String? _lostArtisanName;
 
   // ---------- Getters used across the app ----------
@@ -63,6 +64,7 @@ class AuthProvider extends ChangeNotifier {
 
   // set when the artisan revokes access during a supporter session
   bool get supportAccessLost => _supportAccessLost;
+  bool get justCreatedArtisanProfile => _justCreatedArtisanProfile;
   String? get lostArtisanName => _lostArtisanName;
   List<SupportGrantModel> get supportGrants => List.unmodifiable(_supportGrants);
   AppContextType? get activeContext => _activeContext;
@@ -85,6 +87,7 @@ class AuthProvider extends ChangeNotifier {
       _status == AuthStatus.signedIn &&
       !needsArtisanSetup &&
       !_supportAccessLost &&
+      !_justCreatedArtisanProfile &&
       _activeContext == null &&
       availableContextCount > 1;
 
@@ -275,7 +278,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       await _contextDataSource.createArtisanProfile(profile);
       _hasArtisanProfile = true;
-      _activeContext = AppContextType.artisan;
+      _justCreatedArtisanProfile = true; // show "Artisan profile created!" first
       return true;
     } catch (_) {
       _errorMessage = 'Your profile could not be saved. Check your connection and try again.';
@@ -284,6 +287,13 @@ class AuthProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  // Continue on the "Artisan profile created!" screen
+  void finishArtisanSetup() {
+    _justCreatedArtisanProfile = false;
+    _activeContext = AppContextType.artisan;
+    notifyListeners();
   }
 
   void clearError() {
