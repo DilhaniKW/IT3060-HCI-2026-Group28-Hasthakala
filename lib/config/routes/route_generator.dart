@@ -45,6 +45,18 @@ class RouteGenerator {
       case AppRoutes.verifiedLabMatrix:
         return MaterialPageRoute(builder: (_) => const VerifiedLabMatrixScreen());
 
+      case AppRoutes.customCommission:
+        return MaterialPageRoute(builder: (_) => const CustomCommissionScreen());
+
+      case AppRoutes.craftCatalog:
+        return MaterialPageRoute(builder: (_) => const CraftCatalogScreen());
+
+      case AppRoutes.artisanReviews:
+        return MaterialPageRoute(builder: (_) => const ArtisanReviewsScreen());
+
+      case AppRoutes.masterArtisanProfile:
+        return MaterialPageRoute(builder: (_) => const MasterArtisanProfileScreen());
+
       case AppRoutes.orderTracking:
         final orderId = settings.arguments as String;
         return MaterialPageRoute(
