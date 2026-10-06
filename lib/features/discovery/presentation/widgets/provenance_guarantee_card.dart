@@ -89,6 +89,35 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
             title: 'Safe Insured Packaging',
             description: 'Cushioned with biodegradable coir & banana fiber for flawless delivery.',
           ),
+          const SizedBox(height: 12),
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, '/verified-lab-matrix'),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: const Color(0xFF264E36),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Icon(Icons.science_outlined, size: 16, color: Colors.white),
+                  SizedBox(width: 6),
+                  Text(
+                    'View Verified Lab Certificate',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(width: 4),
+                  Icon(Icons.chevron_right, size: 16, color: Colors.white),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
