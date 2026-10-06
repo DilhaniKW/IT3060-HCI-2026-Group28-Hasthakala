@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../features/account/presentation/screens/artisan_profile_created_screen.dart';
 import '../../features/account/presentation/screens/artisan_profile_setup_screen.dart';
 import '../../features/account/presentation/screens/checking_access_screen.dart';
 import '../../features/account/presentation/screens/context_selection_screen.dart';
 import '../../features/account/presentation/screens/login_screen.dart';
+import '../../features/account/presentation/screens/support_access_removed_screen.dart';
 import '../../features/account/presentation/state/auth_provider.dart';
 import 'artisan_shell.dart';
 import 'buyer_shell.dart';
@@ -12,7 +14,7 @@ import 'buyer_shell.dart';
 /// Decides the first screen from the signed-in state (I01, decision D1):
 /// checking -> signed out -> artisan setup -> "Continue as" -> shell.
 /// Screens never navigate to a home screen themselves; they change the
-/// AuthProvider state and this gate shows the right place.
+/// AuthProvider state and this shows the right place.
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
@@ -27,6 +29,8 @@ class AuthGate extends StatelessWidget {
         return const LoginScreen();
       case AuthStatus.signedIn:
         if (auth.needsArtisanSetup) return const ArtisanProfileSetupScreen();
+        if (auth.supportAccessLost) return const SupportAccessRemovedScreen();
+        if (auth.justCreatedArtisanProfile) return const ArtisanProfileCreatedScreen();
         if (auth.needsContextChoice) return const ContextSelectionScreen();
         switch (auth.activeContext) {
           case AppContextType.buyer:

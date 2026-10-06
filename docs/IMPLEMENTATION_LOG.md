@@ -30,3 +30,35 @@
 - I05 Manage (view/edit/preview) and I13 (invite, accept, permissions, revoke, rules v2).
 - Replace TEMPORARY rules (R1) before functional testing.
 - Cloud Storage decision (T6) for profile/product photos.
+
+## Session 2 - 06 Oct 2026 - Member 4 - branch `feature/account-support`
+
+**Task:** I13 Family Assistance - owner side (design approved first: data model, authorisation model,
+Firestore rules, Storage rules strategy, allowed/denied cases).
+
+| Area | Files | Requirement / Interface |
+|---|---|---|
+| Data | `family_support_remote_datasource.dart` (create/cancel invite, update scopes, revoke, accept, live grant) | FR9, FR10, NFR3 |
+| State | `family_support_provider.dart` (registered in `app.dart`) | I13 |
+| Screens | Family Assistance, Add Support User, Invitation sent (+code), Support User Details (Update Access / Revoke with confirmation), Access revoked | I13_WF_02-05, 10, 11 |
+| Shared | `support_scope_toggles.dart`, `phone_utils.dart`, `SupportGrantModel.inviteCode` (additive) | I13 |
+| Profile | Context-aware Profile tab (Family Assistance for artisans; supporter summary), sign-out confirmation | I01, I13 |
+| Rules | v1.3: supportInvites + supportGrants final; `hasScope()` ready for v2 | NFR3 |
+| Removed | old `family_support_settings_screen.dart`, `permission_toggle_tile.dart`, `family_support_datasource.dart` (email-based, no rules) | - |
+| Docs | `DEVIATIONS.md` (DV1-DV5), DECISIONS I13a-d, I01a, schema note | Assignment |
+
+**Pending:** supporter side (accept screen, supporter home, live revoke/permission handling), I05 Manage, I01 polish, rules v2.
+
+### Session 2b - I13 supporter side
+- Accept invitation screen in Profile (phone + code), creates the grant.
+- Supporter home with the allowed activities; other ones shown as locked.
+- AuthProvider listens to the active grant, so permission changes and revokes apply straight away.
+- New "Support access is no longer available" screen.
+- To check with Member 3: a supporter with only the communication permission can't open the Orders tab, so can't reach order chats yet.
+
+## Session 3 - 06 Oct 2026 - I05 Manage Artisan Profile
+- My Artisan Profile (read, live), Edit Artisan Profile (update), Profile updated, Artisan profile created.
+- Edit screen states from the wireframes: validation messages, saving, save failed, offline, discard changes.
+- Profile hub now has My Artisan Profile + Family Assistance for artisans (I05_HF_01).
+- Preview Public Profile opens Member 1's public profile screen (needs their switch to ArtisanProfileModel).
+- Photo upload not included (DV6).

@@ -29,6 +29,7 @@ class AuthProvider extends ChangeNotifier {
   final AuthRemoteDataSource _authDataSource;
   final ContextRemoteDataSource _contextDataSource;
   StreamSubscription<String?>? _authSubscription;
+  StreamSubscription<SupportGrantModel?>? _grantSubscription;
 
   AuthProvider({
     AuthRemoteDataSource? authDataSource,
@@ -48,6 +49,9 @@ class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _isRegistering = false;
   String? _errorMessage;
+  bool _supportAccessLost = false;
+  bool _justCreatedArtisanProfile = false;
+  String? _lostArtisanName;
 
   // ---------- Getters used across the app ----------
   AuthStatus get status => _status;
@@ -57,6 +61,11 @@ class AuthProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
 
   bool get hasArtisanProfile => _hasArtisanProfile;
+
+  // set when the artisan revokes access during a supporter session
+  bool get supportAccessLost => _supportAccessLost;
+  bool get justCreatedArtisanProfile => _justCreatedArtisanProfile;
+  String? get lostArtisanName => _lostArtisanName;
   List<SupportGrantModel> get supportGrants => List.unmodifiable(_supportGrants);
   AppContextType? get activeContext => _activeContext;
   SupportGrantModel? get activeGrant => _activeGrant;
@@ -77,6 +86,8 @@ class AuthProvider extends ChangeNotifier {
   bool get needsContextChoice =>
       _status == AuthStatus.signedIn &&
       !needsArtisanSetup &&
+      !_supportAccessLost &&
+      !_justCreatedArtisanProfile &&
       _activeContext == null &&
       availableContextCount > 1;
 
@@ -140,6 +151,10 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void _resetSession() {
+    _grantSubscription?.cancel();
+    _grantSubscription = null;
+    _supportAccessLost = false;
+    _lostArtisanName = null;
     _currentUser = null;
     _hasArtisanProfile = false;
     _supportGrants = [];
@@ -202,14 +217,53 @@ class AuthProvider extends ChangeNotifier {
 
   /// "Continue as" choice (I01, D1).
   void selectContext(AppContextType type, {SupportGrantModel? grant}) {
+    _grantSubscription?.cancel();
+    _grantSubscription = null;
     _activeContext = type;
     _activeGrant = type == AppContextType.supporter ? grant : null;
+    if (_activeGrant != null) {
+      _grantSubscription =
+          _contextDataSource.watchGrant(_activeGrant!.id).listen(_onGrantChanged);
+    }
     notifyListeners();
+  }
+
+  // called whenever the active grant document changes
+  void _onGrantChanged(SupportGrantModel? grant) {
+    if (!isSupporterContext) return;
+    if (grant == null || !grant.isActive) {
+      _lostArtisanName = _activeGrant?.artisanName;
+      _supportAccessLost = true;
+      _grantSubscription?.cancel();
+      _grantSubscription = null;
+      _activeContext = null;
+      _activeGrant = null;
+    } else {
+      _activeGrant = grant;
+    }
+    notifyListeners();
+  }
+
+  Future<void> acknowledgeSupportLoss() async {
+    _supportAccessLost = false;
+    _lostArtisanName = null;
+    await refreshSession();
+  }
+
+  // reload user + contexts, e.g. after accepting an invite
+  Future<void> refreshSession() async {
+    final uid = _currentUser?.uid;
+    if (uid == null) return;
+    _grantSubscription?.cancel();
+    _grantSubscription = null;
+    await _loadSession(uid);
   }
 
   /// Go back to the "Continue as" screen (when more than one context exists).
   void switchContext() {
     if (availableContextCount < 2) return;
+    _grantSubscription?.cancel();
+    _grantSubscription = null;
     _activeContext = null;
     _activeGrant = null;
     notifyListeners();
@@ -224,7 +278,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       await _contextDataSource.createArtisanProfile(profile);
       _hasArtisanProfile = true;
-      _activeContext = AppContextType.artisan;
+      _justCreatedArtisanProfile = true; // show "Artisan profile created!" first
       return true;
     } catch (_) {
       _errorMessage = 'Your profile could not be saved. Check your connection and try again.';
@@ -233,6 +287,13 @@ class AuthProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  // Continue on the "Artisan profile created!" screen
+  void finishArtisanSetup() {
+    _justCreatedArtisanProfile = false;
+    _activeContext = AppContextType.artisan;
+    notifyListeners();
   }
 
   void clearError() {
@@ -247,6 +308,7 @@ class AuthProvider extends ChangeNotifier {
   @override
   void dispose() {
     _authSubscription?.cancel();
+    _grantSubscription?.cancel();
     super.dispose();
   }
 }

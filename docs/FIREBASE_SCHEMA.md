@@ -93,7 +93,7 @@ Only the buyer of a **delivered** order may create one (enforced in rules v2).
 
 ### `supportGrants/{artisanUid}_{supporterUid}` — I13 (Member 4; checked by Member 3's screens) — model: `SupportGrantModel`
 artisanId, artisanName, supporterId, supporterName, relationship, phone,
-scopes {products, orders, communication}, status (`"active"` \| `"revoked"`), grantedAt, updatedAt.
+scopes {products, orders, communication}, status (`"active"` \| `"revoked"`), grantedAt, updatedAt, inviteCode *(added 06 Oct: code of the invite it came from; used by security rules)*.
 
 ### `supportInvites/{code}` — I13 (Member 4) — model: `SupportInviteModel`
 code, artisanId, artisanName, inviteeName, relationship, phone, scopes,
@@ -107,6 +107,6 @@ Created **only in the Firebase console**. Lets an admin set `artisanProfiles.ver
 `chats`, `categories`, `family_permissions`, ISO date strings.
 
 ## Security rules
-Enforced in `firestore.rules`. Current version: **v1.1** — `users`, `users/{uid}/cart`,
-`artisanProfiles` and `admins` are final; `products`, `orders`, `conversations`, `reviews`
+Enforced in `firestore.rules`. Current version: **v1.3** (I13 final) — `users`, `users/{uid}/cart`,
+`artisanProfiles`, `admins`, `supportInvites`, `supportGrants` are final; `products`, `orders`, `conversations`, `reviews`
 are TEMPORARY (signed-in only) and must be replaced (v2) before functional testing.

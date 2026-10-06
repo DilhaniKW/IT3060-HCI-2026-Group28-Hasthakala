@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../features/account/presentation/screens/profile_screen.dart';
+import '../../features/account/presentation/screens/supporter_home_screen.dart';
 import '../../features/account/presentation/state/auth_provider.dart';
 import '../../features/artisan/presentation/screens/artisan_dashboard_screen.dart';
 import '../../features/artisan/presentation/screens/artisan_orders_screen.dart';
 import '../../features/artisan/presentation/screens/manage_products_screen.dart';
-import '../widgets/placeholder_tab.dart';
 import '../widgets/restricted_access_view.dart';
 import '../widgets/support_context_banner.dart';
 
@@ -34,8 +34,7 @@ class _ArtisanShellState extends State<ArtisanShell> {
     final tabs = <Widget>[
       // I10 (Member 3). Supporter home is part of I13 (Member 4).
       isSupporter
-          ? const PlaceholderTab(
-              title: 'Supporter Home', interfaceId: 'I13', owner: 'Member 4')
+          ? SupporterHomeScreen(onOpenTab: (i) => setState(() => _index = i))
           : ArtisanDashboardScreen(artisanId: artisanId),
       // I11 (Member 3)
       auth.canManageProducts
