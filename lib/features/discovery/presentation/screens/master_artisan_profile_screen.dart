@@ -4,10 +4,15 @@ import '../../../../core/shared_models/product_model.dart';
 import '../widgets/product_card.dart';
 
 /// High-Fidelity Master Artisan Profile Screen matching Stitch Canvas specification
-class MasterArtisanProfileScreen extends StatelessWidget {
+class MasterArtisanProfileScreen extends StatefulWidget {
   const MasterArtisanProfileScreen({super.key});
 
-  final List<ProductModel> _artisanCrafts = const [
+  @override
+  State<MasterArtisanProfileScreen> createState() => _MasterArtisanProfileScreenState();
+}
+
+class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen> {
+  final List<ProductModel> _artisanCrafts = [
     ProductModel(
       id: 'm_1',
       artisanId: 'artisan_sunil',
@@ -273,7 +278,11 @@ class MasterArtisanProfileScreen extends StatelessWidget {
               ),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  return ProductCard(product: _artisanCrafts[index]);
+                  final p = _artisanCrafts[index];
+                  return ProductCard(
+                    product: p,
+                    onTap: () => Navigator.pushNamed(context, '/product-details', arguments: p),
+                  );
                 },
                 childCount: _artisanCrafts.length,
               ),
