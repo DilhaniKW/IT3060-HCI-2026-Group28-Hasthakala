@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../state/auth_provider.dart';
 import '../widgets/profile_avatar_widget.dart';
+import '../../../../core/localization/tr.dart';
 import 'accept_support_invitation_screen.dart';
 import 'family_assistance_screen.dart';
+import 'language_selection_screen.dart';
 import 'my_artisan_profile_screen.dart';
 
 /// Profile tab (Member 4) - the entry point to I05 Manage and I13.
@@ -96,6 +98,15 @@ class ProfileScreen extends StatelessWidget {
                   'Account settings stay with the owner.',
             ),
 
+          _MenuCard(
+            icon: Icons.translate,
+            title: context.tr('language'),
+            subtitle: context.tr('language_sub'),
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const LanguageSelectionScreen(fromProfile: true))),
+          ),
           if (auth.availableContextCount > 1)
             _MenuCard(
               icon: Icons.swap_horiz,

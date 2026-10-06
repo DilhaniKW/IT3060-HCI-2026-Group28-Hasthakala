@@ -69,3 +69,9 @@ Firestore rules, Storage rules strategy, allowed/denied cases).
 - Reset password + Check your email (real Firebase reset email).
 - New package: shared_preferences (only for the intro screen).
 - Visual polish against the report hi-fi still to do.
+
+## Session 5 - 06 Oct 2026 - I01 UI pass part 1
+- Animated splash, Choose Language (first launch + Profile > Language), language saved to the account.
+- Translation base in `lib/core/localization/` (see docs/TRANSLATION.md); splash, language, intro, sign in, checking access and bottom navigation translated.
+- Plus Jakarta Sans font, app icon + launch screen config.
+- Dark mode recorded as planned improvement (U1).

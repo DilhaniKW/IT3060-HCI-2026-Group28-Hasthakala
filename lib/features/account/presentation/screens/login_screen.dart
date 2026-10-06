@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/tr.dart';
 import '../../../../core/utils/input_validators.dart';
 import '../state/auth_provider.dart';
 import 'register_screen.dart';
@@ -40,18 +41,18 @@ class _LoginScreenState extends State<LoginScreen> {
     final auth = context.watch<AuthProvider>();
 
     if (auth.isLoading) {
-      return const Scaffold(
+      return Scaffold(
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(color: AppColors.primary),
-              SizedBox(height: 16),
-              Text('Signing you in...',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-              SizedBox(height: 6),
-              Text('Please wait while we verify your account.',
-                  style: TextStyle(color: AppColors.textSecondary)),
+              const CircularProgressIndicator(color: AppColors.primary),
+              const SizedBox(height: 16),
+              Text(context.tr('signing_in'),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 6),
+              Text(context.tr('signing_in_sub'),
+                  style: const TextStyle(color: AppColors.textSecondary)),
             ],
           ),
         ),
@@ -68,13 +69,13 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 12),
               Center(child: Image.asset('assets/images/hasthakala_logo.png', width: 96)),
               const SizedBox(height: 16),
-              const Text('Welcome Back',
+              Text(context.tr('welcome_back'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700)),
+                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w700)),
               const SizedBox(height: 4),
-              const Text('Sign in to continue your journey',
+              Text(context.tr('sign_in_sub'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.textSecondary)),
+                  style: const TextStyle(color: AppColors.textSecondary)),
               const SizedBox(height: 24),
               if (auth.errorMessage != null)
                 Container(
@@ -99,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(labelText: 'Email Address'),
+                decoration: InputDecoration(labelText: context.tr('email')),
                 validator: InputValidators.validateEmail,
               ),
               const SizedBox(height: 14),
@@ -109,9 +110,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) => _signIn(auth),
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: context.tr('password'),
                   suffixIcon: IconButton(
-                    tooltip: _hidePassword ? 'Show password' : 'Hide password',
+                    tooltip: context.tr(_hidePassword ? 'show_password' : 'hide_password'),
                     icon: Icon(_hidePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
                     onPressed: () => setState(() => _hidePassword = !_hidePassword),
                   ),
@@ -126,23 +127,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (_) => const ResetPasswordScreen()));
                   },
-                  child: const Text('Forgot password?'),
+                  child: Text(context.tr('forgot_password')),
                 ),
               ),
               const SizedBox(height: 8),
-              ElevatedButton(onPressed: () => _signIn(auth), child: const Text('Sign In')),
+              ElevatedButton(onPressed: () => _signIn(auth), child: Text(context.tr('sign_in'))),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('New to HASTHAKALA?'),
+                  Text(context.tr('new_here')),
                   TextButton(
                     onPressed: () {
                       auth.clearError();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (_) => const RegisterScreen()));
                     },
-                    child: const Text('Create Account'),
+                    child: Text(context.tr('create_account')),
                   ),
                 ],
               ),

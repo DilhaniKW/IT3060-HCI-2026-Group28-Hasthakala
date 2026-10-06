@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'core/localization/language_provider.dart';
 import 'core/navigation/auth_gate.dart';
 import 'config/routes/route_generator.dart';
 import 'core/theme/app_theme.dart';
@@ -19,6 +21,7 @@ class HasthakalaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => OnboardingProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => FamilySupportProvider()), // I13
@@ -28,13 +31,22 @@ class HasthakalaApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ArtisanDashboardProvider()),
         ChangeNotifierProvider(create: (_) => ArtisanOrdersProvider()),
       ],
-      child: MaterialApp(
+      child: Consumer<LanguageProvider>(
+        builder: (context, language, _) => MaterialApp(
         title: 'Hasthakala',
+        locale: language.locale,
+        supportedLocales: const [Locale('en'), Locale('si'), Locale('ta')],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         // AuthGate picks the first screen from the sign-in state (I01, D1).
         home: const AuthGate(),
         onGenerateRoute: RouteGenerator.generateRoute,
+        ),
       ),
     );
   }

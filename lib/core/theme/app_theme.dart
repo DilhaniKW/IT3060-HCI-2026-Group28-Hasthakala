@@ -4,6 +4,8 @@ import '../constants/app_typography.dart';
 
 /// Single shared theme for the whole app. 
 class AppTheme {
+  static const fontFamily = 'PlusJakartaSans';
+
   static ThemeData get lightTheme {
     final scheme = ColorScheme.fromSeed(
       seedColor: AppColors.primary,
@@ -22,15 +24,16 @@ class AppTheme {
 
     return ThemeData(
       useMaterial3: true,
+      fontFamily: fontFamily,
       colorScheme: scheme,
       scaffoldBackgroundColor: AppColors.background,
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: AppColors.background,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: false,
-        iconTheme: IconThemeData(color: AppColors.textPrimary),
-        titleTextStyle: AppTypography.titleLarge,
+        iconTheme: const IconThemeData(color: AppColors.textPrimary),
+        titleTextStyle: AppTypography.titleLarge.copyWith(fontFamily: fontFamily),
       ),
       // Primary button: solid Terracotta with Raw Linen text
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -41,7 +44,7 @@ class AppTheme {
           minimumSize: const Size.fromHeight(48), // touch-friendly (NFR5)
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           shape: rounded12,
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(fontFamily: fontFamily, fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
       // Secondary button: Terracotta outline
@@ -51,7 +54,7 @@ class AppTheme {
           minimumSize: const Size.fromHeight(48),
           side: const BorderSide(color: AppColors.primary),
           shape: rounded12,
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(fontFamily: fontFamily, fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -101,6 +104,7 @@ class AppTheme {
         ),
         labelTextStyle: WidgetStateProperty.resolveWith(
           (states) => TextStyle(
+            fontFamily: fontFamily,
             fontSize: 12,
             color: states.contains(WidgetState.selected)
                 ? AppColors.primary
@@ -110,7 +114,7 @@ class AppTheme {
       ),
       snackBarTheme: const SnackBarThemeData(
         backgroundColor: AppColors.textPrimary,
-        contentTextStyle: TextStyle(color: AppColors.onPrimary),
+        contentTextStyle: TextStyle(fontFamily: fontFamily, color: AppColors.onPrimary),
         behavior: SnackBarBehavior.floating,
       ),
       dividerTheme: const DividerThemeData(color: AppColors.divider),
