@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../../core/widgets/custom_button.dart';
 import '../state/auth_provider.dart';
 import '../widgets/profile_avatar_widget.dart';
-import 'family_support_settings_screen.dart';
+import 'family_assistance_screen.dart';
 
-/// Assigned to: WANIGATHUNGA Y. J.
-/// Branch: feature/account-support
+/// Profile tab (Member 4) - the entry point to I05 Manage and I13.
+/// What it shows depends on the active context (decision D1).
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
+
+  Future<void> _confirmSignOut(BuildContext context, AuthProvider auth) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Sign out?'),
+        content: const Text('You will need to sign in again to access your account.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
+            child: const Text('Sign Out'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    await auth.logout(); // AuthGate then shows the sign-in screen
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,74 +38,92 @@ class ProfileScreen extends StatelessWidget {
     final user = auth.currentUser;
 
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Account & Settings'),
+      appBar: AppBar(title: const Text('Profile')),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
           ProfileAvatarWidget(
-            name: user?.displayName ?? 'Hasthakala Artisan',
+            name: user?.displayName ?? '',
             imageUrl: user?.photoUrl,
             onCameraTap: () {},
           ),
-          const SizedBox(height: 16),
-          Text(
-            user?.displayName ?? 'Traditional Craftsman',
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            user?.email ?? 'artisan@hasthakala.lk',
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
-          ),
-          const SizedBox(height: 24),
-          const Divider(),
           const SizedBox(height: 12),
-          ListTile(
-            leading: const Icon(Icons.badge_outlined, color: AppColors.secondary),
-            title: const Text('Started as'),
-            trailing: Text(
-                (user?.startedAsSeller ?? false) ? 'SELLER' : 'BUYER',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          ListTile(
-            leading: const Icon(Icons.people_outline, color: AppColors.accent),
-            title: const Text('Family Support & Permissions'),
-            subtitle: const Text('Delegated management for elders'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 14),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => FamilySupportSettingsScreen(
-                    elderArtisanUid: user?.uid ?? 'artisan123',
-                  ),
-                ),
-              );
-            },
-          ),
+          Text(user?.displayName ?? '',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(user?.email ?? '',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+          const SizedBox(height: 24),
+
+          // ---- Artisan (owner) ----
+          if (auth.isArtisanContext)
+            _MenuCard(
+              icon: Icons.people_alt_outlined,
+              title: 'Family Assistance',
+              subtitle: 'Manage authorised support',
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const FamilyAssistanceScreen())),
+            ),
+
+          // ---- Supporter ----
+          if (auth.isSupporterContext && auth.activeGrant != null)
+            _MenuCard(
+              icon: Icons.verified_user_outlined,
+              title: 'Supporting ${auth.activeGrant!.artisanName}',
+              subtitle: 'Allowed: ${auth.activeGrant!.scopeSummary}. '
+                  'Account settings stay with the owner.',
+            ),
+
           if (auth.availableContextCount > 1)
-            ListTile(
-              leading: const Icon(Icons.swap_horiz, color: AppColors.primary),
-              title: const Text('Switch context'),
-              subtitle: const Text('Continue as buyer, artisan or supporter'),
+            _MenuCard(
+              icon: Icons.swap_horiz,
+              title: 'Switch context',
+              subtitle: 'Continue as buyer, artisan or supporter',
               onTap: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
                 auth.switchContext();
               },
             ),
-          const SizedBox(height: 32),
-          CustomButton(
-            text: 'Sign Out',
-            isOutlined: true,
-            textColor: AppColors.error,
-            backgroundColor: AppColors.error,
-            onPressed: () async {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              await auth.logout(); // AuthGate then shows the sign-in screen
-            },
+
+          const SizedBox(height: 24),
+          OutlinedButton(
+            onPressed: () => _confirmSignOut(context, auth),
+            style: OutlinedButton.styleFrom(
+              foregroundColor: AppColors.error,
+              side: const BorderSide(color: AppColors.error),
+            ),
+            child: const Text('Sign Out'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MenuCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback? onTap;
+
+  const _MenuCard({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        onTap: onTap,
+        leading: Icon(icon, color: AppColors.primary),
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+        subtitle: Text(subtitle),
+        trailing: onTap != null ? const Icon(Icons.chevron_right) : null,
       ),
     );
   }

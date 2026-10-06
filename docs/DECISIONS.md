@@ -17,3 +17,8 @@
 | S2 | 06 Oct | One order per artisan; cart in users/{uid}/cart | Clear ownership for I12 and security rules | I06, I07, I12 |
 | S3 | 06 Oct | Ratings computed from reviews, not stored | Cannot be faked or go out of sync (FR4, NFR2) | I04, I05 |
 | R1 | 06 Oct | **TEMPORARY** signed-in-only rules for products/orders/conversations/reviews | Unblock development; MUST become v2 owner/grant rules before functional testing | NFR3 — OPEN |
+| I13a | 06 Oct | I13 invite acceptance needs BOTH the 6-digit code and the phone number the artisan entered; grant copies the invite exactly (checked by rules) | A guessed code alone is useless; supporter cannot grant themselves extra scopes (NFR3) | I13, rules v1.3 |
+| I13b | 06 Oct | "Pending invitations" list with Cancel on Family Assistance (derived, category B) | Owner can see/cancel codes; gives I13 a real Delete operation | I13 |
+| I13c | 06 Oct | Revoke keeps the grant with status `revoked` (not deleted) | Audit trail; re-invite reactivates via a new invite | I13 |
+| I13d | 06 Oct | supportGrants gains optional field `inviteCode` (additive) | Rules check a grant against its invite | Schema S1 |
+| I01a | 06 Oct | Sign-out asks for confirmation (from I01 wireframe "Sign out?") | Error prevention | I01 |

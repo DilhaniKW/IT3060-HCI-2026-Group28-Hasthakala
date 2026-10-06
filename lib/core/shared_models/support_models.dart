@@ -8,6 +8,19 @@ class SupportScopes {
   final bool orders;
   final bool communication;
 
+  SupportScopes copyWith({bool? products, bool? orders, bool? communication}) {
+    return SupportScopes(
+      products: products ?? this.products,
+      orders: orders ?? this.orders,
+      communication: communication ?? this.communication,
+    );
+  }
+
+  bool sameAs(SupportScopes other) =>
+      products == other.products &&
+      orders == other.orders &&
+      communication == other.communication;
+
   const SupportScopes({
     this.products = false,
     this.orders = false,
@@ -50,6 +63,10 @@ class SupportGrantModel {
   final DateTime grantedAt;
   final DateTime updatedAt;
 
+  /// Code of the invite this grant was created from (additive field; lets
+  /// the security rules check the grant against its invite).
+  final String? inviteCode;
+
   SupportGrantModel({
     required this.artisanId,
     required this.artisanName,
@@ -61,11 +78,22 @@ class SupportGrantModel {
     this.status = SupportGrantStatus.active,
     DateTime? grantedAt,
     DateTime? updatedAt,
+    this.inviteCode,
   })  : grantedAt = grantedAt ?? DateTime.now(),
         updatedAt = updatedAt ?? DateTime.now();
 
   String get id => '${artisanId}_$supporterId';
   bool get isActive => status == SupportGrantStatus.active;
+
+  /// Readable list of permissions, e.g. "Products, Orders".
+  String get scopeSummary {
+    final parts = <String>[
+      if (scopes.products) 'Products',
+      if (scopes.orders) 'Orders',
+      if (scopes.communication) 'Customer messages',
+    ];
+    return parts.isEmpty ? 'No permissions' : parts.join(', ');
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -79,6 +107,7 @@ class SupportGrantModel {
       'status': status.name,
       'grantedAt': FirestoreConverters.toTimestamp(grantedAt),
       'updatedAt': FirestoreConverters.toTimestamp(updatedAt),
+      'inviteCode': inviteCode,
     };
   }
 
@@ -97,6 +126,7 @@ class SupportGrantModel {
           : SupportGrantStatus.active,
       grantedAt: FirestoreConverters.toDateTime(map['grantedAt']),
       updatedAt: FirestoreConverters.toDateTime(map['updatedAt']),
+      inviteCode: map['inviteCode'],
     );
   }
 }
@@ -132,6 +162,8 @@ class SupportInviteModel {
     this.acceptedBy,
   })  : createdAt = createdAt ?? DateTime.now(),
         expiresAt = expiresAt ?? DateTime.now().add(const Duration(days: 7));
+
+  bool get isExpired => DateTime.now().isAfter(expiresAt);
 
   Map<String, dynamic> toMap() {
     return {
