@@ -32,8 +32,7 @@ class ArtisanProfileRemoteDataSource {
   }
 
   // The artisan name is copied into a few other documents (account, products,
-  // support grants, pending invites). Update them all so every screen shows
-  // the same name.
+  // support grants, pending invites). PDATE NAME CHANGES
   Future<void> _syncArtisanName(String uid, String name) async {
     final batch = _db.batch();
     final now = Timestamp.now();
