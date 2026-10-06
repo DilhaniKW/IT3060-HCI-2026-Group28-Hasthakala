@@ -20,7 +20,6 @@ class PublicArtisanProfileScreen extends StatefulWidget {
 class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen> {
   final DiscoveryRemoteDataSource _dataSource = DiscoveryRemoteDataSource();
   UserModel? _artisan;
-  bool _loading = true;
 
   final List<ProductModel> _artisanProducts = [
     ProductModel(
@@ -48,17 +47,26 @@ class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen>
   }
 
   Future<void> _loadProfile() async {
-    final profile = await _dataSource.getArtisanProfile(widget.artisanId);
-    setState(() {
-      _artisan = profile;
-      _loading = false;
-    });
+    try {
+      final profile = await _dataSource.getArtisanProfile(widget.artisanId);
+      if (mounted) {
+        setState(() {
+          _artisan = profile;
+        });
+      }
+    } catch (_) {
+      // Safe fallback to default Master Artisan details if offline or non-existent doc ID
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final name = _artisan?.displayName ?? 'Sunil Kariyawasam';
-    final district = _artisan?.district ?? 'Kelaniya';
+    final name = _artisan?.displayName.isNotEmpty == true
+        ? _artisan!.displayName
+        : 'Sunil Kariyawasam';
+    final district = _artisan?.district.isNotEmpty == true
+        ? _artisan!.district
+        : 'Kelaniya';
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -87,6 +95,12 @@ class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen>
                     child: Image.network(
                       'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&q=80&w=800',
                       fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
+                        color: AppColors.accent,
+                        child: const Center(
+                          child: Icon(Icons.storefront, size: 60, color: Colors.white),
+                        ),
+                      ),
                     ),
                   ),
                   Positioned.fill(
@@ -97,7 +111,7 @@ class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen>
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.black.withOpacity(0.3),
-                            Colors.black.withOpacity(0.7),
+                            Colors.black.withOpacity(0.75),
                           ],
                         ),
                       ),
@@ -115,11 +129,17 @@ class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen>
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 2.5),
-                            image: const DecorationImage(
-                              image: NetworkImage(
-                                'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
-                              ),
+                            color: AppColors.surface,
+                          ),
+                          child: ClipOval(
+                            child: Image.network(
+                              'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
                               fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => const Icon(
+                                Icons.person,
+                                size: 36,
+                                color: AppColors.primary,
+                              ),
                             ),
                           ),
                         ),
@@ -127,15 +147,20 @@ class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen>
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Row(
                                 children: [
-                                  Text(
-                                    name,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                                  Flexible(
+                                    child: Text(
+                                      name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 4),
@@ -145,9 +170,11 @@ class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen>
                               const SizedBox(height: 2),
                               Text(
                                 'Master Craftsman • $district Lineage',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   color: Colors.white70,
-                                  fontSize: 12.5,
+                                  fontSize: 12,
                                 ),
                               ),
                             ],
