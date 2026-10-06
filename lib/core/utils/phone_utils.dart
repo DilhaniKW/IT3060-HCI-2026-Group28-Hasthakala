@@ -1,4 +1,4 @@
-/// Sri Lankan phone number helpers (I13 invitations).
+/// SL Numbers
 /// Stored format: 10 digits starting with 0, e.g. 0771234567.
 class PhoneUtils {
   /// Converts "+94 77 123 4567", "94771234567" or "077-123 4567" to "0771234567".

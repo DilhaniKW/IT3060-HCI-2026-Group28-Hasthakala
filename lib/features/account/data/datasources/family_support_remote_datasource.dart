@@ -13,7 +13,7 @@ class SupportInviteException implements Exception {
   String toString() => message;
 }
 
-/// I13 Family Assistance data access (Member 4). FR9, FR10, NFR3.
+/// I13 Family Assistance data access
 /// Every operation here is also checked by firestore.rules - the app hiding
 /// a button is never the only protection.
 class FamilySupportRemoteDataSource {
@@ -28,7 +28,7 @@ class FamilySupportRemoteDataSource {
   CollectionReference<Map<String, dynamic>> get _grants =>
       _db.collection(FirestoreCollections.supportGrants);
 
-  // ---------------- Artisan (owner) side ----------------
+  // Artisan (owner) side 
 
   /// READ: everyone the artisan has authorised (active and revoked).
   Stream<List<SupportGrantModel>> watchGrantsForArtisan(String artisanId) {
@@ -97,10 +97,9 @@ class FamilySupportRemoteDataSource {
     });
   }
 
-  // ---------------- Supporter side ----------------
+  // Supporter side (accepting an invite, watching their grant)
 
-  /// CREATE grant from an invitation. The supporter must know BOTH the code
-  /// and the phone number the artisan entered (rules compare them).
+  /// CREATE grant from an invitation. The supporter must know BOTH the code and the phone number the artisan entered (rules compare them).
   Future<SupportGrantModel> acceptInvite({
     required String code,
     required String phone,
@@ -137,7 +136,7 @@ class FamilySupportRemoteDataSource {
       throw const SupportInviteException('You cannot accept your own invitation.');
     }
 
-    // 3. Create the grant and mark the invite accepted in ONE atomic write.
+    // 3. Create the grant and mark the invite accepted in ONE write.
     final grant = SupportGrantModel(
       artisanId: invite.artisanId,
       artisanName: invite.artisanName,
@@ -158,8 +157,7 @@ class FamilySupportRemoteDataSource {
     return grant;
   }
 
-  /// READ (live): the supporter's grant, so a revoke or permission change
-  /// is shown immediately.
+  /// READ (live): the supporter's grant, so a revoke or permission change is shown immediately.
   Stream<SupportGrantModel?> watchGrant(String grantId) {
     return _grants.doc(grantId).snapshots().map(
         (d) => d.exists && d.data() != null ? SupportGrantModel.fromMap(d.data()!) : null);

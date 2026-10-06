@@ -1,5 +1,4 @@
 /// Feature: Account & Family Support
-/// Assignee: WANIGATHUNGA Y. J.
 /// Branch: feature/account-support
 library account;
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 
-/// I13_WF_11 Access revoked (owner confirmation of a completed action).
+/// I13 Access revoked (owner confirmation of a completed action).
 class AccessRevokedScreen extends StatelessWidget {
   final String supporterName;
   const AccessRevokedScreen({super.key, required this.supporterName});

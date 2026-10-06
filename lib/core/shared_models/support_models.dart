@@ -47,7 +47,7 @@ class SupportScopes {
 
 enum SupportGrantStatus { active, revoked }
 
-/// supportGrants/{artisanUid}_{supporterUid} - I13 (FR9, NFR3).
+
 /// Created when a supporter accepts an invite; managed by the artisan.
 /// The supporter always signs in as THEMSELF; this grant only says what
 /// they may do for this artisan.
@@ -63,8 +63,7 @@ class SupportGrantModel {
   final DateTime grantedAt;
   final DateTime updatedAt;
 
-  /// Code of the invite this grant was created from (additive field; lets
-  /// the security rules check the grant against its invite).
+  /// Code of the invite this grant was created from (additive field; lets the security rules check the grant against its invite).
   final String? inviteCode;
 
   SupportGrantModel({

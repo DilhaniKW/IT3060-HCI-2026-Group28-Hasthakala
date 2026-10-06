@@ -8,7 +8,7 @@ import '../state/family_support_provider.dart';
 import 'add_support_user_screen.dart';
 import 'support_user_details_screen.dart';
 
-/// I13_WF_02 Family Assistance (owner). FR9.
+
 /// READ: authorised support users + pending invitations.
 /// DELETE: cancel a pending invitation.
 class FamilyAssistanceScreen extends StatefulWidget {

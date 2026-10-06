@@ -14,7 +14,7 @@ import 'buyer_shell.dart';
 /// Decides the first screen from the signed-in state (I01, decision D1):
 /// checking -> signed out -> artisan setup -> "Continue as" -> shell.
 /// Screens never navigate to a home screen themselves; they change the
-/// AuthProvider state and this gate shows the right place.
+/// AuthProvider state and this shows the right place.
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 

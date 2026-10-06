@@ -7,7 +7,7 @@ import '../state/family_support_provider.dart';
 import '../widgets/support_scope_toggles.dart';
 import 'access_revoked_screen.dart';
 
-/// I13_WF_05 Support User Details (owner).
+/// Support User Details (owner).
 /// UPDATE: permissions ("Access updated"). UPDATE: revoke (with confirmation).
 class SupportUserDetailsScreen extends StatefulWidget {
   final SupportGrantModel grant;
