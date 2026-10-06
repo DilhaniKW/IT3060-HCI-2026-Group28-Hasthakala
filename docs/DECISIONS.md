@@ -27,3 +27,5 @@
 | I01b | 06 Oct | Sign up in two steps: Create Account makes the Auth account; users/{uid} is written after "How will you start using HASTHAKALA?" | Matches hi-fi order; if the app closes in between, next launch returns to the purpose screen | I01 |
 | I01c | 06 Oct | Intro screen shown on first launch only (`shared_preferences`) | Hi-fi frame 2; not repeated every time | I01 |
 | I01d | 06 Oct | Circular logo asset `assets/images/hasthakala_logo.png` (27 KB) | Logo should be circular; emblem without wordmark stays readable when small | I01, branding |
+| I13e | 06 Oct | Permission labels use plain words (Manage products / Manage orders / Respond to customers) without interface codes | Interface codes mean nothing to real users (match between system and real world) | I13 |
+| I13f | 06 Oct | Copy-to-clipboard invitation message (no extra package) | Family members already use WhatsApp/SMS (Milestone 01 F4/F7) | I13 |

@@ -10,6 +10,13 @@ class PhoneUtils {
     return digits;
   }
 
+  // 0771234567 -> 077 123 4567 (for showing on screen)
+  static String display(String phone) {
+    final d = normalize(phone);
+    if (d.length != 10) return phone;
+    return '${d.substring(0, 3)} ${d.substring(3, 6)} ${d.substring(6)}';
+  }
+
   static bool isValid(String input) =>
       RegExp(r'^0[0-9]{9}$').hasMatch(normalize(input));
 
