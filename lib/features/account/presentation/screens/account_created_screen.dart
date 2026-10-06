@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../state/auth_provider.dart';
 import '../widgets/status_screen.dart';
 
-// I01 "Account Created!" (hi-fi frame 14)
+// I01 "Account Created!" 
 class AccountCreatedScreen extends StatelessWidget {
   const AccountCreatedScreen({super.key});
 

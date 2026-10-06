@@ -6,7 +6,7 @@ import '../../../../core/utils/input_validators.dart';
 import '../state/auth_provider.dart';
 import '../widgets/status_screen.dart';
 
-// I01 Reset Password (hi-fi frame 18) + "Check your email" state
+// I01 Reset Password (18) + "Check your email" state
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({super.key});
 

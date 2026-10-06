@@ -5,7 +5,7 @@ import '../../../../core/shared_models/user_model.dart';
 import '../state/auth_provider.dart';
 import '../widgets/status_screen.dart';
 
-// I01 hi-fi frames 16 ("You're all set!") and 17 ("Your artisan setup has started!")
+// frames 16 ("You're all set!") and 17 ("Your artisan setup has started!")
 class PurposeConfirmedScreen extends StatelessWidget {
   const PurposeConfirmedScreen({super.key});
 

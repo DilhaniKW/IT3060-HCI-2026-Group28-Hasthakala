@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../state/onboarding_provider.dart';
 
-// I01 first-launch intro (hi-fi frame 2). Shown once, then the sign in screen.
+//  first-launch intro : Shown once, then the sign in screen.
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 

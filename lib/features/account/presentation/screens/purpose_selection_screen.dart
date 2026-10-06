@@ -5,7 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/user_model.dart';
 import '../state/auth_provider.dart';
 
-// I01 "How will you start using HASTHAKALA?" (hi-fi frame 15). Asked once.
+// I01 "How will you start using HASTHAKALA?" (15). Asked once.
 class PurposeSelectionScreen extends StatelessWidget {
   const PurposeSelectionScreen({super.key});
 
