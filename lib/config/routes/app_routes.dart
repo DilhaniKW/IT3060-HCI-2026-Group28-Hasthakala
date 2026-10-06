@@ -17,4 +17,5 @@ class AppRoutes {
   static const String artisanChat = '/artisan-chat';
   static const String profile = '/profile';
   static const String familySupport = '/family-support';
+  static const String verifiedLabMatrix = '/verified-lab-matrix';
 }
