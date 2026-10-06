@@ -5,6 +5,7 @@ import '../../features/account/presentation/screens/artisan_profile_setup_screen
 import '../../features/account/presentation/screens/checking_access_screen.dart';
 import '../../features/account/presentation/screens/context_selection_screen.dart';
 import '../../features/account/presentation/screens/login_screen.dart';
+import '../../features/account/presentation/screens/support_access_removed_screen.dart';
 import '../../features/account/presentation/state/auth_provider.dart';
 import 'artisan_shell.dart';
 import 'buyer_shell.dart';
@@ -27,6 +28,7 @@ class AuthGate extends StatelessWidget {
         return const LoginScreen();
       case AuthStatus.signedIn:
         if (auth.needsArtisanSetup) return const ArtisanProfileSetupScreen();
+        if (auth.supportAccessLost) return const SupportAccessRemovedScreen();
         if (auth.needsContextChoice) return const ContextSelectionScreen();
         switch (auth.activeContext) {
           case AppContextType.buyer:

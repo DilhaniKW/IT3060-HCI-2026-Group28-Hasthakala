@@ -48,3 +48,10 @@ Firestore rules, Storage rules strategy, allowed/denied cases).
 | Docs | `DEVIATIONS.md` (DV1-DV5), DECISIONS I13a-d, I01a, schema note | Assignment |
 
 **Pending:** supporter side (accept screen, supporter home, live revoke/permission handling), I05 Manage, I01 polish, rules v2.
+
+### Session 2b - I13 supporter side
+- Accept invitation screen in Profile (phone + code), creates the grant.
+- Supporter home with the allowed activities; other ones shown as locked.
+- AuthProvider listens to the active grant, so permission changes and revokes apply straight away.
+- New "Support access is no longer available" screen.
+- To check with Member 3: a supporter with only the communication permission can't open the Orders tab, so can't reach order chats yet.

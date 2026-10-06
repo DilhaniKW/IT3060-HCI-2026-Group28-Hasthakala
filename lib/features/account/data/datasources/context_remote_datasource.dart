@@ -31,6 +31,15 @@ class ContextRemoteDataSource {
         .toList();
   }
 
+  // listens to one grant so permission changes / revokes show up straight away
+  Stream<SupportGrantModel?> watchGrant(String grantId) {
+    return _firestoreService.instance
+        .collection(FirestoreCollections.supportGrants)
+        .doc(grantId)
+        .snapshots()
+        .map((d) => d.exists && d.data() != null ? SupportGrantModel.fromMap(d.data()!) : null);
+  }
+
   /// CREATE artisanProfiles/{uid} (I05 first-time artisan setup).
   Future<void> createArtisanProfile(ArtisanProfileModel profile) async {
     await _firestoreService.setDocument(

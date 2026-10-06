@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../state/auth_provider.dart';
 import '../widgets/profile_avatar_widget.dart';
+import 'accept_support_invitation_screen.dart';
 import 'family_assistance_screen.dart';
 
 /// Profile tab (Member 4) - the entry point to I05 Manage and I13.
@@ -64,6 +65,16 @@ class ProfileScreen extends StatelessWidget {
               subtitle: 'Manage authorised support',
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (_) => const FamilyAssistanceScreen())),
+            ),
+
+          // buyer can accept an invite to help an artisan (I13)
+          if (auth.isBuyerContext)
+            _MenuCard(
+              icon: Icons.handshake_outlined,
+              title: 'Accept support invitation',
+              subtitle: 'Help an artisan with their business using a code',
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const AcceptSupportInvitationScreen())),
             ),
 
           // ---- Supporter ----
