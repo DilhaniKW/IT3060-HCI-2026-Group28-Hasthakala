@@ -42,6 +42,9 @@ class RouteGenerator {
       case AppRoutes.checkout:
         return MaterialPageRoute(builder: (_) => const CheckoutScreen());
 
+      case AppRoutes.verifiedLabMatrix:
+        return MaterialPageRoute(builder: (_) => const VerifiedLabMatrixScreen());
+
       case AppRoutes.orderTracking:
         final orderId = settings.arguments as String;
         return MaterialPageRoute(
