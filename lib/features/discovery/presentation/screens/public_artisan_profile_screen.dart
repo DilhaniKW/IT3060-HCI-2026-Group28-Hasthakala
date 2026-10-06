@@ -64,8 +64,8 @@ class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen>
     final name = _artisan?.displayName.isNotEmpty == true
         ? _artisan!.displayName
         : 'Sunil Kariyawasam';
-    final district = _artisan?.district.isNotEmpty == true
-        ? _artisan!.district
+    final district = (_artisan?.district?.isNotEmpty == true)
+        ? _artisan!.district!
         : 'Kelaniya';
 
     return Scaffold(
@@ -227,8 +227,8 @@ class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _artisan?.bio.isNotEmpty == true
-                        ? _artisan!.bio
+                    (_artisan?.bio?.isNotEmpty == true)
+                        ? _artisan!.bio!
                         : 'Dedicated to preserving Sri Lanka’s traditional terracotta pottery heritage. Every vessel is hand-spun using river clay and fired in traditional wood kilns in Kelaniya, carrying forward 4 generations of artisanal mastery.',
                     style: const TextStyle(
                       fontSize: 14,
