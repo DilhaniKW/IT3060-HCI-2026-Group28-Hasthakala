@@ -757,6 +757,40 @@ class AppStrings {
       'ta': 'உங்கள் இருப்பிடத்தை உள்ளிடவும்.',
     },
 
+    // ---- first-time artisan + status screens (I05) ----
+    'setup_title': {
+      'en': 'Complete Your Artisan Profile',
+      'si': 'ඔබේ ශිල්පී පැතිකඩ සම්පූර්ණ කරන්න',
+      'ta': 'உங்கள் கைவினைஞர் சுயவிவரத்தை நிறைவு செய்யுங்கள்',
+    },
+    'setup_intro': {
+      'en': 'Tell buyers about your craft and story.',
+      'si': 'ඔබේ කලාව සහ කතාව ගැනුම්කරුවන්ට කියන්න.',
+      'ta': 'உங்கள் கைவினை மற்றும் கதையை வாங்குபவர்களுக்குச் சொல்லுங்கள்.',
+    },
+    'save_profile': {'en': 'Save Profile', 'si': 'පැතිකඩ සුරකින්න', 'ta': 'சுயவிவரத்தைச் சேமி'},
+    'created_title': {
+      'en': 'Artisan profile created!',
+      'si': 'ශිල්පී පැතිකඩ සාදන ලදී!',
+      'ta': 'கைவினைஞர் சுயவிவரம் உருவாக்கப்பட்டது!',
+    },
+    'created_body': {
+      'en': 'Your profile is ready. You can now start showcasing your craft to buyers.',
+      'si': 'ඔබේ පැතිකඩ සූදානම්. දැන් ඔබට ඔබේ කලාව ගැනුම්කරුවන්ට පෙන්වීම ආරම්භ කළ හැක.',
+      'ta': 'உங்கள் சுயவிவரம் தயார். இப்போது உங்கள் கைவினையை வாங்குபவர்களுக்குக் காட்டத் தொடங்கலாம்.',
+    },
+    'updated_title': {
+      'en': 'Profile updated',
+      'si': 'පැතිකඩ යාවත්කාලීන විය',
+      'ta': 'சுயவிவரம் புதுப்பிக்கப்பட்டது',
+    },
+    'updated_body': {
+      'en': 'Your artisan profile changes have been saved.',
+      'si': 'ඔබේ ශිල්පී පැතිකඩේ වෙනස්කම් සුරකින ලදී.',
+      'ta': 'உங்கள் கைவினைஞர் சுயவிவர மாற்றங்கள் சேமிக்கப்பட்டன.',
+    },
+    'view_my_profile': {'en': 'View My Profile', 'si': 'මගේ පැතිකඩ බලන්න', 'ta': 'எனது சுயவிவரத்தைப் பார்'},
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},

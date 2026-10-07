@@ -15,6 +15,8 @@ class StatusScreen extends StatelessWidget {
   final bool loading;
   final Widget? extra;
   final Color color;
+  // shown instead of the round icon when given (e.g. a profile preview)
+  final Widget? header;
 
   const StatusScreen({
     super.key,
@@ -28,6 +30,7 @@ class StatusScreen extends StatelessWidget {
     this.loading = false,
     this.extra,
     this.color = AppColors.accent,
+    this.header,
   });
 
   @override
@@ -45,19 +48,22 @@ class StatusScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // soft ring around the icon
-                        Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: color.withValues(alpha: 0.12),
+                        if (header != null)
+                          header!
+                        else
+                          // soft ring around the icon
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: color.withValues(alpha: 0.12),
+                            ),
+                            child: CircleAvatar(
+                              radius: 52,
+                              backgroundColor: color,
+                              child: Icon(icon, size: 52, color: AppColors.onPrimary),
+                            ),
                           ),
-                          child: CircleAvatar(
-                            radius: 52,
-                            backgroundColor: color,
-                            child: Icon(icon, size: 52, color: AppColors.onPrimary),
-                          ),
-                        ),
                         const SizedBox(height: 28),
                         Text(title,
                             textAlign: TextAlign.center,
