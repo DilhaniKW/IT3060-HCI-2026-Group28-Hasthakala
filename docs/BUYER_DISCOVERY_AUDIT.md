@@ -2,6 +2,21 @@
 
 Reviewed: 7 October 2026. Branch: `feature/buyer-discovery`.
 
+## Screen polish pass (7 October)
+
+The existing colour palette was preserved as explicitly requested. This pass covers the 10 distinct implemented views represented by the 16 Stitch exports (the Home/Explore/Details/Profile exports include alternative versions). It is a responsive UI and interaction polish pass, not a claim of exact pixel parity or completed backend integration.
+
+- Rendered and inspected Home, Explore, Product Details, Public Profile, Master Profile, Catalog, Reviews, Commission, Lab Report and Checkout. Local QA previews are in `.dart_tool/polish_previews/`. Tests deliberately use missing/offline images to verify fallback layouts; blank/image-error placeholders in those previews do not indicate that production photography was removed.
+- Fixed narrow-screen wrapping in headings, prices, metadata, reviews, payment controls and lab metrics. Verified 320px at 1.2 text scale and 390px at normal scale, including scrolling lower sections. Loaded the bundled text and Material icon fonts for visual review.
+- Fixed the commission dropdown's invalid initial value and disposed form controllers. Commission now validates fields and copies a usable request draft with an optional reference link; it does not falsely claim to submit a request or upload a file.
+- Catalog sorting now changes the sample collection order, empty categories show a message, and the Home profile action opens the profile route.
+- Checkout displays real cart lines/counts, charges delivery once, removes sample customer details, validates delivery fields, and opens an order review. It does not claim to place an order. Empty carts cannot proceed.
+- Legacy artisan/reviews/catalog/lab sample content is identified as preview content. Certificate actions no longer claim a successful PDF download; no certificate exists for those sample results.
+
+Validation: **50 tests passed**, including 20 screen/width cases and 3 new interaction regressions. Static analysis completed with no errors or warnings, with 91 informational findings. Live phone/Firebase end-to-end testing remains pending. Live review/catalog binding for the legacy preview views, commission delivery, certificates, payment/order submission and cross-device persistence remain separate unfinished functionality.
+
+The earlier audit and implementation notes below describe the historical baseline and previous passes.
+
 Third implementation update: Product Details now has a swipeable image gallery, selectable thumbnails, photo counter and fullscreen pinch zoom, with honest missing/broken-image states. Home and Search open Saved Crafts; all product-card/details hearts use one shared favorites provider. Favorites persist product IDs in SharedPreferences on this device, separately for each account, and the saved list retrieves current product documents rather than retaining stale prices/stock. Missing products can be removed; storage/load failures are surfaced. Share opens a preview and copies real product text to the platform clipboard for pasting into messages. There is no fabricated public product URL or native OS share sheet. Missing ratings/specifications now show unavailable/unreviewed states; the unconditional product verification badge was removed.
 
 Third-update validation: all 27 discovery state/widget tests passed, including favorites recreation/account separation/write failure, shared hearts, missing saved products, gallery swiping/thumbnails/zoom, and the platform Clipboard.setData call. Flutter device discovery found Windows, Chrome and Edge, but no connected mobile phone/emulator; live mobile/Firebase end-to-end verification remains outstanding. Favorites are device-local and do not sync between devices; live review aggregation is still pending. These updates supersede corresponding outstanding items in the earlier notes below.
