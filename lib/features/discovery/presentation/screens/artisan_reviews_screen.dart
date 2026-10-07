@@ -166,10 +166,10 @@ class ArtisanReviewsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Wrap(
+ alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                         children: [
-                          Row(
+                          Wrap(spacing: 4, runSpacing: 4,
                             children: [
                               CircleAvatar(
                                 radius: 18,
@@ -204,7 +204,7 @@ class ArtisanReviewsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Row(
+                          Wrap(spacing: 4, runSpacing: 4,
                             children: List.generate(
                               5,
                               (i) => const Icon(Icons.star, color: Colors.amber, size: 14),
