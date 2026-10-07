@@ -351,6 +351,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Unable to load crafts'), findsOneWidget);
     fail = false;
+    await tester.ensureVisible(find.text('Retry'));
     await tester.tap(find.text('Retry'));
     await tester.pumpAndSettle();
     expect(find.text('No crafts found'), findsOneWidget);
