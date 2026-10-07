@@ -1,3 +1,4 @@
+import '../../../../core/localization/tr.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,22 +33,22 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               DiscoveryRemoteDataSource().getSavedProducts)(ids);
     }
     return Scaffold(
-      appBar: AppBar(title: const Text('Saved Crafts')),
+      appBar: AppBar(title: Text(context.tr('discovery_saved_title'))),
       body: favorites.error != null
           ? EmptyStateView(
               icon: Icons.error_outline,
-              title: 'Unable to load favorites',
-              description: favorites.error!,
-              actionButtonText: 'Retry',
+              title: context.tr('discovery_favorites_error'),
+              description: context.tr('discovery_load_favorites_error'),
+              actionButtonText: context.tr('discovery_retry'),
               onActionPressed: () =>
                   favorites.setAccount(favorites.account, reload: true))
           : favorites.busy && ids.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : ids.isEmpty
-                  ? const EmptyStateView(
+                  ? EmptyStateView(
                       icon: Icons.favorite_border,
-                      title: 'No saved crafts yet',
-                      description: 'Tap a heart on a craft to save it here.')
+                      title: context.tr('discovery_favorites_empty'),
+                      description: context.tr('discovery_favorites_help'))
                   : FutureBuilder<List<ProductModel>>(
                       future: _products,
                       builder: (context, snapshot) {
@@ -57,10 +58,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         if (snapshot.hasError)
                           return EmptyStateView(
                               icon: Icons.cloud_off,
-                              title: 'Unable to load crafts',
+                              title: context.tr('discovery_load_error'),
                               description:
-                                  'Your favorites are saved. Check your connection and retry.',
-                              actionButtonText: 'Retry',
+                                  context.tr('discovery_favorites_offline'),
+                              actionButtonText: context.tr('discovery_retry'),
                               onActionPressed: () =>
                                   setState(() => _key = null));
                         final products = {
@@ -84,7 +85,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                      const Text('Craft unavailable'),
+                                      Text(context
+                                          .tr('discovery_craft_unavailable')),
                                       FavoriteButton(productId: ids[index]),
                                     ]));
                               return ProductCard(
