@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/tr.dart';
 import '../../../../core/utils/phone_utils.dart';
 import '../state/auth_provider.dart';
 import '../state/family_support_provider.dart';
+import '../widgets/profile_form_parts.dart';
+import '../widgets/support_parts.dart';
 
 // I13 - supporter enters phone number + invite code (see DEVIATIONS DV4)
 // creates the support grant, user stays logged in as themselves
@@ -45,12 +48,43 @@ class _AcceptSupportInvitationScreenState extends State<AcceptSupportInvitationS
       context: context,
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        icon: const Icon(Icons.check_circle, color: AppColors.accent, size: 48),
-        title: Text('You are now supporting ${grant.artisanName}'),
-        content: Text('You can help with: ${grant.scopeSummary}.\n'
-            'Choose "Supporting ${grant.artisanName}" to start.'),
+        icon: Container(
+          width: 64,
+          height: 64,
+          decoration: BoxDecoration(
+            color: AppColors.accent.withValues(alpha: 0.12),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(Icons.check_circle, color: AppColors.accent, size: 44),
+        ),
+        title: Text(ctx.tr('now_supporting', {'name': grant.artisanName}),
+            textAlign: TextAlign.center),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(ctx.tr('can_help_with'),
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: AppColors.textSecondary)),
+            const SizedBox(height: 10),
+            ScopeChips(scopes: grant.scopes),
+            const SizedBox(height: 14),
+            Text(
+              ctx.tr('choose_to_start',
+                  {'ctx': ctx.tr('ctx_supporting', {'name': grant.artisanName})}),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: AppColors.textSecondary, height: 1.4),
+            ),
+          ],
+        ),
+        actionsPadding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Continue')),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(ctx.tr('continue')),
+            ),
+          ),
         ],
       ),
     );
@@ -64,60 +98,80 @@ class _AcceptSupportInvitationScreenState extends State<AcceptSupportInvitationS
     final support = context.watch<FamilySupportProvider>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Accept Support Invitation')),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            const Text(
-              'An artisan can invite you to help with their business. '
-              'Ask them for the 6-digit invitation code and enter the phone '
-              'number they used for you.',
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              controller: _phoneController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                labelText: 'Your phone number',
-                hintText: 'e.g. 077 123 4567',
+      appBar: AppBar(title: Text(context.tr('accept_invite'))),
+      body: SafeArea(
+        top: false,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+                  children: [
+                    // same photo as the artisan's Family Assistance screen
+                    PhotoHeaderCard(
+                      image: 'assets/images/family_banner.jpg',
+                      text: context.tr('accept_intro'),
+                    ),
+                    const SizedBox(height: 18),
+                    LabelledField(
+                      label: context.tr('label_your_phone'),
+                      child: TextFormField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: const InputDecoration(
+                          hintText: 'e.g. 077 123 4567',
+                          prefixIcon: Icon(Icons.phone_outlined, color: AppColors.textSecondary),
+                        ),
+                        validator: (v) => context.trMessage(PhoneUtils.validate(v)),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    LabelledField(
+                      label: context.tr('label_invite_code'),
+                      child: TextFormField(
+                        controller: _codeController,
+                        keyboardType: TextInputType.number,
+                        maxLength: 6,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w700, letterSpacing: 8),
+                        decoration: const InputDecoration(hintText: '000000'),
+                        validator: (v) => context.trMessage(
+                            RegExp(r'^[0-9]{6}$').hasMatch((v ?? '').trim())
+                                ? null
+                                : 'Enter the 6-digit code'),
+                      ),
+                    ),
+                    if (support.errorMessage != null) ...[
+                      const SizedBox(height: 4),
+                      Text(context.trMessage(support.errorMessage)!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: AppColors.error)),
+                    ],
+                    const SizedBox(height: 14),
+                    TrustNote(context.tr('accept_note')),
+                  ],
+                ),
               ),
-              validator: PhoneUtils.validate,
-            ),
-            const SizedBox(height: 14),
-            TextFormField(
-              controller: _codeController,
-              keyboardType: TextInputType.number,
-              maxLength: 6,
-              decoration: const InputDecoration(labelText: 'Invitation code'),
-              validator: (v) => RegExp(r'^[0-9]{6}$').hasMatch((v ?? '').trim())
-                  ? null
-                  : 'Enter the 6-digit code',
-            ),
-            if (support.errorMessage != null) ...[
-              const SizedBox(height: 8),
-              Text(support.errorMessage!, style: const TextStyle(color: AppColors.error)),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+                child: ElevatedButton(
+                  onPressed: support.isSaving ? null : _accept,
+                  child: support.isSaving
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2, color: AppColors.onPrimary),
+                        )
+                      : Text(context.tr('accept_invitation')),
+                ),
+              ),
             ],
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: support.isSaving ? null : _accept,
-              child: support.isSaving
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.onPrimary),
-                    )
-                  : const Text('Accept Invitation'),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'You will keep your own account. You can only help in the areas '
-              'the artisan allows, and they can change or remove this at any time.',
-              style: TextStyle(color: AppColors.textSecondary, fontSize: 12),
-            ),
-          ],
+          ),
         ),
       ),
     );

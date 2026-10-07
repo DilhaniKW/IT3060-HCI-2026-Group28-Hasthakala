@@ -1130,6 +1130,76 @@ class AppStrings {
     },
     'status_revoked': {'en': 'Revoked', 'si': 'ඉවත් කළා', 'ta': 'நீக்கப்பட்டது'},
 
+    // ---- supporter side (I13) ----
+    'accept_intro': {
+      'en': 'An artisan can invite you to help with their business. Ask them for the 6-digit invitation code and enter the phone number they used for you.',
+      'si': 'ශිල්පියෙකුට ඔවුන්ගේ ව්‍යාපාරයට උදව් කිරීමට ඔබට ආරාධනා කළ හැක. ඉලක්කම් 6ක ආරාධනා කේතය ඔවුන්ගෙන් ලබාගෙන, ඔවුන් ඔබ සඳහා භාවිතා කළ දුරකථන අංකය ඇතුළත් කරන්න.',
+      'ta': 'ஒரு கைவினைஞர் தங்கள் வணிகத்திற்கு உதவ உங்களை அழைக்கலாம். 6 இலக்க அழைப்புக் குறியீட்டை அவர்களிடம் கேட்டு, அவர்கள் உங்களுக்காகப் பயன்படுத்திய தொலைபேசி எண்ணை உள்ளிடவும்.',
+    },
+    'label_your_phone': {'en': 'Your phone number', 'si': 'ඔබේ දුරකථන අංකය', 'ta': 'உங்கள் தொலைபேசி எண்'},
+    'label_invite_code': {'en': 'Invitation code', 'si': 'ආරාධනා කේතය', 'ta': 'அழைப்புக் குறியீடு'},
+    'accept_invitation': {'en': 'Accept Invitation', 'si': 'ආරාධනාව පිළිගන්න', 'ta': 'அழைப்பை ஏற்கவும்'},
+    'accept_note': {
+      'en': 'You will keep your own account. You can only help in the areas the artisan allows, and they can change or remove this at any time.',
+      'si': 'ඔබේම ගිණුම ඔබට තිබේ. ඔබට උදව් කළ හැක්කේ ශිල්පියා අවසර දෙන කටයුතුවලට පමණක් වන අතර, ඔවුන්ට එය ඕනෑම වේලාවක වෙනස් කිරීමට හෝ ඉවත් කිරීමට හැක.',
+      'ta': 'உங்கள் சொந்தக் கணக்கு அப்படியே இருக்கும். கைவினைஞர் அனுமதிக்கும் பகுதிகளில் மட்டுமே நீங்கள் உதவ முடியும், அவர்கள் இதை எப்போது வேண்டுமானாலும் மாற்றலாம் அல்லது நீக்கலாம்.',
+    },
+    'now_supporting': {
+      'en': 'You are now supporting {name}',
+      'si': 'ඔබ දැන් {name} ට සහාය වේ',
+      'ta': 'நீங்கள் இப்போது {name} க்கு உதவுகிறீர்கள்',
+    },
+    'can_help_with': {'en': 'You can help with:', 'si': 'ඔබට උදව් කළ හැකි දේ:', 'ta': 'நீங்கள் உதவக்கூடியவை:'},
+    'choose_to_start': {
+      'en': 'Choose "{ctx}" to start.',
+      'si': 'ආරම්භ කිරීමට "{ctx}" තෝරන්න.',
+      'ta': 'தொடங்க "{ctx}" என்பதைத் தேர்ந்தெடுக்கவும்.',
+    },
+    'err_code': {
+      'en': 'Enter the 6-digit code',
+      'si': 'ඉලක්කම් 6ක කේතය ඇතුළත් කරන්න',
+      'ta': '6 இலக்கக் குறியீட்டை உள்ளிடவும்',
+    },
+    'hello_name': {'en': 'Hello {name}', 'si': 'ආයුබෝවන් {name}', 'ta': 'வணக்கம் {name}'},
+    'supporting_label': {'en': 'SUPPORTING', 'si': 'සහාය දක්වන්නේ', 'ta': 'உதவுவது'},
+    'sh_intro': {
+      'en': 'You can help with the following authorized activities:',
+      'si': 'ඔබට පහත බලයලත් කටයුතුවලට උදව් කළ හැක:',
+      'ta': 'பின்வரும் அங்கீகரிக்கப்பட்ட செயல்களில் நீங்கள் உதவலாம்:',
+    },
+    'act_comm': {
+      'en': 'Order Communication',
+      'si': 'ඇණවුම් සන්නිවේදනය',
+      'ta': 'ஆர்டர் தொடர்பு',
+    },
+    'act_comm_sub': {
+      'en': 'Reply to customer queries related to authorized orders',
+      'si': 'බලයලත් ඇණවුම් පිළිබඳ පාරිභෝගික විමසීම්වලට පිළිතුරු දෙන්න',
+      'ta': 'அங்கீகரிக்கப்பட்ட ஆர்டர்கள் தொடர்பான வாடிக்கையாளர் கேள்விகளுக்குப் பதிலளிக்கவும்',
+    },
+    'act_account': {'en': 'Account settings', 'si': 'ගිණුම් සැකසුම්', 'ta': 'கணக்கு அமைப்புகள்'},
+    'not_included': {
+      'en': 'Not included in your access',
+      'si': 'ඔබේ ප්‍රවේශයට ඇතුළත් නැත',
+      'ta': 'உங்கள் அணுகலில் சேர்க்கப்படவில்லை',
+    },
+    'sh_note': {
+      'en': 'Some account functions are not available in support mode.',
+      'si': 'සහාය ආකාරයේදී සමහර ගිණුම් කටයුතු ලබාගත නොහැක.',
+      'ta': 'உதவி முறையில் சில கணக்கு செயல்பாடுகள் கிடைக்காது.',
+    },
+    'signed_in_as': {'en': 'Signed in as {name}', 'si': '{name} ලෙස පුරනය වී ඇත', 'ta': '{name} ஆக உள்நுழைந்துள்ளீர்கள்'},
+    'restricted_title': {
+      'en': 'Not part of your support access',
+      'si': 'මෙය ඔබේ සහාය ප්‍රවේශයට අයත් නැත',
+      'ta': 'இது உங்கள் உதவி அணுகலில் இல்லை',
+    },
+    'restricted_body': {
+      'en': 'Ask {artisan} to allow "{feature}" in Family Assistance if you need it.',
+      'si': 'අවශ්‍ය නම්, පවුලේ සහාය තුළ "{feature}" සඳහා අවසර දෙන ලෙස {artisan} ගෙන් ඉල්ලන්න.',
+      'ta': 'தேவைப்பட்டால், குடும்ப உதவியில் "{feature}" அனுமதிக்குமாறு {artisan} இடம் கேளுங்கள்.',
+    },
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
@@ -1141,6 +1211,9 @@ class AppStrings {
   // English messages from validators / Firebase - key, so they can be shown
   // in the chosen language without changing where they come from
   static const Map<String, String> messageKeys = {
+    'Enter the 6-digit code': 'err_code',
+    'Manage products': 'perm_products',
+    'Manage orders': 'perm_orders',
     'Please enter their full name': 'err_full_name',
     'Please enter a phone number': 'err_phone_required',
     'Enter a valid number, e.g. 077 123 4567': 'err_phone_invalid',

@@ -70,3 +70,34 @@ class TrustNote extends StatelessWidget {
     );
   }
 }
+
+// rounded card with a photo on top and a short centred line under it
+class PhotoHeaderCard extends StatelessWidget {
+  final String image;
+  final String text;
+  const PhotoHeaderCard({super.key, required this.image, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 140, child: Image.asset(image, fit: BoxFit.cover)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 14, 18, 16),
+            child: Text(text,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 15, height: 1.45)),
+          ),
+        ],
+      ),
+    );
+  }
+}
