@@ -2,6 +2,14 @@
 
 Reviewed: 7 October 2026. Branch: `feature/buyer-discovery`.
 
+## Core Discovery localization (7 October)
+
+- Connected Home, Search/Filter, Product Details, Public Artisan Profile and Saved Crafts to the existing `context.tr` locale mechanism, including shared cart actions, favorites, gallery, share sheet and Home guidance. English/Sinhala/Tamil strings live in `lib/core/localization/discovery_strings.dart`, merged into `AppStrings`.
+- Translated category and known district display labels while preserving query/storage values. Product names, descriptions and artisan-written stories remain unchanged. Share details use translated labels with the original product values. Removed the invented Kelaniya guild fallback from Product Details.
+- Fixed narrow-screen wrapping for the sample-report button, review labels and studio action. Added locale-switch/filter-key tests and translation placeholder checks; extended screen layout checks to Sinhala/Tamil at 320px (1.2 text scale) and 390px.
+- **72 automated tests passed.** Multilingual render checks used the installed Nirmala font via `DISCOVERY_TEST_SCRIPT_FONT` (test-only, no OS font redistributed); previews are in `.dart_tool/polish_previews/*_si.png` and `*_ta.png`. Actual phone font/rendering and live Firebase checks remain pending. A fluent Sinhala/Tamil speaker should review wording before release.
+- This pass covers the core assigned Discovery flow and its shared controls. Separate legacy sample catalog/master-profile/reviews/commission/lab screens and purchase screens are not fully localized by this change.
+
 ## Discovery verification follow-up (7 October)
 
 - Re-ran the existing 50 automated tests successfully. Fixed Home refresh handling for a synchronous query-start failure and for a stream that closes before its first snapshot; both now finish loading and expose the retry state. An actual empty snapshot remains a successful empty catalog.
