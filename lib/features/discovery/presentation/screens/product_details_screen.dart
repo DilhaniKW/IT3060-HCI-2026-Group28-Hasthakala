@@ -1,3 +1,5 @@
+import '../discovery_labels.dart';
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import '../widgets/product_purchase_bar.dart';
 import '../widgets/favorite_button.dart';
@@ -55,7 +57,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 child: IconButton(
                   icon: const Icon(Icons.share_outlined,
                       color: AppColors.textPrimary, size: 20),
-                  tooltip: 'Share product details',
+                  tooltip: context.tr('discovery_share_tooltip'),
                   onPressed: () => showProductShare(context, product),
                 ),
               ),
@@ -80,7 +82,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Chip(label: Text(product.category)),
+                  Chip(
+                      label: Text(
+                          discoveryCategoryLabel(context, product.category))),
                   const SizedBox(height: 12),
 
                   // Title & Rating
@@ -93,7 +97,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  Row(
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       const Icon(Icons.star,
                           size: 16, color: AppColors.secondary),
@@ -101,7 +106,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       Text(
                         product.reviewCount > 0
                             ? product.rating.toStringAsFixed(1)
-                            : 'No reviews yet',
+                            : context.tr('discovery_no_reviews'),
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
@@ -110,7 +115,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                       Text(
                         product.reviewCount > 0
-                            ? ' (${product.reviewCount} customer reviews)'
+                            ? context.tr('discovery_reviews',
+                                {'count': '${product.reviewCount}'})
                             : '',
                         style: const TextStyle(
                           fontSize: 13,
@@ -130,13 +136,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       border: Border.all(color: Colors.black.withOpacity(0.06)),
                     ),
                     child: Wrap(
-                      alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
+                      alignment: WrapAlignment.spaceBetween,
+                      spacing: 12,
+                      runSpacing: 8,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'FAIR PRICE FOR ARTISAN',
+                            Text(
+                              context.tr('discovery_fair_price'),
                               style: TextStyle(
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.bold,
@@ -169,8 +177,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               SizedBox(width: 4),
                               Text(
                                 product.isAvailable && product.stockQuantity > 0
-                                    ? 'In stock'
-                                    : 'Out of stock',
+                                    ? context.tr('discovery_in_stock')
+                                    : context.tr('discovery_out_stock'),
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
@@ -209,7 +217,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               Text(
                                 product.artisanName.isNotEmpty
                                     ? product.artisanName
-                                    : 'Meet the maker',
+                                    : context.tr('discovery_meet_maker'),
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -218,7 +226,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                'Master Craftsman • ${product.district.isNotEmpty ? product.district : "Kelaniya"} Guild',
+                                product.district.isNotEmpty
+                                    ? discoveryOriginLabel(
+                                        context, product.district)
+                                    : context
+                                        .tr('discovery_unavailable_details'),
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: AppColors.textSecondary,
@@ -227,7 +239,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ],
                           ),
                         ),
-                        TextButton(
+                        Flexible(
+                            child: TextButton(
                           onPressed: product.artisanId.isEmpty
                               ? null
                               : () {
@@ -241,23 +254,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     ),
                                   );
                                 },
-                          child: const Text(
-                            'View Studio',
+                          child: Text(
+                            context.tr('discovery_studio'),
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: AppColors.primary,
                             ),
                           ),
-                        ),
+                        )),
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
 
                   // Craft Story & Description
-                  const Text(
-                    'Craft Story & Heritage',
+                  Text(
+                    context.tr('discovery_story'),
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -268,7 +281,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Text(
                     product.description.isNotEmpty
                         ? product.description
-                        : 'The artisan has not added a description yet.',
+                        : context.tr('discovery_no_description'),
                     style: const TextStyle(
                       fontSize: 14,
                       color: AppColors.textSecondary,
@@ -288,8 +301,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'SPECIFICATIONS & MATERIALS',
+                        Text(
+                          context.tr('discovery_specs'),
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -299,15 +312,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                         const SizedBox(height: 10),
                         _buildSpecRow(
-                          'Raw Materials',
+                          context.tr('discovery_materials'),
                           product.materials.isNotEmpty
                               ? product.materials
-                              : 'Details unavailable',
+                              : context.tr('discovery_unavailable_details'),
                         ),
                         const Divider(height: 16),
-                        _buildSpecRow('Craft Technique', 'Details unavailable'),
+                        _buildSpecRow(context.tr('discovery_technique'),
+                            context.tr('discovery_unavailable_details')),
                         const Divider(height: 16),
-                        _buildSpecRow('Packaging', 'Details unavailable'),
+                        _buildSpecRow(context.tr('discovery_packaging'),
+                            context.tr('discovery_unavailable_details')),
                       ],
                     ),
                   ),
