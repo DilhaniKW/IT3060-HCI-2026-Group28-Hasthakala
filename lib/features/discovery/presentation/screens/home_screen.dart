@@ -52,8 +52,13 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         scrolledUnderElevation: 1,
         titleSpacing: 16,
-        title: const Text('Hasthakala', maxLines: 1, overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary)),
+        title: const Text('Hasthakala',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary)),
         actions: [
           IconButton(
             icon: const Icon(Icons.search,
@@ -90,10 +95,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const DiscoveryCartAction(),
           const SizedBox(width: 4),
-          const CircleAvatar(
-            radius: 15,
-            backgroundColor: AppColors.primary,
-            child: Icon(Icons.person, size: 18, color: Colors.white),
+          IconButton(
+            tooltip: 'My profile',
+            onPressed: () => Navigator.pushNamed(context, '/profile'),
+            icon: const CircleAvatar(
+                radius: 15,
+                backgroundColor: AppColors.primary,
+                child: Icon(Icons.person, size: 18, color: Colors.white)),
           ),
           const SizedBox(width: 12),
         ],
@@ -237,7 +245,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // Section Header: Curated Masterpieces
                 Wrap(
-                  alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
+                  alignment: WrapAlignment.spaceBetween,
+                  spacing: 12,
+                  runSpacing: 8,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
