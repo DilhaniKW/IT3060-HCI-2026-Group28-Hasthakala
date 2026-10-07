@@ -3,6 +3,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/product_model.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import 'discovery_cart_action.dart';
+import 'favorite_button.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductModel product;
@@ -21,7 +22,6 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
-  bool _isWishlisted = false;
   bool _isAdded = false;
 
   void _handleQuickAdd() {
@@ -109,39 +109,13 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                   ),
 
-                  // Wishlist Button Overlay (Top Right)
                   Positioned(
-                    top: 8,
-                    right: 8,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() => _isWishlisted = !_isWishlisted);
-                      },
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 200),
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 4,
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          _isWishlisted
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          size: 16,
-                          color: _isWishlisted
-                              ? AppColors.primary
-                              : AppColors.textSecondary,
-                        ),
-                      ),
-                    ),
+                    top: 4,
+                    right: 4,
+                    child: Material(
+                        color: AppColors.surface,
+                        shape: const CircleBorder(),
+                        child: FavoriteButton(productId: widget.product.id)),
                   ),
                 ],
               ),
