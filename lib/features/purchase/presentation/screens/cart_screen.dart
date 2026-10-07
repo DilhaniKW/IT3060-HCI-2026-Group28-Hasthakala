@@ -17,14 +17,16 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'My Craft Cart', showBackButton: false),
+      appBar: CustomAppBar(
+          title: 'My Craft Cart', showBackButton: Navigator.canPop(context)),
       body: Consumer<CartProvider>(
         builder: (context, cart, _) {
           if (cart.cartItems.isEmpty) {
             return EmptyStateView(
               icon: Icons.shopping_bag_outlined,
               title: 'Your cart is empty',
-              description: 'Explore traditional crafts and add authentic items to your basket.',
+              description:
+                  'Explore traditional crafts and add authentic items to your basket.',
               actionButtonText: 'Start Exploring',
               onActionPressed: () => Navigator.pop(context),
             );
@@ -42,6 +44,14 @@ class CartScreen extends StatelessWidget {
                       item: item,
                       onQuantityChanged: (newQty) {
                         cart.updateQuantity(item.productId, newQty);
+                        if (newQty > 0 &&
+                            cart.quantityFor(item.productId) != newQty) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                                'You have reached the available stock limit.'),
+                          ));
+                        }
                       },
                       onRemove: () {
                         cart.removeItem(item.productId);
@@ -56,7 +66,10 @@ class CartScreen extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: AppColors.surface,
                   boxShadow: [
-                    BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, -2))
+                    BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: Offset(0, -2))
                   ],
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
@@ -65,7 +78,8 @@ class CartScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Subtotal', style: TextStyle(color: AppColors.textSecondary)),
+                        const Text('Subtotal',
+                            style: TextStyle(color: AppColors.textSecondary)),
                         Text(
                           CurrencyFormatter.formatLKR(cart.subtotalLkr),
                           style: const TextStyle(fontWeight: FontWeight.w600),
@@ -89,7 +103,8 @@ class CartScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Total Amount',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
                         Text(
                           CurrencyFormatter.formatLKR(cart.totalLkr),
                           style: const TextStyle(
@@ -102,11 +117,13 @@ class CartScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     CustomButton(
-                      text: 'Proceed to Checkout (${cart.totalItemCount} items)',
+                      text:
+                          'Proceed to Checkout (${cart.totalItemCount} items)',
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const CheckoutScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const CheckoutScreen()),
                         );
                       },
                     ),
