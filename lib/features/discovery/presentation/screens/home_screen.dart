@@ -52,48 +52,8 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         scrolledUnderElevation: 1,
         titleSpacing: 16,
-        title: Row(
-          children: [
-            Container(
-              width: 36,
-              height: 36,
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.account_balance_outlined,
-                size: 20,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                Text(
-                  'Hasthakala',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                    height: 1.1,
-                  ),
-                ),
-                Text(
-                  'HOME / DISCOVERY',
-                  style: TextStyle(
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                    letterSpacing: 0.8,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+        title: const Text('Hasthakala', maxLines: 1, overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary)),
         actions: [
           IconButton(
             icon: const Icon(Icons.search,
@@ -276,9 +236,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 24),
 
                 // Section Header: Curated Masterpieces
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
