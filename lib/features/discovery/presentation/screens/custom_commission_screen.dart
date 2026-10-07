@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../core/constants/app_colors.dart';
 
 /// High-Fidelity Custom Commission Request Screen matching Stitch Canvas specification
@@ -12,12 +13,15 @@ class CustomCommissionScreen extends StatefulWidget {
 class _CustomCommissionScreenState extends State<CustomCommissionScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _budgetController = TextEditingController(text: '5000');
+  final TextEditingController _budgetController =
+      TextEditingController(text: '5000');
+  final _referenceController = TextEditingController();
   String _selectedCategory = 'Pottery & Clay';
   String _selectedArtisan = 'Sunil Kariyawasam (Kelaniya Guild)';
 
   @override
   void dispose() {
+    _referenceController.dispose();
     _titleController.dispose();
     _descriptionController.dispose();
     _budgetController.dispose();
@@ -74,7 +78,8 @@ class _CustomCommissionScreenState extends State<CustomCommissionScreen> {
               ),
               child: Row(
                 children: const [
-                  Icon(Icons.palette_outlined, color: AppColors.primary, size: 28),
+                  Icon(Icons.palette_outlined,
+                      color: AppColors.primary, size: 28),
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -163,40 +168,16 @@ class _CustomCommissionScreenState extends State<CustomCommissionScreen> {
 
             // Reference Attachment Box
             const Text(
-              'Attach Reference Photo or Sketch (Optional)',
+              'Reference Photo or Sketch',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Photo uploader triggered!')),
-                );
-              },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: AppColors.primary.withOpacity(0.4),
-                    style: BorderStyle.solid,
-                    width: 1.5,
-                  ),
-                ),
-                child: Column(
-                  children: const [
-                    Icon(Icons.cloud_upload_outlined, color: AppColors.primary, size: 32),
-                    SizedBox(height: 6),
-                    Text(
-                      'Tap to upload sketch or reference image',
-                      style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            TextField(
+                controller: _referenceController,
+                keyboardType: TextInputType.url,
+                decoration: const InputDecoration(
+                    labelText: 'Reference image link (optional)',
+                    hintText: 'https://...')),
             const SizedBox(height: 16),
 
             // Preferred Artisan Guild Selection
@@ -217,7 +198,8 @@ class _CustomCommissionScreenState extends State<CustomCommissionScreen> {
                   value: _selectedArtisan,
                   isExpanded: true,
                   items: _artisanGuilds.map((artisan) {
-                    return DropdownMenuItem(value: artisan, child: Text(artisan));
+                    return DropdownMenuItem(
+                        value: artisan, child: Text(artisan));
                   }).toList(),
                   onChanged: (val) {
                     if (val != null) setState(() => _selectedArtisan = val);
@@ -254,15 +236,17 @@ class _CustomCommissionScreenState extends State<CustomCommissionScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF264E36).withOpacity(0.08),
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: const Color(0xFF264E36).withOpacity(0.2)),
+                border:
+                    Border.all(color: const Color(0xFF264E36).withOpacity(0.2)),
               ),
               child: Row(
                 children: const [
-                  Icon(Icons.shield_outlined, color: Color(0xFF264E36), size: 24),
+                  Icon(Icons.shield_outlined,
+                      color: Color(0xFF264E36), size: 24),
                   SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      '50% deposit released to artisan upon order acceptance for raw material procurement. Remaining 50% paid on final inspection.',
+                      'Prepare a request draft to share with an artisan. Copying a draft does not submit an order or take a deposit.',
                       style: TextStyle(
                         fontSize: 11.5,
                         fontWeight: FontWeight.w600,
@@ -287,17 +271,42 @@ class _CustomCommissionScreenState extends State<CustomCommissionScreen> {
                   ),
                   elevation: 0,
                 ),
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Custom Commission Request sent to Master Sunil Kariyawasam!'),
-                      backgroundColor: AppColors.accent,
-                    ),
-                  );
-                  Navigator.pop(context);
+                onPressed: () async {
+                  final budget = double.tryParse(_budgetController.text.trim());
+                  final reference = _referenceController.text.trim();
+                  final uri = Uri.tryParse(reference);
+                  if (_titleController.text.trim().isEmpty ||
+                      _descriptionController.text.trim().isEmpty ||
+                      budget == null ||
+                      !budget.isFinite ||
+                      budget <= 0 ||
+                      (reference.isNotEmpty &&
+                          (uri == null ||
+                              !['http', 'https'].contains(uri.scheme) ||
+                              uri.host.isEmpty))) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            'Add a title, design details, positive budget and valid reference link.')));
+                    return;
+                  }
+                  try {
+                    await Clipboard.setData(ClipboardData(
+                        text:
+                            'Hasthakala commission draft\n${_titleController.text.trim()}\nCategory: $_selectedCategory\nArtisan preference: $_selectedArtisan\n${_descriptionController.text.trim()}\nBudget: LKR ${budget.toStringAsFixed(2)}\nReference: $reference'));
+                    if (!mounted) return;
+                    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                            'Request draft copied. Share it with your artisan; it has not been submitted.')));
+                  } catch (_) {
+                    if (mounted)
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              'Could not copy the draft. Please try again.')));
+                  }
                 },
                 child: const Text(
-                  'Submit Custom Commission Request',
+                  'Copy Request Draft',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
