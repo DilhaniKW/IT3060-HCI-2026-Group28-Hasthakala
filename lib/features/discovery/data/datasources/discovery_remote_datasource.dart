@@ -7,6 +7,16 @@ import '../discovery_filters.dart';
 /// Assigned to: JAYAWARDANA V. K. A.
 /// Branch: feature/buyer-discovery
 class DiscoveryRemoteDataSource {
+  Future<List<ProductModel>> getSavedProducts(List<String> ids) async {
+    final documents = await Future.wait(ids.map((id) => _firestoreService
+            .getDocument(collection: FirestoreCollections.products, docId: id)))
+        .timeout(const Duration(seconds: 10));
+    return documents
+        .where((doc) => doc.exists && doc.data() != null)
+        .map((doc) => ProductModel.fromMap(doc.data()!, doc.id))
+        .toList();
+  }
+
   final FirestoreService _firestoreService;
 
   DiscoveryRemoteDataSource({FirestoreService? firestoreService})
