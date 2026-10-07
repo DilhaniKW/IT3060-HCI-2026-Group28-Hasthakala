@@ -4,12 +4,12 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/product_model.dart';
 import '../../../../core/widgets/loading_indicator.dart';
 import '../state/discovery_provider.dart';
-import '../state/search_filter_provider.dart';
+import '../../../../core/constants/craft_categories.dart';
+import '../../../../core/widgets/empty_state_view.dart';
 import '../widgets/craft_category_chip.dart';
 import '../widgets/master_artisan_spotlight_card.dart';
 import '../widgets/product_card.dart';
 import '../widgets/provenance_guarantee_card.dart';
-import '../widgets/search_filter_bottom_sheet.dart';
 import 'product_details_screen.dart';
 import 'public_artisan_profile_screen.dart';
 import 'search_screen.dart';
@@ -24,16 +24,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedCategoryIndex = 0;
-
-  final List<Map<String, dynamic>> _categories = [
-    {'label': 'All Crafts', 'icon': Icons.grid_view},
-    {'label': 'Pottery & Clay', 'icon': Icons.local_florist},
-    {'label': 'Woodcarving', 'icon': Icons.carpenter},
-    {'label': 'Batik & Weave', 'icon': Icons.texture},
-    {'label': 'Brass Casting', 'icon': Icons.hardware},
-  ];
-
   // High-fidelity fallback sample products matching Stitch Canvas
   final List<ProductModel> _sampleProducts = [
     ProductModel(
@@ -110,18 +100,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       context.read<DiscoveryProvider>().listenToFeaturedProducts();
     });
   }
 
   void _openFilterBottomSheet() {
-    final searchFilterProvider = Provider.of<SearchFilterProvider>(context, listen: false);
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => SearchFilterBottomSheet(provider: searchFilterProvider),
-    );
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const SearchScreen(openFilters: true),
+        ));
   }
 
   @override
@@ -177,7 +166,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: AppColors.textPrimary, size: 22),
+            icon: const Icon(Icons.search,
+                color: AppColors.textPrimary, size: 22),
             onPressed: () {
               Navigator.push(
                 context,
@@ -189,7 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
             alignment: Alignment.center,
             children: [
               IconButton(
-                icon: const Icon(Icons.favorite_border, color: AppColors.textPrimary, size: 22),
+                icon: const Icon(Icons.favorite_border,
+                    color: AppColors.textPrimary, size: 22),
                 onPressed: () {},
               ),
               Positioned(
@@ -210,7 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
             alignment: Alignment.center,
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_bag_outlined, color: AppColors.textPrimary, size: 22),
+                icon: const Icon(Icons.shopping_bag_outlined,
+                    color: AppColors.textPrimary, size: 22),
                 onPressed: () {},
               ),
               Positioned(
@@ -245,17 +237,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Consumer<DiscoveryProvider>(
         builder: (context, provider, _) {
-          final displayProducts = provider.featuredProducts.isNotEmpty
-              ? provider.featuredProducts
-              : _sampleProducts;
+          final displayProducts = provider.featuredProducts;
 
           return RefreshIndicator(
             color: AppColors.primary,
             onRefresh: () async {
-              provider.listenToFeaturedProducts();
+              await provider.listenToFeaturedProducts();
             },
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               children: [
                 // Search Input with Filter Trigger
                 Row(
@@ -265,18 +257,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const SearchScreen()),
+                            MaterialPageRoute(
+                                builder: (_) => const SearchScreen()),
                           );
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 11),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(24),
-                            border: Border.all(color: Colors.black.withOpacity(0.05)),
+                            border: Border.all(
+                                color: Colors.black.withOpacity(0.05)),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF1C1917).withOpacity(0.05),
+                                color:
+                                    const Color(0xFF1C1917).withOpacity(0.05),
                                 blurRadius: 12,
                                 offset: const Offset(0, 2),
                               ),
@@ -284,7 +280,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: Row(
                             children: const [
-                              Icon(Icons.search, size: 20, color: AppColors.primary),
+                              Icon(Icons.search,
+                                  size: 20, color: AppColors.primary),
                               SizedBox(width: 8),
                               Expanded(
                                 child: Text(
@@ -326,18 +323,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 38,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    itemCount: _categories.length,
+                    itemCount: CraftCategories.all.length + 1,
                     separatorBuilder: (_, __) => const SizedBox(width: 8),
                     itemBuilder: (context, index) {
-                      final item = _categories[index];
+                      final category =
+                          index == 0 ? null : CraftCategories.all[index - 1];
                       return CraftCategoryChip(
-                        label: item['label'],
-                        icon: item['icon'],
-                        isSelected: _selectedCategoryIndex == index,
+                        label: category?.label ?? 'All Crafts',
+                        isSelected: index == 0,
                         onTap: () {
-                          setState(() {
-                            _selectedCategoryIndex = index;
-                          });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => SearchScreen(
+                                    initialCategory: category?.key),
+                              ));
                         },
                       );
                     },
@@ -380,7 +380,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Row(
                           children: const [
-                            Icon(Icons.auto_awesome, size: 14, color: AppColors.secondary),
+                            Icon(Icons.auto_awesome,
+                                size: 14, color: AppColors.secondary),
                             SizedBox(width: 4),
                             Text(
                               'RARE & HANDCRAFTED',
@@ -408,13 +409,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const SearchScreen()),
+                          MaterialPageRoute(
+                              builder: (_) => const SearchScreen()),
                         );
                       },
                       child: Row(
                         children: const [
                           Text(
-                            'Explore 84+',
+                            'Explore all',
                             style: TextStyle(
                               fontSize: 12.5,
                               fontWeight: FontWeight.bold,
@@ -437,13 +439,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (provider.isLoading)
                   const Padding(
                     padding: EdgeInsets.all(40.0),
-                    child: LoadingIndicator(message: 'Loading authentic crafts...'),
+                    child: LoadingIndicator(
+                        message: 'Loading authentic crafts...'),
                   )
+                else if (provider.errorMessage != null)
+                  EmptyStateView(
+                      icon: Icons.cloud_off,
+                      title: 'Unable to load crafts',
+                      description: 'Check your connection and try again.',
+                      actionButtonText: 'Retry',
+                      onActionPressed: provider.listenToFeaturedProducts)
+                else if (displayProducts.isEmpty)
+                  const EmptyStateView(
+                      icon: Icons.storefront,
+                      title: 'No crafts yet',
+                      description: 'New artisan creations will appear here.')
                 else
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
@@ -458,7 +474,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => ProductDetailsScreen(product: product),
+                              builder: (_) =>
+                                  ProductDetailsScreen(product: product),
                             ),
                           );
                         },
