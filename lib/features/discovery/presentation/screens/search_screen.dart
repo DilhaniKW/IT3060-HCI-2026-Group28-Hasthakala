@@ -9,6 +9,7 @@ import '../widgets/craft_category_chip.dart';
 import '../widgets/product_card.dart';
 import '../widgets/search_filter_bottom_sheet.dart';
 import 'product_details_screen.dart';
+import 'favorites_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen(
@@ -84,6 +85,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
               actions: [
+                IconButton(
+                    tooltip: 'Saved crafts',
+                    icon: const Icon(Icons.favorite_border),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const FavoritesScreen()))),
                 IconButton(
                     tooltip: 'Filter crafts',
                     onPressed: _openFilters,
