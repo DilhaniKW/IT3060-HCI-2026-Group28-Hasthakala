@@ -32,3 +32,8 @@ Started with interfaces I01,105,I13
 - Animated splash, Choose Language (also in Profile), language saved to the account.
 - Translations in lib/core/localization (see docs/TRANSLATION.md).
 - Plus Jakarta Sans font, app icon and launch screen.
+
+## 06-07 Oct - intro screen UI enhancement
+- Intro is now three pages you can swipe: discover crafts, verified artisans, order/chat/track.
+- Centred layout, page dots, Next / Get Started button, Skip in the same spot on every page.
+- Pictures drawn with the brand colours until we have the hi-fi images.
