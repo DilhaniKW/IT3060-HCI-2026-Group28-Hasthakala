@@ -270,7 +270,7 @@ class _SectionLabel extends StatelessWidget {
   }
 }
 
-// same card as the I01 "How will you start" options
+// same card applied for I01 "How will you start" options
 class _MenuCard extends StatelessWidget {
   final IconData icon;
   final String title;
