@@ -2,6 +2,13 @@
 
 Reviewed: 7 October 2026. Branch: `feature/buyer-discovery`.
 
+## Artisan search completion (8 October)
+
+- Completed the interrupted Products/Artisans search switch with English/Sinhala/Tamil labels. Artisan mode reads public `artisanProfiles` on first entry, searches name/craft/about/location locally, and combines category and verified-only filters. It does not query private account documents or apply product price filters to artisans.
+- Selecting a result sends its `artisanUid` to the existing public-profile route. Search text survives mode changes; artisan data and filters remain available during the Search screen session. Refresh/retry reloads profiles. Loading, failure and no-match states are separate.
+- Added filter, latest-response, retry, disposal and localized UI/navigation tests, plus six artisan-mode viewport/locale checks. **85 automated tests passed**, including all existing regressions. Static analysis of the artisan-search implementation and new test found no issues. Rendered Tamil layout was visually inspected with the local test font fallback.
+- Verification uses controlled data; live signed-in Firebase and phone testing remain pending. The current implementation loads the public profile collection and filters on-device; pagination/indexed search remains future work for a larger catalog. Search matches stored text, without transliteration or automatic translation of artisan-written content.
+
 ## Search price sorting (7 October)
 
 - Added Default order, Price: low to high and Price: high to low to the main Search screen, with English/Sinhala/Tamil labels. Default order restores the data source order; it does not claim a relevance ranking.
