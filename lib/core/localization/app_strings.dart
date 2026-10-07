@@ -1038,6 +1038,98 @@ class AppStrings {
     },
     'err_try_again': {'en': 'Please try again.', 'si': 'නැවත උත්සාහ කරන්න.', 'ta': 'மீண்டும் முயற்சிக்கவும்.'},
 
+    // ---- invitation sent / support user details / revoked (I13) ----
+    'inv_sent_title': {'en': 'Invitation sent', 'si': 'ආරාධනාව යවන ලදී', 'ta': 'அழைப்பு அனுப்பப்பட்டது'},
+    'inv_sent_body': {
+      'en': 'Send this code to {name} so they can join as your support user.',
+      'si': '{name} ට ඔබේ සහායකයා ලෙස එක්වීමට මෙම කේතය යවන්න.',
+      'ta': '{name} உங்கள் உதவியாளராகச் சேர இந்தக் குறியீட்டை அனுப்புங்கள்.',
+    },
+    'back_to_fa': {
+      'en': 'Back to Family Assistance',
+      'si': 'පවුලේ සහාය වෙත ආපසු',
+      'ta': 'குடும்ப உதவிக்குத் திரும்பு',
+    },
+    'add_another_user': {
+      'en': 'Add Another User',
+      'si': 'තවත් අයෙක් එක් කරන්න',
+      'ta': 'மற்றொருவரைச் சேர்',
+    },
+    'invite_code_title': {'en': 'Invitation code', 'si': 'ආරාධනා කේතය', 'ta': 'அழைப்புக் குறியீடு'},
+    'valid_until': {'en': 'Valid until {date}', 'si': '{date} දක්වා වලංගුයි', 'ta': '{date} வரை செல்லும்'},
+    'copy_invite': {
+      'en': 'Copy invitation message',
+      'si': 'ආරාධනා පණිවිඩය පිටපත් කරන්න',
+      'ta': 'அழைப்புச் செய்தியை நகலெடு',
+    },
+    'invite_copied': {
+      'en': 'Invitation copied. Paste it into WhatsApp or SMS.',
+      'si': 'ආරාධනාව පිටපත් කළා. WhatsApp හෝ SMS එකට අලවන්න.',
+      'ta': 'அழைப்பு நகலெடுக்கப்பட்டது. WhatsApp அல்லது SMS-இல் ஒட்டுங்கள்.',
+    },
+    'how_joins': {'en': 'How {name} joins:', 'si': '{name} එක්වන ආකාරය:', 'ta': '{name} எப்படிச் சேர்வது:'},
+    'join_step1': {
+      'en': 'Sign in to HASTHAKALA with their own account.',
+      'si': 'තමන්ගේම ගිණුමෙන් HASTHAKALA වෙත පුරනය වන්න.',
+      'ta': 'தங்கள் சொந்தக் கணக்கில் HASTHAKALA-வில் உள்நுழையவும்.',
+    },
+    'join_step2': {
+      'en': 'Open {profile} > {accept}.',
+      'si': '{profile} > {accept} විවෘත කරන්න.',
+      'ta': '{profile} > {accept} என்பதைத் திறக்கவும்.',
+    },
+    'join_step3': {
+      'en': 'Enter this code and the phone number {phone}.',
+      'si': 'මෙම කේතය සහ {phone} දුරකථන අංකය ඇතුළත් කරන්න.',
+      'ta': 'இந்தக் குறியீட்டையும் {phone} தொலைபேசி எண்ணையும் உள்ளிடவும்.',
+    },
+    'invite_message': {
+      'en': 'Hi {name}, {artisan} invited you to help with their shop on HASTHAKALA. Sign in with your own account, go to {profile} > {accept}, and enter code {code} with your phone number {phone}. The code works until {date}.',
+      'si': 'ආයුබෝවන් {name}, HASTHAKALA හි ඔවුන්ගේ වෙළඳසැලට උදව් කිරීමට {artisan} ඔබට ආරාධනා කර ඇත. ඔබේම ගිණුමෙන් පුරනය වී, {profile} > {accept} වෙත ගොස්, {code} කේතය සහ ඔබේ {phone} දුරකථන අංකය ඇතුළත් කරන්න. කේතය {date} දක්වා වලංගුයි.',
+      'ta': 'வணக்கம் {name}, HASTHAKALA-வில் தங்கள் கடைக்கு உதவ {artisan} உங்களை அழைத்துள்ளார். உங்கள் சொந்தக் கணக்கில் உள்நுழைந்து, {profile} > {accept} சென்று, {code} குறியீட்டையும் உங்கள் {phone} தொலைபேசி எண்ணையும் உள்ளிடவும். குறியீடு {date} வரை செல்லும்.',
+    },
+    'details_title': {
+      'en': 'Support User Details',
+      'si': 'සහායක විස්තර',
+      'ta': 'உதவியாளர் விவரங்கள்',
+    },
+    'details_note': {
+      'en': 'Owner controls access. Sensitive account functions remain owner-only.',
+      'si': 'ප්‍රවේශය පාලනය කරන්නේ හිමිකරුය. සංවේදී ගිණුම් කටයුතු හිමිකරුට පමණි.',
+      'ta': 'அணுகலை உரிமையாளர் கட்டுப்படுத்துகிறார். முக்கியமான கணக்கு செயல்பாடுகள் உரிமையாளருக்கு மட்டும்.',
+    },
+    'details_unsaved': {
+      'en': 'You have changed the access. Tap Update Access to save it.',
+      'si': 'ඔබ ප්‍රවේශය වෙනස් කර ඇත. සුරැකීමට ප්‍රවේශය යාවත්කාලීන කරන්න ඔබන්න.',
+      'ta': 'அணுகலை மாற்றியுள்ளீர்கள். சேமிக்க அணுகலைப் புதுப்பி என்பதைத் தட்டவும்.',
+    },
+    'update_access': {'en': 'Update Access', 'si': 'ප්‍රවේශය යාවත්කාලීන කරන්න', 'ta': 'அணுகலைப் புதுப்பி'},
+    'revoke_access': {'en': 'Revoke Access', 'si': 'ප්‍රවේශය ඉවත් කරන්න', 'ta': 'அணுகலை நீக்கு'},
+    'access_updated': {'en': 'Access updated', 'si': 'ප්‍රවේශය යාවත්කාලීන විය', 'ta': 'அணுகல் புதுப்பிக்கப்பட்டது'},
+    'keep_one_on': {
+      'en': 'Keep at least one activity on, or use Revoke Access instead.',
+      'si': 'අවම වශයෙන් එක් කටයුත්තක් සක්‍රියව තබන්න, නැතහොත් ප්‍රවේශය ඉවත් කරන්න භාවිතා කරන්න.',
+      'ta': 'குறைந்தது ஒரு செயலையாவது இயக்கத்தில் வைக்கவும், அல்லது அணுகலை நீக்கு என்பதைப் பயன்படுத்தவும்.',
+    },
+    'revoke_title': {'en': 'Revoke access?', 'si': 'ප්‍රවේශය ඉවත් කරන්නද?', 'ta': 'அணுகலை நீக்கவா?'},
+    'revoke_body': {
+      'en': "{name} will no longer be able to access {artisan}'s authorized business functions.",
+      'si': '{name} ට තවදුරටත් {artisan} ගේ බලයලත් ව්‍යාපාර කටයුතුවලට ප්‍රවේශ විය නොහැක.',
+      'ta': '{name} இனி {artisan} இன் அங்கீகரிக்கப்பட்ட வணிகச் செயல்பாடுகளை அணுக முடியாது.',
+    },
+    'revoked_title': {'en': 'Access revoked', 'si': 'ප්‍රවේශය ඉවත් කළා', 'ta': 'அணுகல் நீக்கப்பட்டது'},
+    'revoked_body': {
+      'en': "{name}'s support access has been removed.",
+      'si': '{name} ගේ සහාය ප්‍රවේශය ඉවත් කර ඇත.',
+      'ta': '{name} இன் உதவி அணுகல் நீக்கப்பட்டது.',
+    },
+    'revoked_hint': {
+      'en': 'You can invite them again at any time from Family Assistance.',
+      'si': 'පවුලේ සහාය හරහා ඕනෑම වේලාවක ඔවුන්ට නැවත ආරාධනා කළ හැක.',
+      'ta': 'குடும்ப உதவியிலிருந்து எப்போது வேண்டுமானாலும் அவர்களை மீண்டும் அழைக்கலாம்.',
+    },
+    'status_revoked': {'en': 'Revoked', 'si': 'ඉවත් කළා', 'ta': 'நீக்கப்பட்டது'},
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},

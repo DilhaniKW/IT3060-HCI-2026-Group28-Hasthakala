@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/tr.dart';
 import '../../../../core/shared_models/support_models.dart';
 import '../widgets/invite_code_card.dart';
+import '../widgets/status_screen.dart';
 import 'add_support_user_screen.dart';
 
-//  Invitation sent. Shows the 6-digit code.
+// I13 Invitation sent. Shows the 6-digit code.
 class InvitationSentScreen extends StatelessWidget {
   final SupportInviteModel invite;
   const InvitationSentScreen({super.key, required this.invite});
@@ -13,41 +14,16 @@ class InvitationSentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final firstName = invite.inviteeName.split(' ').first;
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Icon(Icons.check_circle, size: 64, color: AppColors.accent),
-              const SizedBox(height: 16),
-              const Text('Invitation sent',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-              const SizedBox(height: 8),
-              Text(
-                'Send this code to $firstName so they can join as your support user.',
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: 20),
-              InviteCodeCard(invite: invite),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Back to Family Assistance'),
-              ),
-              const SizedBox(height: 10),
-              OutlinedButton(
-                onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => const AddSupportUserScreen())),
-                child: const Text('Add Another User'),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return StatusScreen(
+      icon: Icons.send_rounded,
+      title: context.tr('inv_sent_title'),
+      message: context.tr('inv_sent_body', {'name': firstName}),
+      extra: InviteCodeCard(invite: invite),
+      primaryLabel: context.tr('back_to_fa'),
+      onPrimary: () => Navigator.pop(context),
+      secondaryLabel: context.tr('add_another_user'),
+      onSecondary: () => Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => const AddSupportUserScreen())),
     );
   }
 }
