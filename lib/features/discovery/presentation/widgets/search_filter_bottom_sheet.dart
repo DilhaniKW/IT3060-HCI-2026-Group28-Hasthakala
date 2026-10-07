@@ -1,3 +1,5 @@
+import '../discovery_labels.dart';
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/craft_categories.dart';
@@ -80,8 +82,8 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(children: [
-                    const Expanded(
-                        child: Text('Filter Handicrafts',
+                    Expanded(
+                        child: Text(context.tr('discovery_filter_title'),
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold))),
                     TextButton(
@@ -89,15 +91,16 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                           widget.provider.clearFilters();
                           Navigator.pop(context);
                         },
-                        child: const Text('Reset')),
+                        child: Text(context.tr('discovery_reset'))),
                   ]),
-                  const Text('Craft Category'),
+                  Text(context.tr('discovery_category')),
                   const SizedBox(height: 8),
                   Wrap(
                       spacing: 8,
                       children: CraftCategories.all
                           .map((category) => ChoiceChip(
-                                label: Text(category.label),
+                                label: Text(discoveryCategoryLabel(
+                                    context, category.key)),
                                 selected: _category == category.key,
                                 onSelected: (selected) => setState(() =>
                                     _category = selected ? category.key : null),
@@ -107,14 +110,19 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                   DropdownButtonFormField<String>(
                     initialValue: _district,
                     isExpanded: true,
-                    decoration: const InputDecoration(
-                        labelText: 'Artisan origin / district'),
+                    decoration: InputDecoration(
+                        labelText: context.tr('discovery_origin')),
                     items: [
-                      const DropdownMenuItem<String>(
-                          value: null, child: Text('Any origin')),
-                      ...{..._districts, if (_district != null) _district!}.map(
-                          (district) => DropdownMenuItem(
-                              value: district, child: Text(district))),
+                      DropdownMenuItem<String>(
+                          value: null,
+                          child: Text(context.tr('discovery_any_origin'))),
+                      ...{
+                        ..._districts,
+                        if (_district != null) _district!
+                      }.map((district) => DropdownMenuItem(
+                          value: district,
+                          child:
+                              Text(discoveryOriginLabel(context, district)))),
                     ],
                     onChanged: (value) => setState(() => _district = value),
                   ),
@@ -123,14 +131,14 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                     controller: _price,
                     keyboardType:
                         const TextInputType.numberWithOptions(decimal: true),
-                    decoration: const InputDecoration(
-                        labelText: 'Maximum price (LKR)',
-                        hintText: 'Any price'),
+                    decoration: InputDecoration(
+                        labelText: context.tr('discovery_max_price'),
+                        hintText: context.tr('discovery_any_price')),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) return null;
                       final price = double.tryParse(value.trim());
                       return price == null || !price.isFinite || price < 0
-                          ? 'Enter a valid price of zero or more'
+                          ? context.tr('discovery_invalid_price')
                           : null;
                     },
                   ),
@@ -146,7 +154,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
                               maxPrice: double.tryParse(_price.text.trim()));
                           Navigator.pop(context);
                         },
-                        child: const Text('Apply Filters'),
+                        child: Text(context.tr('discovery_apply')),
                       )),
                 ],
               ),
