@@ -1,322 +1,199 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/craft_categories.dart';
 import '../../../../core/shared_models/product_model.dart';
-import '../../../../core/shared_models/user_model.dart';
+import '../../../../core/shared_models/artisan_profile_model.dart';
+import '../../../../core/widgets/empty_state_view.dart';
+import '../../../../core/widgets/loading_indicator.dart';
 import '../../data/datasources/discovery_remote_datasource.dart';
+import '../../data/discovery_filters.dart';
 import '../widgets/product_card.dart';
+import '../widgets/discovery_cart_action.dart';
 import 'product_details_screen.dart';
 
-/// Assigned to: JAYAWARDANA V. K. A.
-/// Branch: feature/buyer-discovery
 class PublicArtisanProfileScreen extends StatefulWidget {
+  const PublicArtisanProfileScreen(
+      {super.key,
+      required this.artisanId,
+      this.loadProfile,
+      this.loadProducts});
   final String artisanId;
-
-  const PublicArtisanProfileScreen({super.key, required this.artisanId});
-
+  final Future<ArtisanProfileModel?> Function(String)? loadProfile;
+  final Future<List<ProductModel>> Function(String)? loadProducts;
   @override
-  State<PublicArtisanProfileScreen> createState() => _PublicArtisanProfileScreenState();
+  State<PublicArtisanProfileScreen> createState() =>
+      _PublicArtisanProfileScreenState();
 }
 
-class _PublicArtisanProfileScreenState extends State<PublicArtisanProfileScreen> {
-  final DiscoveryRemoteDataSource _dataSource = DiscoveryRemoteDataSource();
-  UserModel? _artisan;
-
-  final List<ProductModel> _artisanProducts = [
-    ProductModel(
-      id: 'sample_1',
-      artisanId: 'artisan_sunil',
-      artisanName: 'Sunil K.',
-      title: 'Heritage Jug',
-      description: 'Organic raw unglazed terracotta water jug.',
-      priceLkr: 2400.0,
-      category: 'Pottery & Clay',
-      materials: 'Terracotta Clay',
-      district: 'Kelaniya',
-      rating: 4.9,
-      reviewCount: 24,
-      imageUrls: [
-        'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=600',
-      ],
-    ),
-  ];
+class _PublicArtisanProfileScreenState
+    extends State<PublicArtisanProfileScreen> {
+  ArtisanProfileModel? _artisan;
+  List<ProductModel> _products = [];
+  bool _loading = true;
+  String? _error;
+  int _request = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadProfile();
+    _load();
   }
 
-  Future<void> _loadProfile() async {
+  @override
+  void didUpdateWidget(covariant PublicArtisanProfileScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.artisanId != widget.artisanId) _load();
+  }
+
+  Future<void> _load() async {
+    final request = ++_request;
+    final artisanId = widget.artisanId;
+    setState(() {
+      _loading = true;
+      _error = null;
+      _artisan = null;
+      _products = [];
+    });
     try {
-      final profile = await _dataSource.getArtisanProfile(widget.artisanId);
-      if (mounted) {
-        setState(() {
-          _artisan = profile;
-        });
-      }
+      final source = widget.loadProfile == null || widget.loadProducts == null
+          ? DiscoveryRemoteDataSource()
+          : null;
+      final artisan =
+          await (widget.loadProfile ?? source!.getArtisanProfile)(artisanId);
+      final products = artisan == null
+          ? <ProductModel>[]
+          : await (widget.loadProducts ??
+              source!.getArtisanProducts)(artisanId);
+      if (!mounted || request != _request) return;
+      setState(() {
+        _artisan = artisan;
+        _products = products
+            .where((p) => p.artisanId == artisanId && p.isAvailable)
+            .toList();
+      });
     } catch (_) {
-      // Safe fallback to default Master Artisan details if offline or non-existent doc ID
+      if (!mounted || request != _request) return;
+      setState(() => _error = 'Check your connection and try again.');
+    } finally {
+      if (mounted && request == _request) setState(() => _loading = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final name = _artisan?.displayName.isNotEmpty == true
-        ? _artisan!.displayName
-        : 'Sunil Kariyawasam';
-    final district = (_artisan?.district?.isNotEmpty == true)
-        ? _artisan!.district!
-        : 'Kelaniya';
-
+    final artisan = _artisan;
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          // Workshop Cover & Avatar Header
-          SliverAppBar(
-            expandedHeight: 260,
-            pinned: true,
-            backgroundColor: AppColors.background,
-            elevation: 0,
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                backgroundColor: Colors.white.withOpacity(0.9),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary, size: 20),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
-            ),
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&q=80&w=800',
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: AppColors.accent,
-                        child: const Center(
-                          child: Icon(Icons.storefront, size: 60, color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.black.withOpacity(0.3),
-                            Colors.black.withOpacity(0.75),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    left: 20,
-                    right: 20,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 2.5),
-                            color: AppColors.surface,
-                          ),
-                          child: ClipOval(
-                            child: Image.network(
-                              'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => const Icon(
-                                Icons.person,
-                                size: 36,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      name,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  const Icon(Icons.verified, size: 16, color: Color(0xFFC0EDCC)),
-                                ],
-                              ),
-                              const SizedBox(height: 2),
+      appBar: AppBar(
+          title: const Text('Artisan Studio'),
+          actions: const [DiscoveryCartAction()]),
+      body: _loading
+          ? const LoadingIndicator(message: 'Loading artisan studio...')
+          : _error != null
+              ? EmptyStateView(
+                  icon: Icons.cloud_off,
+                  title: 'Unable to load artisan',
+                  description: _error!,
+                  actionButtonText: 'Retry',
+                  onActionPressed: _load)
+              : artisan == null
+                  ? const EmptyStateView(
+                      icon: Icons.person_off_outlined,
+                      title: 'Artisan not found',
+                      description: 'This public studio is not available.')
+                  : RefreshIndicator(
+                      onRefresh: _load,
+                      child: ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(16),
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                                color: AppColors.surface,
+                                borderRadius: BorderRadius.circular(24),
+                                border: Border.all(color: AppColors.border)),
+                            child: Column(children: [
+                              ClipOval(
+                                  child: artisan.photoUrl?.isNotEmpty == true
+                                      ? Image.network(artisan.photoUrl!,
+                                          width: 88,
+                                          height: 88,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, __, ___) =>
+                                              const Icon(Icons.person,
+                                                  size: 88))
+                                      : const Icon(Icons.storefront,
+                                          size: 88, color: AppColors.primary)),
+                              const SizedBox(height: 12),
                               Text(
-                                'Master Craftsman • $district Lineage',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
+                                  artisan.displayName.isEmpty
+                                      ? 'Artisan studio'
+                                      : artisan.displayName,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold)),
+                              if (artisan.craftType.trim().isNotEmpty)
+                                Text(
+                                    CraftCategories.labelFor(
+                                        discoveryCategoryKey(
+                                            artisan.craftType)!),
+                                    style: const TextStyle(
+                                        color: AppColors.primary)),
+                              if (artisan.location.isNotEmpty)
+                                Text(artisan.location),
+                              if (artisan.verified)
+                                const Chip(
+                                    avatar: Icon(Icons.verified,
+                                        color: AppColors.accent),
+                                    label: Text('Verified artisan')),
+                            ]),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          // Profile Body
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Key Stats Bar
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.black.withOpacity(0.05)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildStatItem('35 YRS', 'Experience'),
-                        Container(width: 1, height: 28, color: AppColors.border),
-                        _buildStatItem('48', 'Crafts Created'),
-                        Container(width: 1, height: 28, color: AppColors.border),
-                        _buildStatItem('4.9 ★', 'Buyer Rating'),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Heritage & Story
-                  const Text(
-                    'Artisan Journey & Heritage',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    (_artisan?.bio?.isNotEmpty == true)
-                        ? _artisan!.bio!
-                        : 'Dedicated to preserving Sri Lanka’s traditional terracotta pottery heritage. Every vessel is hand-spun using river clay and fired in traditional wood kilns in Kelaniya, carrying forward 4 generations of artisanal mastery.',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary,
-                      height: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Studio Masterpieces Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Workshop Masterpieces',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      Text(
-                        '1 Available',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textMuted,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 14),
-
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 0.70,
-                    ),
-                    itemCount: _artisanProducts.length,
-                    itemBuilder: (context, index) {
-                      final product = _artisanProducts[index];
-                      return ProductCard(
-                        product: product,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ProductDetailsScreen(product: product),
+                          const SizedBox(height: 24),
+                          const Text('Artisan Journey & Heritage',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 8),
+                          Text(
+                              artisan.about.isEmpty
+                                  ? 'This artisan has not added a story yet.'
+                                  : artisan.about,
+                              style: const TextStyle(
+                                  height: 1.5, color: AppColors.textSecondary)),
+                          const SizedBox(height: 24),
+                          Text('Workshop Masterpieces (${_products.length})',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 12),
+                          if (_products.isEmpty)
+                            const EmptyStateView(
+                                icon: Icons.storefront,
+                                title: 'No crafts listed yet',
+                                description:
+                                    'Check back for new creations from this artisan.')
+                          else
+                            GridView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 12,
+                                      mainAxisSpacing: 12,
+                                      childAspectRatio: .70),
+                              itemCount: _products.length,
+                              itemBuilder: (_, index) => ProductCard(
+                                  key: ValueKey(_products[index].id),
+                                  product: _products[index],
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => ProductDetailsScreen(
+                                              product: _products[index])))),
                             ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatItem(String value, String label) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primary,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 11,
-            color: AppColors.textSecondary,
-          ),
-        ),
-      ],
+                        ],
+                      )),
     );
   }
 }
