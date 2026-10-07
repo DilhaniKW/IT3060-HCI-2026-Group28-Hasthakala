@@ -114,7 +114,8 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                 children: [
                   Row(
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
+                        onBackgroundImageError: (_, __) {},
                         radius: 36,
                         backgroundImage: NetworkImage(
                           'https://lh3.googleusercontent.com/aida-public/AB6AXuDTSOgarZ8KIanzm-nSN7REc-EHyLNFMeBEAzkjLQtqAphmhd6AXqNJtpoKNf1fwBroTpESgrnH1s0ZM6NBJuE1JWdlHzI29wlOY-qQZOdR-9T_EeJ64yHl51LOBmW8T_LOpeSHuPi1Sz0yAzUYbF1HB3-n_irDxiG93-2pOJqf-YbdIsfkWIPb_VHe7zjVUP3PETv1bAj0GT4odSVvTxkWsNknvtLoieDTwzATzDIGimOjUxTSK_qqJQ',
@@ -125,7 +126,7 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Row(
+                            Wrap(spacing: 4, runSpacing: 4,
                               children: const [
                                 Text(
                                   'Sunil Kariyawasam',
@@ -145,7 +146,7 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                               style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
                             ),
                             const SizedBox(height: 6),
-                            Row(
+                            Wrap(spacing: 4, runSpacing: 4,
                               children: [
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
