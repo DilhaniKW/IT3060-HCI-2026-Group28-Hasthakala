@@ -17,7 +17,11 @@ import '../widgets/artisan_search_results.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen(
-      {super.key, this.initialCategory, this.openFilters = false, this.search, this.loadArtisans});
+      {super.key,
+      this.initialCategory,
+      this.openFilters = false,
+      this.search,
+      this.loadArtisans});
   final ArtisanLoader? loadArtisans;
   final String? initialCategory;
   final bool openFilters;
@@ -104,7 +108,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 onSubmitted: (value) => _queryChanged(value, submit: true),
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                  hintText: context.tr(_showArtisans ? 'discovery_artisans_hint' : 'discovery_search'),
+                  hintText: context.tr(_showArtisans
+                      ? 'discovery_artisans_hint'
+                      : 'discovery_search'),
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _controller.text.isEmpty
                       ? null
@@ -126,155 +132,174 @@ class _SearchScreenState extends State<SearchScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (_) => const FavoritesScreen()))),
-                if (!_showArtisans) IconButton(
-                    tooltip: context.tr('discovery_filter_action'),
-                    onPressed: _openFilters,
-                    icon: const Icon(Icons.tune)),
+                if (!_showArtisans)
+                  IconButton(
+                      tooltip: context.tr('discovery_filter_action'),
+                      onPressed: _openFilters,
+                      icon: const Icon(Icons.tune)),
               ],
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(56),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: SegmentedButton<bool>(
                     segments: [
-                      ButtonSegment(value: false, label: Text(context.tr('discovery_products_tab'))),
-                      ButtonSegment(value: true, label: Text(context.tr('discovery_artisans_tab'))),
+                      ButtonSegment(
+                          value: false,
+                          label: Text(context.tr('discovery_products_tab'))),
+                      ButtonSegment(
+                          value: true,
+                          label: Text(context.tr('discovery_artisans_tab'))),
                     ],
                     selected: {_showArtisans},
-                    onSelectionChanged: (selected) => _changeMode(selected.single),
+                    onSelectionChanged: (selected) =>
+                        _changeMode(selected.single),
                   ),
                 ),
               ),
             ),
-            body: _showArtisans ? ArtisanSearchResults(provider: _artisanProvider!) : Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        height: 40,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: CraftCategories.all.length + 1,
-                          separatorBuilder: (_, __) => const SizedBox(width: 8),
-                          itemBuilder: (_, index) {
-                            final category = index == 0
-                                ? null
-                                : CraftCategories.all[index - 1];
-                            return CraftCategoryChip(
-                              label: category == null
-                                  ? context.tr('discovery_all_crafts')
-                                  : discoveryCategoryLabel(
-                                      context, category.key),
-                              isSelected:
-                                  provider.selectedCategory == category?.key,
-                              onTap: () => provider.setCategory(category?.key),
-                            );
-                          },
-                        )),
-                    const SizedBox(height: 12),
-                    Row(children: [
-                      Expanded(
-                          child: Text(
-                              provider.isSearching
-                                  ? context.tr('discovery_searching')
-                                  : context.tr('discovery_results',
-                                      {'count': '${results.length}'}),
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold))),
-                      if (provider.hasFilters)
-                        TextButton(
-                            onPressed: provider.clearFilters,
-                            child: Text(context.tr('discovery_clear_filters'))),
-                    ]),
-                    if (provider.selectedDistrict != null ||
-                        provider.maxPrice != null)
-                      Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: Text([
-                            if (provider.selectedDistrict != null)
-                              discoveryOriginLabel(
-                                  context, provider.selectedDistrict!),
-                            if (provider.maxPrice != null)
-                              context.tr('discovery_up_to', {
-                                'price': provider.maxPrice!.toStringAsFixed(2)
-                              }),
-                          ].join(' · '))),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      child: InputDecorator(
-                        decoration: InputDecoration(
-                          labelText: context.tr('discovery_sort'),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 4),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<DiscoverySort>(
-                            key: const ValueKey('discovery-sort'),
-                            isExpanded: true,
-                            value: provider.sort,
-                            items: [
-                              for (final sort in DiscoverySort.values)
-                                DropdownMenuItem(
-                                  value: sort,
-                                  child: Text(context
-                                      .tr('discovery_sort_${sort.name}')),
-                                ),
-                            ],
-                            onChanged: (sort) {
-                              if (sort != null) provider.setSort(sort);
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: provider.isSearching
-                          ? LoadingIndicator(
-                              message: context.tr('discovery_searching_long'))
-                          : provider.errorMessage != null
-                              ? EmptyStateView(
-                                  icon: Icons.cloud_off,
-                                  title: context.tr('discovery_load_error'),
-                                  description:
-                                      context.tr('discovery_retry_help'),
-                                  actionButtonText:
-                                      context.tr('discovery_retry'),
-                                  onActionPressed: provider.performSearch)
-                              : results.isEmpty
-                                  ? EmptyStateView(
-                                      icon: Icons.search_off,
-                                      title: context.tr('discovery_no_results'),
-                                      description: context
-                                          .tr('discovery_no_results_help'))
-                                  : RefreshIndicator(
-                                      onRefresh: provider.performSearch,
-                                      child: GridView.builder(
-                                        physics:
-                                            const AlwaysScrollableScrollPhysics(),
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                crossAxisSpacing: 12,
-                                                mainAxisSpacing: 12,
-                                                childAspectRatio: .70),
-                                        itemCount: results.length,
-                                        itemBuilder: (_, index) => ProductCard(
-                                          key: ValueKey(results[index].id),
-                                          product: results[index],
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (_) =>
-                                                      ProductDetailsScreen(
-                                                          product:
-                                                              results[index]))),
-                                        ),
+            body: _showArtisans
+                ? ArtisanSearchResults(provider: _artisanProvider!)
+                : Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                              height: 40,
+                              child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: CraftCategories.all.length + 1,
+                                separatorBuilder: (_, __) =>
+                                    const SizedBox(width: 8),
+                                itemBuilder: (_, index) {
+                                  final category = index == 0
+                                      ? null
+                                      : CraftCategories.all[index - 1];
+                                  return CraftCategoryChip(
+                                    label: category == null
+                                        ? context.tr('discovery_all_crafts')
+                                        : discoveryCategoryLabel(
+                                            context, category.key),
+                                    isSelected: provider.selectedCategory ==
+                                        category?.key,
+                                    onTap: () =>
+                                        provider.setCategory(category?.key),
+                                  );
+                                },
+                              )),
+                          const SizedBox(height: 12),
+                          Row(children: [
+                            Expanded(
+                                child: Text(
+                                    provider.isSearching
+                                        ? context.tr('discovery_searching')
+                                        : context.tr('discovery_results',
+                                            {'count': '${results.length}'}),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold))),
+                            if (provider.hasFilters)
+                              TextButton(
+                                  onPressed: provider.clearFilters,
+                                  child: Text(
+                                      context.tr('discovery_clear_filters'))),
+                          ]),
+                          if (provider.selectedDistrict != null ||
+                              provider.maxPrice != null)
+                            Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Text([
+                                  if (provider.selectedDistrict != null)
+                                    discoveryOriginLabel(
+                                        context, provider.selectedDistrict!),
+                                  if (provider.maxPrice != null)
+                                    context.tr('discovery_up_to', {
+                                      'price':
+                                          provider.maxPrice!.toStringAsFixed(2)
+                                    }),
+                                ].join(' · '))),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12, bottom: 12),
+                            child: InputDecorator(
+                              decoration: InputDecoration(
+                                labelText: context.tr('discovery_sort'),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 4),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<DiscoverySort>(
+                                  key: const ValueKey('discovery-sort'),
+                                  isExpanded: true,
+                                  value: provider.sort,
+                                  items: [
+                                    for (final sort in DiscoverySort.values)
+                                      DropdownMenuItem(
+                                        value: sort,
+                                        child: Text(context
+                                            .tr('discovery_sort_${sort.name}')),
                                       ),
-                                    ),
-                    ),
-                  ]),
-            ),
+                                  ],
+                                  onChanged: (sort) {
+                                    if (sort != null) provider.setSort(sort);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: provider.isSearching
+                                ? LoadingIndicator(
+                                    message:
+                                        context.tr('discovery_searching_long'))
+                                : provider.errorMessage != null
+                                    ? EmptyStateView(
+                                        icon: Icons.cloud_off,
+                                        title:
+                                            context.tr('discovery_load_error'),
+                                        description:
+                                            context.tr('discovery_retry_help'),
+                                        actionButtonText:
+                                            context.tr('discovery_retry'),
+                                        onActionPressed: provider.performSearch)
+                                    : results.isEmpty
+                                        ? EmptyStateView(
+                                            icon: Icons.search_off,
+                                            title: context
+                                                .tr('discovery_no_results'),
+                                            description: context.tr(
+                                                'discovery_no_results_help'))
+                                        : RefreshIndicator(
+                                            onRefresh: provider.performSearch,
+                                            child: GridView.builder(
+                                              physics:
+                                                  const AlwaysScrollableScrollPhysics(),
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                      crossAxisCount: 2,
+                                                      crossAxisSpacing: 12,
+                                                      mainAxisSpacing: 12,
+                                                      childAspectRatio: .70),
+                                              itemCount: results.length,
+                                              itemBuilder: (_, index) =>
+                                                  ProductCard(
+                                                key:
+                                                    ValueKey(results[index].id),
+                                                product: results[index],
+                                                onTap: () => Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            ProductDetailsScreen(
+                                                                product: results[
+                                                                    index]))),
+                                              ),
+                                            ),
+                                          ),
+                          ),
+                        ]),
+                  ),
           );
         }),
       );
