@@ -1,3 +1,5 @@
+import '../discovery_labels.dart';
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -70,12 +72,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 onSubmitted: (value) => provider.performSearch(query: value),
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                  hintText: 'Search crafts...',
+                  hintText: context.tr('discovery_search'),
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _controller.text.isEmpty
                       ? null
                       : IconButton(
-                          tooltip: 'Clear search',
+                          tooltip: context.tr('discovery_clear_search'),
                           icon: const Icon(Icons.clear),
                           onPressed: () {
                             _controller.clear();
@@ -86,14 +88,14 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               actions: [
                 IconButton(
-                    tooltip: 'Saved crafts',
+                    tooltip: context.tr('discovery_saved_action'),
                     icon: const Icon(Icons.favorite_border),
                     onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (_) => const FavoritesScreen()))),
                 IconButton(
-                    tooltip: 'Filter crafts',
+                    tooltip: context.tr('discovery_filter_action'),
                     onPressed: _openFilters,
                     icon: const Icon(Icons.tune)),
               ],
@@ -114,7 +116,10 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ? null
                                 : CraftCategories.all[index - 1];
                             return CraftCategoryChip(
-                              label: category?.label ?? 'All Crafts',
+                              label: category == null
+                                  ? context.tr('discovery_all_crafts')
+                                  : discoveryCategoryLabel(
+                                      context, category.key),
                               isSelected:
                                   provider.selectedCategory == category?.key,
                               onTap: () => provider.setCategory(category?.key),
@@ -126,14 +131,15 @@ class _SearchScreenState extends State<SearchScreen> {
                       Expanded(
                           child: Text(
                               provider.isSearching
-                                  ? 'Searching crafts...'
-                                  : 'Curated Crafts (${results.length})',
+                                  ? context.tr('discovery_searching')
+                                  : context.tr('discovery_results',
+                                      {'count': '${results.length}'}),
                               style: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold))),
                       if (provider.hasFilters)
                         TextButton(
                             onPressed: provider.clearFilters,
-                            child: const Text('Clear Filters')),
+                            child: Text(context.tr('discovery_clear_filters'))),
                     ]),
                     if (provider.selectedDistrict != null ||
                         provider.maxPrice != null)
@@ -141,27 +147,32 @@ class _SearchScreenState extends State<SearchScreen> {
                           padding: const EdgeInsets.only(bottom: 8),
                           child: Text([
                             if (provider.selectedDistrict != null)
-                              provider.selectedDistrict!,
+                              discoveryOriginLabel(
+                                  context, provider.selectedDistrict!),
                             if (provider.maxPrice != null)
-                              'Up to LKR ${provider.maxPrice!.toStringAsFixed(2)}',
+                              context.tr('discovery_up_to', {
+                                'price': provider.maxPrice!.toStringAsFixed(2)
+                              }),
                           ].join(' · '))),
                     Expanded(
                       child: provider.isSearching
-                          ? const LoadingIndicator(
-                              message: 'Searching authentic crafts...')
+                          ? LoadingIndicator(
+                              message: context.tr('discovery_searching_long'))
                           : provider.errorMessage != null
                               ? EmptyStateView(
                                   icon: Icons.cloud_off,
-                                  title: 'Unable to load crafts',
-                                  description: provider.errorMessage!,
-                                  actionButtonText: 'Retry',
+                                  title: context.tr('discovery_load_error'),
+                                  description:
+                                      context.tr('discovery_retry_help'),
+                                  actionButtonText:
+                                      context.tr('discovery_retry'),
                                   onActionPressed: provider.performSearch)
                               : results.isEmpty
-                                  ? const EmptyStateView(
+                                  ? EmptyStateView(
                                       icon: Icons.search_off,
-                                      title: 'No crafts found',
-                                      description:
-                                          'Try another search or clear your filters.')
+                                      title: context.tr('discovery_no_results'),
+                                      description: context
+                                          .tr('discovery_no_results_help'))
                                   : RefreshIndicator(
                                       onRefresh: provider.performSearch,
                                       child: GridView.builder(
