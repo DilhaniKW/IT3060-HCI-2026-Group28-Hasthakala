@@ -3,9 +3,13 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/craft_categories.dart';
+import '../../../../core/localization/tr.dart';
 import '../../../../core/shared_models/artisan_profile_model.dart';
 import '../state/artisan_profile_provider.dart';
 import '../state/auth_provider.dart';
+import '../widgets/craft_name.dart';
+import '../widgets/profile_avatar_widget.dart';
+import '../widgets/profile_form_parts.dart';
 import 'profile_updated_screen.dart';
 
 // I05 Edit Artisan Profile (+ saving, save failed, offline, discard states)
@@ -75,69 +79,60 @@ class _EditArtisanProfileScreenState extends State<EditArtisanProfileScreen> {
         );
       case ProfileSaveResult.failed:
         _showRetryDialog(
-          icon: Icons.error_outline,
-          title: "We couldn't save your changes",
-          message: 'Your information has not been lost. Please try again.',
+          icon: Icons.error_outline_rounded,
+          color: AppColors.error,
+          title: context.tr('save_failed_title'),
+          message: context.tr('save_failed_body'),
         );
       case ProfileSaveResult.offline:
         _showRetryDialog(
-          icon: Icons.wifi_off,
-          title: "You're offline",
-          message: "Changes can't be saved right now. Your edits are still here.",
+          icon: Icons.wifi_off_rounded,
+          color: AppColors.secondary,
+          title: context.tr('offline_title'),
+          message: context.tr('offline_body'),
         );
     }
   }
 
   Future<void> _showRetryDialog({
     required IconData icon,
+    required Color color,
     required String title,
     required String message,
   }) async {
-    final retry = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        icon: Icon(icon, color: AppColors.error),
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Keep Editing')),
-          ElevatedButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Try Again')),
-        ],
-      ),
+    final retry = await showChoiceDialog(
+      context,
+      icon: icon,
+      iconColor: color,
+      title: title,
+      message: message,
+      filledLabel: context.tr('try_again'),
+      textLabel: context.tr('keep_editing'),
     );
     if (retry == true && mounted) _save();
   }
 
   Future<bool> _confirmDiscard() async {
-    final discard = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        icon: const Icon(Icons.warning_amber_rounded, color: AppColors.secondary),
-        title: const Text('Discard changes?'),
-        content: const Text('You have unsaved profile changes. Are you sure you want to leave?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Discard'),
-          ),
-          ElevatedButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Keep Editing')),
-        ],
-      ),
+    // keep editing is the filled (safe) button, discard is the text one
+    final keep = await showChoiceDialog(
+      context,
+      icon: Icons.warning_amber_rounded,
+      iconColor: AppColors.secondary,
+      title: context.tr('discard_title'),
+      message: context.tr('discard_body'),
+      filledLabel: context.tr('keep_editing'),
+      textLabel: context.tr('discard'),
+      textColor: AppColors.error,
     );
-    return discard ?? false;
+    return keep == false;
   }
-
-  Widget _section(String text) => Padding(
-        padding: const EdgeInsets.only(top: 18, bottom: 8),
-        child: Text(text.toUpperCase(),
-            style: const TextStyle(
-                color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 12)),
-      );
 
   @override
   Widget build(BuildContext context) {
     final saving = context.watch<ArtisanProfileProvider>().isSaving;
+    final aboutLength = _about.text.trim().length;
+    // first letter of what is typed, or of the saved name while the field is empty
+    final avatarName = _name.text.trim().isNotEmpty ? _name.text.trim() : widget.profile.displayName;
 
     return PopScope(
       canPop: !_hasChanges || saving,
@@ -147,92 +142,140 @@ class _EditArtisanProfileScreenState extends State<EditArtisanProfileScreen> {
         if (await _confirmDiscard()) navigator.pop();
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Edit Artisan Profile')),
+        appBar: AppBar(title: Text(context.tr('edit_title'))),
         body: Stack(
           children: [
             Form(
               key: _formKey,
-              child: ListView(
-                padding: const EdgeInsets.all(20),
-                children: [
-                  _section('Profile photo'),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundColor: AppColors.secondaryLight,
-                        child: Text(
-                          _name.text.isNotEmpty ? _name.text[0].toUpperCase() : '?',
-                          style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary),
-                        ),
+              child: SafeArea(
+                top: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                        children: [
+                          FormSectionTitle(context.tr('sec_photo')),
+                          Row(
+                            children: [
+                              ProfileAvatarWidget(name: avatarName, radius: 30),
+                              const SizedBox(width: 14),
+                              // photo upload comes later (DEVIATIONS DV6)
+                              Expanded(
+                                child: Text(context.tr('photo_soon'),
+                                    style: const TextStyle(color: AppColors.textSecondary)),
+                              ),
+                            ],
+                          ),
+
+                          FormSectionTitle(context.tr('sec_basic')),
+                          LabelledField(
+                            label: context.tr('label_artisan_name'),
+                            child: TextFormField(
+                              controller: _name,
+                              textCapitalization: TextCapitalization.words,
+                              decoration: InputDecoration(
+                                hintText: context.tr('hint_artisan_name'),
+                                prefixIcon: const Icon(Icons.person_outline,
+                                    color: AppColors.textSecondary),
+                              ),
+                              validator: (v) => context.trMessage(
+                                  (v == null || v.trim().isEmpty) ? 'Artisan name is required.' : null),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          LabelledField(
+                            label: context.tr('label_craft'),
+                            child: DropdownButtonFormField<String>(
+                              initialValue: _craftType,
+                              isExpanded: true,
+                              decoration: const InputDecoration(
+                                prefixIcon:
+                                    Icon(Icons.palette_outlined, color: AppColors.textSecondary),
+                              ),
+                              hint: Text(context.tr('hint_craft')),
+                              items: CraftCategories.all
+                                  .map((c) => DropdownMenuItem(
+                                      value: c.key, child: Text(craftName(context, c.key))))
+                                  .toList(),
+                              onChanged: (v) => setState(() => _craftType = v),
+                              validator: (v) =>
+                                  context.trMessage(v == null ? 'Please select a craft type.' : null),
+                            ),
+                          ),
+
+                          FormSectionTitle(context.tr('about_my_craft')),
+                          LabelledField(
+                            label: context.tr('label_about'),
+                            helper: aboutLength >= 10
+                                ? FieldHint(context.tr('about_ok'), ok: true)
+                                : FieldHint(context.tr('about_count', {'count': '$aboutLength'})),
+                            child: TextFormField(
+                              controller: _about,
+                              maxLines: 4,
+                              textCapitalization: TextCapitalization.sentences,
+                              decoration: InputDecoration(hintText: context.tr('hint_about')),
+                              validator: (v) => context.trMessage((v == null || v.trim().length < 10)
+                                  ? 'Please write a short description (10+ characters).'
+                                  : null),
+                            ),
+                          ),
+
+                          FormSectionTitle(context.tr('sec_location')),
+                          LabelledField(
+                            label: context.tr('label_location'),
+                            helper: FieldHint(context.tr('location_help'),
+                                icon: Icons.lock_outline_rounded),
+                            child: TextFormField(
+                              controller: _location,
+                              textCapitalization: TextCapitalization.words,
+                              decoration: InputDecoration(
+                                hintText: context.tr('hint_location'),
+                                prefixIcon: const Icon(Icons.location_on_outlined,
+                                    color: AppColors.textSecondary),
+                              ),
+                              validator: (v) => context.trMessage(
+                                  (v == null || v.trim().isEmpty) ? 'Please enter your location.' : null),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 14),
-                      // photo upload needs Cloud Storage (DEVIATIONS DV6)
-                      const Expanded(
-                        child: Text('Photo upload will be available soon.',
-                            style: TextStyle(color: AppColors.textSecondary)),
+                    ),
+
+                    // save stays at the bottom so it is always in reach
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 4, 20, 16),
+                      child: ElevatedButton(
+                        onPressed: (_hasChanges && !saving) ? _save : null,
+                        child: Text(context.tr('save_changes')),
                       ),
-                    ],
-                  ),
-                  _section('Basic information'),
-                  TextFormField(
-                    controller: _name,
-                    decoration: const InputDecoration(labelText: 'Artisan Name'),
-                    validator: (v) =>
-                        (v == null || v.trim().isEmpty) ? 'Artisan name is required.' : null,
-                  ),
-                  const SizedBox(height: 14),
-                  DropdownButtonFormField<String>(
-                    initialValue: _craftType,
-                    decoration: const InputDecoration(labelText: 'Craft Type'),
-                    hint: const Text('Select craft type'),
-                    items: CraftCategories.all
-                        .map((c) => DropdownMenuItem(value: c.key, child: Text(c.label)))
-                        .toList(),
-                    onChanged: (v) => setState(() => _craftType = v),
-                    validator: (v) => v == null ? 'Please select a craft type.' : null,
-                  ),
-                  _section('About my craft'),
-                  TextFormField(
-                    controller: _about,
-                    maxLines: 4,
-                    decoration: const InputDecoration(labelText: 'About My Craft'),
-                    validator: (v) => (v == null || v.trim().length < 10)
-                        ? 'Please write a short description (10+ characters).'
-                        : null,
-                  ),
-                  _section('Location'),
-                  TextFormField(
-                    controller: _location,
-                    decoration: const InputDecoration(labelText: 'General Location'),
-                    validator: (v) =>
-                        (v == null || v.trim().isEmpty) ? 'Please enter your location.' : null,
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: (_hasChanges && !saving) ? _save : null,
-                    child: const Text('Save Changes'),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
             if (saving)
               Container(
                 color: AppColors.background,
                 alignment: Alignment.center,
-                child: const Column(
+                padding: const EdgeInsets.all(32),
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CircularProgressIndicator(color: AppColors.primary),
-                    SizedBox(height: 16),
-                    Text('Saving your profile...',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-                    SizedBox(height: 6),
-                    Text('Please wait while we update your information.',
-                        style: TextStyle(color: AppColors.textSecondary)),
+                    const SizedBox(
+                      width: 56,
+                      height: 56,
+                      child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 4),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(context.tr('saving_title'),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 8),
+                    Text(context.tr('saving_sub'),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: AppColors.textSecondary)),
                   ],
                 ),
               ),

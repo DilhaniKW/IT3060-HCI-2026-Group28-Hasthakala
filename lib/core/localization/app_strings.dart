@@ -647,17 +647,131 @@ class AppStrings {
       'ta': 'பொது சுயவிவர முன்னோட்டம்',
     },
 
+    // ---- edit / complete artisan profile (I05) ----
+    'edit_title': {
+      'en': 'Edit Artisan Profile',
+      'si': 'ශිල්පී පැතිකඩ/ප්‍රොෆයිල් සංස්කරණය',
+      'ta': 'கைவினைஞர் சுயவிவரத்தைத் திருத்து',
+    },
+    'sec_photo': {'en': 'Profile Photo', 'si': 'පැතිකඩ ඡායාරූපය', 'ta': 'சுயவிவரப் படம்'},
+    'sec_basic': {'en': 'Basic Information', 'si': 'මූලික තොරතුරු', 'ta': 'அடிப்படைத் தகவல்'},
+    'sec_location': {'en': 'Location', 'si': 'ස්ථානය', 'ta': 'இருப்பிடம்'},
+    'photo_soon': {
+      'en': 'Photo upload will be available soon.',
+      'si': 'ඡායාරූප උඩුගත කිරීම ඉක්මනින් ලැබෙනු ඇත.',
+      'ta': 'படம் பதிவேற்றும் வசதி விரைவில் கிடைக்கும்.',
+    },
+    'label_artisan_name': {'en': 'Artisan Name', 'si': 'ශිල්පී නම', 'ta': 'கைவினைஞர் பெயர்'},
+    'hint_artisan_name': {
+      'en': 'Enter your artisan name',
+      'si': 'ඔබේ ශිල්පී නම ඇතුළත් කරන්න',
+      'ta': 'உங்கள் கைவினைஞர் பெயரை உள்ளிடவும்',
+    },
+    'label_craft': {'en': 'Craft Type', 'si': 'කලා වර්ගය', 'ta': 'கைவினை வகை'},
+    'hint_craft': {
+      'en': 'Select craft type',
+      'si': 'කලා වර්ගය තෝරන්න',
+      'ta': 'கைவினை வகையைத் தேர்ந்தெடுக்கவும்',
+    },
+    'label_about': {'en': 'Short description', 'si': 'කෙටි විස්තරය', 'ta': 'சிறு விளக்கம்'},
+    'hint_about': {
+      'en': 'Tell buyers what you make and how you make it',
+      'si': 'ඔබ සාදන දේ සහ එය සාදන ආකාරය ගැනුම්කරුවන්ට කියන්න',
+      'ta': 'நீங்கள் என்ன செய்கிறீர்கள், எப்படிச் செய்கிறீர்கள் என்று வாங்குபவர்களுக்குச் சொல்லுங்கள்',
+    },
+    'about_count': {
+      'en': 'Write at least 10 characters ({count} so far)',
+      'si': 'අවම වශයෙන් අකුරු 10ක් ලියන්න (දැනට {count})',
+      'ta': 'குறைந்தது 10 எழுத்துகள் எழுதவும் (இதுவரை {count})',
+    },
+    'about_ok': {'en': 'Looks good', 'si': 'හොඳයි', 'ta': 'சரியாக உள்ளது'},
+    'label_location': {'en': 'General Location', 'si': 'පොදු ස්ථානය', 'ta': 'பொது இருப்பிடம்'},
+    'hint_location': {
+      'en': 'e.g. Colombo, Sri Lanka',
+      'si': 'උදා: කොළඹ, ශ්‍රී ලංකාව',
+      'ta': 'எ.கா. கொழும்பு, இலங்கை',
+    },
+    'location_help': {
+      'en': 'Town or district only, not your home address.',
+      'si': 'නගරය හෝ දිස්ත්‍රික්කය පමණි, ඔබේ නිවසේ ලිපිනය නොවේ.',
+      'ta': 'நகரம் அல்லது மாவட்டம் மட்டும், உங்கள் வீட்டு முகவரி அல்ல.',
+    },
+    'save_changes': {'en': 'Save Changes', 'si': 'වෙනස්කම් සුරකින්න', 'ta': 'மாற்றங்களைச் சேமி'},
+    'saving_title': {
+      'en': 'Saving your profile...',
+      'si': 'ඔබේ ප්‍රොෆයිල් සුරකිමින්...',
+      'ta': 'உங்கள் சுயவிவரம் சேமிக்கப்படுகிறது...',
+    },
+    'saving_sub': {
+      'en': 'Please wait while we update your information.',
+      'si': 'ඔබේ තොරතුරු යාවත්කාලීන කරන තෙක් රැඳී සිටින්න.',
+      'ta': 'உங்கள் தகவலைப் புதுப்பிக்கும் வரை காத்திருக்கவும்.',
+    },
+    'save_failed_title': {
+      'en': "We couldn't save your changes",
+      'si': 'ඔබේ වෙනස්කම් සුරැකීමට නොහැකි විය',
+      'ta': 'உங்கள் மாற்றங்களைச் சேமிக்க முடியவில்லை',
+    },
+    'save_failed_body': {
+      'en': 'Your information has not been lost. Please try again.',
+      'si': 'ඔබේ තොරතුරු නැති වී නැත. නැවත උත්සාහ කරන්න.',
+      'ta': 'உங்கள் தகவல் இழக்கப்படவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'offline_title': {'en': "You're offline", 'si': 'ඔබ නොබැඳි ය', 'ta': 'நீங்கள் இணைப்பில் இல்லை'},
+    'offline_body': {
+      'en': "Changes can't be saved right now. Your edits are still here.",
+      'si': 'දැන් වෙනස්කම් සුරැකිය නොහැක. ඔබේ සංස්කරණ තවමත් මෙහි ඇත.',
+      'ta': 'இப்போது மாற்றங்களைச் சேமிக்க முடியாது. உங்கள் திருத்தங்கள் இங்கேயே உள்ளன.',
+    },
+    'try_again': {'en': 'Try Again', 'si': 'නැවත උත්සාහ කරන්න', 'ta': 'மீண்டும் முயற்சி'},
+    'keep_editing': {'en': 'Keep Editing', 'si': 'දිගටම සංස්කරණය', 'ta': 'தொடர்ந்து திருத்து'},
+    'discard_title': {
+      'en': 'Discard changes?',
+      'si': 'වෙනස්කම් ඉවත දමන්නද?',
+      'ta': 'மாற்றங்களை நிராகரிக்கவா?',
+    },
+    'discard_body': {
+      'en': 'You have unsaved profile changes. Are you sure you want to leave?',
+      'si': 'ඔබේ පැතිකඩේ/ප්‍රොෆයිල් සුරැකී නැති වෙනස්කම් ඇත. ඔබට ඉවත් වීමට අවශ්‍යද?',
+      'ta': 'சேமிக்கப்படாத சுயவிவர மாற்றங்கள் உள்ளன. நிச்சயமாக வெளியேற வேண்டுமா?',
+    },
+    'discard': {'en': 'Discard', 'si': 'ඉවත දමන්න', 'ta': 'நிராகரி'},
+    'err_artisan_name': {
+      'en': 'Artisan name is required.',
+      'si': 'ශිල්පී නම අවශ්‍යයි.',
+      'ta': 'கைவினைஞர் பெயர் தேவை.',
+    },
+    'err_craft_type': {
+      'en': 'Please select a craft type.',
+      'si': 'කරුණාකර කලා වර්ගයක් තෝරන්න.',
+      'ta': 'கைவினை வகையைத் தேர்ந்தெடுக்கவும்.',
+    },
+    'err_about_short': {
+      'en': 'Please write a short description (10+ characters).',
+      'si': 'කරුණාකර කෙටි විස්තරයක් ලියන්න (අකුරු 10+).',
+      'ta': 'சிறு விளக்கம் ஒன்றை எழுதவும் (10+ எழுத்துகள்).',
+    },
+    'err_location': {
+      'en': 'Please enter your location.',
+      'si': 'කරුණාකර ඔබේ ස්ථානය ඇතුළත් කරන්න.',
+      'ta': 'உங்கள் இருப்பிடத்தை உள்ளிடவும்.',
+    },
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
     'nav_orders': {'en': 'Orders', 'si': 'ඇණවුම්', 'ta': 'ஆர்டர்கள்'},
     'nav_products': {'en': 'Products', 'si': 'නිෂ්පාදන', 'ta': 'தயாரிப்புகள்'},
-    'nav_profile': {'en': 'Profile', 'si': 'පැතිකඩ', 'ta': 'சுயவிவரம்'},
+    'nav_profile': {'en': 'Profile', 'si': 'පැතිකඩ/ප්‍රොෆයිල්', 'ta': 'சுயவிவரம்'},
   };
 
   // English messages from validators / Firebase - key, so they can be shown
   // in the chosen language without changing where they come from
   static const Map<String, String> messageKeys = {
+    'Artisan name is required.': 'err_artisan_name',
+    'Please select a craft type.': 'err_craft_type',
+    'Please write a short description (10+ characters).': 'err_about_short',
+    'Please enter your location.': 'err_location',
     'We could not save your choice. Check your connection and try again.': 'err_save_choice',
     'We could not send the reset link. Please try again.': 'err_reset_failed',
     'Please enter your full name': 'err_name_required',
