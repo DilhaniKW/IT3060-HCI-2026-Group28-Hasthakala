@@ -1,3 +1,4 @@
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 
@@ -44,9 +45,9 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Discover Sri Lankan Craft',
+                      context.tr('discovery_discover'),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -55,7 +56,7 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
                     ),
                     SizedBox(height: 1),
                     Text(
-                      'Explore the people and stories behind each craft',
+                      context.tr('discovery_discover_help'),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -71,26 +72,24 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
             icon: Icons.local_florist,
             iconBgColor: AppColors.secondary.withOpacity(0.15),
             iconColor: AppColors.secondary,
-            title: 'Meet the Maker',
-            description:
-                'Visit artisan profiles to learn about their craft and story.',
+            title: context.tr('discovery_meet'),
+            description: context.tr('discovery_meet_help'),
           ),
           const SizedBox(height: 8),
           _buildItem(
             icon: Icons.handshake,
             iconBgColor: AppColors.primary.withOpacity(0.15),
             iconColor: AppColors.primary,
-            title: 'Explore Local Crafts',
-            description: 'Browse crafts by category, location and price.',
+            title: context.tr('discovery_local'),
+            description: context.tr('discovery_local_help'),
           ),
           const SizedBox(height: 8),
           _buildItem(
             icon: Icons.inventory_2,
             iconBgColor: AppColors.accent.withOpacity(0.15),
             iconColor: AppColors.accent,
-            title: 'Check Product Details',
-            description:
-                'Review the listed materials, dimensions and availability before buying.',
+            title: context.tr('discovery_check_details'),
+            description: context.tr('discovery_check_details_help'),
           ),
           const SizedBox(height: 12),
           GestureDetector(
@@ -104,17 +103,19 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Icon(Icons.science_outlined, size: 16, color: Colors.white),
                   SizedBox(width: 6),
-                  Text(
-                    'View Sample Lab Report',
+                  Flexible(
+                      child: Text(
+                    context.tr('discovery_sample_report'),
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  )),
                   SizedBox(width: 4),
                   Icon(Icons.chevron_right, size: 16, color: Colors.white),
                 ],
