@@ -1,8 +1,7 @@
 import '../utils/firestore_converters.dart';
 
-/// The three permissions shown as toggles in the I13 hi-fi:
-/// Manage products (I11), Manage orders (I12), Respond to customers (I09).
-/// Account/security settings are ALWAYS owner-only and are not a scope.
+// the three permissions an artisan can give a supporter
+// (account settings always stay with the owner)
 class SupportScopes {
   final bool products;
   final bool orders;
@@ -48,9 +47,9 @@ class SupportScopes {
 enum SupportGrantStatus { active, revoked }
 
 
-/// Created when a supporter accepts an invite; managed by the artisan.
-/// The supporter always signs in as THEMSELF; this grant only says what
-/// they may do for this artisan.
+// Created when a supporter accepts an invite; managed by the artisan.
+// The supporter always signs in as themselves; this grant only says what
+// they may do for this artisan.
 class SupportGrantModel {
   final String artisanId;
   final String artisanName;
@@ -63,7 +62,7 @@ class SupportGrantModel {
   final DateTime grantedAt;
   final DateTime updatedAt;
 
-  /// Code of the invite this grant was created from (additive field; lets the security rules check the grant against its invite).
+  // code of the invite this grant came from (the rules check it)
   final String? inviteCode;
 
   SupportGrantModel({
@@ -84,7 +83,7 @@ class SupportGrantModel {
   String get id => '${artisanId}_$supporterId';
   bool get isActive => status == SupportGrantStatus.active;
 
-  /// Readable list of permissions, e.g. "Products, Orders".
+  // Readable list of permissions, e.g. "Products, Orders".
   String get scopeSummary {
     final parts = <String>[
       if (scopes.products) 'Products',
@@ -132,8 +131,7 @@ class SupportGrantModel {
 
 enum SupportInviteStatus { pending, accepted, revoked, expired }
 
-/// supportInvites/{code} - I13 invitation (decision D4: phone-number form
-/// as designed + a 6-digit code the artisan passes to the supporter).
+// supportInvites/{code} - the artisan shares the 6-digit code with the supporter
 class SupportInviteModel {
   final String code;
   final String artisanId;

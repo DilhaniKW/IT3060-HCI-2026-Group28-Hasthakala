@@ -1,5 +1,5 @@
-/// Feature: Account & Family Support
-/// Branch: feature/account-support
+// Feature: Account & Family Support
+// Branch: feature/account-support
 library account;
 
 export 'presentation/screens/splash_screen.dart';

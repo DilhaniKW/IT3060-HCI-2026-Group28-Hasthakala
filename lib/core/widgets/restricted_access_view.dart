@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
-/// Shown when a supporter opens an area they were not given permission for
-/// (I13 low-fi refinement: explicit restricted states; constraints + feedback).
+// shown when a supporter opens an area they don't have permission for
 class RestrictedAccessView extends StatelessWidget {
   final String featureName;
   final String artisanName;

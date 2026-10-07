@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/support_models.dart';
 
-/// The three I13 permission toggles + the locked "Sensitive account functions" row . Used by Add Support
-/// User and Support User Details so both stay consistent.
+// permission toggles, used on Add Support User and Support User Details
 class SupportScopeToggles extends StatelessWidget {
   final SupportScopes scopes;
   final ValueChanged<SupportScopes>? onChanged; // null = read-only
@@ -16,24 +15,24 @@ class SupportScopeToggles extends StatelessWidget {
     return Column(
       children: [
         _ToggleRow(
-          title: 'Product activities',
-          subtitle: 'Manage products through authorised I11 functions',
+          title: 'Manage products',
+          subtitle: 'Add, edit and update products',
           value: scopes.products,
           onChanged: onChanged == null
               ? null
               : (v) => onChanged!(scopes.copyWith(products: v)),
         ),
         _ToggleRow(
-          title: 'Order activities',
-          subtitle: 'View and update order status through I12 functions',
+          title: 'Manage orders',
+          subtitle: 'View and update order status',
           value: scopes.orders,
           onChanged: onChanged == null
               ? null
               : (v) => onChanged!(scopes.copyWith(orders: v)),
         ),
         _ToggleRow(
-          title: 'Customer / order communication',
-          subtitle: 'Respond to order-related customer queries through I09',
+          title: 'Respond to customers',
+          subtitle: 'Reply to messages about orders',
           value: scopes.communication,
           onChanged: onChanged == null
               ? null

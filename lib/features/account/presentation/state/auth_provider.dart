@@ -9,22 +9,20 @@ import '../../../../core/shared_models/user_model.dart';
 import '../../data/datasources/auth_remote_datasource.dart';
 import '../../data/datasources/context_remote_datasource.dart';
 
-/// Where the app is in the sign-in process.
+// Where the app is in the sign-in process.
 enum AuthStatus { checking, signedOut, signedIn }
 
-/// Which "hat" the person is currently wearing (decision D1).
+// buyer, artisan or supporting someone
 enum AppContextType { buyer, artisan, supporter }
 
-/// I01 Entry/Auth state (Member 4) - shared by ALL members.
-///
-/// Other members should use:
-///   auth.currentUser        -> the signed-in person (always themselves)
-///   auth.actingArtisanId    -> whose shop I11/I12/I09 should load
-///                              (own uid for an artisan, the supported
-///                              artisan's uid for a supporter)
-///   auth.canManageProducts / canManageOrders / canRespondToCustomers
-///                           -> hide/disable actions in the UI. The real
-///                              protection is in firestore.rules (NFR3).
+// Sign-in state used across the app. Useful bits for other screens:
+//   auth.currentUser        -> the signed-in person (always themselves)
+//   auth.actingArtisanId    -> whose shop I11/I12/I09 should load
+//                              (own uid for an artisan, the supported
+//                              artisan's uid for a supporter)
+//   auth.canManageProducts / canManageOrders / canRespondToCustomers
+//                           -> hide/disable actions in the UI. The real
+//                              protection is in firestore.rules.
 class AuthProvider extends ChangeNotifier {
   final AuthRemoteDataSource _authDataSource;
   final ContextRemoteDataSource _contextDataSource;
@@ -51,6 +49,9 @@ class AuthProvider extends ChangeNotifier {
   String? _errorMessage;
   bool _supportAccessLost = false;
   bool _justCreatedArtisanProfile = false;
+  bool _needsPurpose = false;
+  bool _justRegistered = false;
+  AccountPurpose? _purposeJustChosen;
   String? _lostArtisanName;
 
   // ---------- Getters used across the app ----------
@@ -65,6 +66,11 @@ class AuthProvider extends ChangeNotifier {
   // set when the artisan revokes access during a supporter session
   bool get supportAccessLost => _supportAccessLost;
   bool get justCreatedArtisanProfile => _justCreatedArtisanProfile;
+
+  // signed in but no users/{uid} yet -> "How will you start using HASTHAKALA?"
+  bool get needsPurpose => _needsPurpose;
+  bool get justRegistered => _justRegistered;
+  AccountPurpose? get purposeJustChosen => _purposeJustChosen;
   String? get lostArtisanName => _lostArtisanName;
   List<SupportGrantModel> get supportGrants => List.unmodifiable(_supportGrants);
   AppContextType? get activeContext => _activeContext;
@@ -74,24 +80,26 @@ class AuthProvider extends ChangeNotifier {
   bool get isArtisanContext => _activeContext == AppContextType.artisan;
   bool get isSupporterContext => _activeContext == AppContextType.supporter;
 
-  /// Chose "Sell my crafts" but has not completed the artisan profile yet.
+  // Chose "Sell my crafts" but has not completed the artisan profile yet.
   bool get needsArtisanSetup =>
       (_currentUser?.startedAsSeller ?? false) && !_hasArtisanProfile;
 
-  /// Number of contexts: buyer always + artisan + each active support grant.
+  // Number of contexts: buyer always + artisan + each active support grant.
   int get availableContextCount =>
       1 + (_hasArtisanProfile ? 1 : 0) + _supportGrants.length;
 
-  /// "Continue as" is shown only when there is more than one context (D1).
+  // "Continue as" is shown only when there is more than one context.
   bool get needsContextChoice =>
       _status == AuthStatus.signedIn &&
       !needsArtisanSetup &&
       !_supportAccessLost &&
       !_justCreatedArtisanProfile &&
+      !_needsPurpose &&
+      _purposeJustChosen == null &&
       _activeContext == null &&
       availableContextCount > 1;
 
-  /// The artisan whose business I11 / I12 / I09 should show.
+  // The artisan whose business I11 / I12 / I09 should show.
   String? get actingArtisanId {
     if (isArtisanContext) return _currentUser?.uid;
     if (isSupporterContext) return _activeGrant?.artisanId;
@@ -114,7 +122,7 @@ class AuthProvider extends ChangeNotifier {
       return;
     }
     // During registration the users/{uid} document is written just after the
-    // Auth account is created; register() loads the session itself.
+    // Auth account is created; register loads the session itself.
     if (_isRegistering) return;
     await _loadSession(uid);
   }
@@ -125,10 +133,14 @@ class AuthProvider extends ChangeNotifier {
     try {
       final user = await _authDataSource.fetchUser(uid);
       if (user == null) {
-        _errorMessage = 'We could not find your account details. Please sign in again.';
-        await _authDataSource.logout();
+        // account exists but sign up wasn't finished (no Shop/Sell choice yet)
+        _currentUser = null;
+        _needsPurpose = true;
+        _status = AuthStatus.signedIn;
+        notifyListeners();
         return;
       }
+      _needsPurpose = false;
       _currentUser = user;
       _hasArtisanProfile = await _contextDataSource.hasArtisanProfile(uid);
       try {
@@ -155,6 +167,9 @@ class AuthProvider extends ChangeNotifier {
     _grantSubscription = null;
     _supportAccessLost = false;
     _lostArtisanName = null;
+    _needsPurpose = false;
+    _justRegistered = false;
+    _purposeJustChosen = null;
     _currentUser = null;
     _hasArtisanProfile = false;
     _supportGrants = [];
@@ -182,25 +197,26 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> register({
+  // Create Account: makes the Firebase Auth account only.
+  // The users/{uid} document is written after "How will you start" (choosePurpose).
+  Future<bool> createAccount({
     required String email,
     required String password,
     required String displayName,
-    required AccountPurpose primaryPurpose,
   }) async {
     _isLoading = true;
     _isRegistering = true;
     _errorMessage = null;
     notifyListeners();
     try {
-      final user = await _authDataSource.register(
+      final uid = await _authDataSource.createAccount(
         email: email,
         password: password,
         displayName: displayName,
-        primaryPurpose: primaryPurpose,
       );
       _isRegistering = false;
-      await _loadSession(user.uid);
+      _justRegistered = true;
+      await _loadSession(uid);
       return true;
     } on AuthException catch (e) {
       _errorMessage = e.message;
@@ -215,7 +231,65 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  /// "Continue as" choice (I01, D1).
+  // Continue on "Account Created!"
+  void continueAfterAccountCreated() {
+    _justRegistered = false;
+    notifyListeners();
+  }
+
+  // "How will you start using HASTHAKALA?" - writes users/{uid}
+  Future<bool> choosePurpose(AccountPurpose purpose) async {
+    final account = _authDataSource.authAccount;
+    if (account == null) return false;
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      await _authDataSource.createUserDocument(
+        uid: account.uid,
+        email: account.email,
+        displayName: account.name,
+        primaryPurpose: purpose,
+      );
+      _needsPurpose = false;
+      _purposeJustChosen = purpose;
+      await _loadSession(account.uid);
+      return true;
+    } catch (_) {
+      _errorMessage = 'We could not save your choice. Check your connection and try again.';
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // Continue on "You're all set!" / "Your artisan setup has started!"
+  void finishPurposeConfirmation() {
+    _purposeJustChosen = null;
+    notifyListeners();
+  }
+
+  Future<bool> sendPasswordReset(String email) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    try {
+      await _authDataSource.sendPasswordReset(email);
+      return true;
+    } on AuthException catch (e) {
+      _errorMessage = e.message;
+      return false;
+    } catch (_) {
+      _errorMessage = 'We could not send the reset link. Please try again.';
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // "Continue as" choice.
   void selectContext(AppContextType type, {SupportGrantModel? grant}) {
     _grantSubscription?.cancel();
     _grantSubscription = null;
@@ -250,6 +324,22 @@ class AuthProvider extends ChangeNotifier {
     await refreshSession();
   }
 
+  // re-read only users/{uid} (e.g. after the name changed) without
+  // leaving the current context
+  Future<void> reloadCurrentUser() async {
+    final uid = _currentUser?.uid;
+    if (uid == null) return;
+    try {
+      final user = await _authDataSource.fetchUser(uid);
+      if (user != null) {
+        _currentUser = user;
+        notifyListeners();
+      }
+    } catch (_) {
+      // keep the old copy; it refreshes on next sign in
+    }
+  }
+
   // reload user + contexts, e.g. after accepting an invite
   Future<void> refreshSession() async {
     final uid = _currentUser?.uid;
@@ -259,7 +349,7 @@ class AuthProvider extends ChangeNotifier {
     await _loadSession(uid);
   }
 
-  /// Go back to the "Continue as" screen (when more than one context exists).
+  // Go back to the "Continue as" screen (when more than one context exists).
   void switchContext() {
     if (availableContextCount < 2) return;
     _grantSubscription?.cancel();
@@ -269,8 +359,8 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// First-time artisan setup: CREATE artisanProfiles/{uid}, then continue
-  /// in the artisan context.
+  // First-time artisan setup: create artisanProfiles/{uid}, then continue
+  // in the artisan context.
   Future<bool> completeArtisanSetup(ArtisanProfileModel profile) async {
     _isLoading = true;
     _errorMessage = null;

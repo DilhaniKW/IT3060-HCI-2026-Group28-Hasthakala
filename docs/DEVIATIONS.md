@@ -1,14 +1,14 @@
-# Deviations from the Milestone 02 High-Fidelity Prototype
+# Differences from the Milestone 02 hi-fi
 
-Assignment 3 requires every difference between the implemented app and the hi-fi prototype to be
-documented and justified. Format: interface, prototype behaviour, implemented behaviour, reason,
-impact on requirements / HCI intent.
+Where the app doesn't match the hi-fi prototype, and why.
 
-| ID | Interface | Prototype (hi-fi) | Implemented | Reason | Impact |
+| # | Screen | In the hi-fi | In the app | Why | Effect |
 |---|---|---|---|---|---|
-| DV1 | I01 | "Choose Language" screen (English / Sinhala / Tamil) | Not implemented yet; English only. `users.preferredLanguage` reserved for later. | Translating every member's screens was not feasible in the implementation window (decision D2). | No FR depends on it. Reduces reach for tourists/non-English users (Milestone 01 language finding) - noted as future work. |
-| DV2 | I01 | Sign-in options: Google, biometrics, passkey | Email/password only (so far). | Time and per-machine setup cost (Google sign-in needs each developer's signing fingerprint) within the 3-day window (decision D3). Not a platform limitation. | Core I01 flow and NFR3 unaffected; fewer sign-in choices. |
-| DV3 | I13 | "Invitation sent - Tharushi will receive an invitation" | Invitation sent screen also shows a 6-digit code the owner shares with the supporter. | No SMS/notification backend; a typed phone number alone does not prove identity (decision D4). | Keeps FR9 and strengthens NFR3. One extra step for the owner. |
-| DV4 | I13 | No screen for the supporter to accept | "Accept support invitation" screen (Profile): supporter enters phone number + code. | Needed to complete D4 securely (derived design mechanism). | Supporter still signs in as herself; access only after acceptance. |
-| DV5 | I13 | Family Assistance lists authorised users only | Also lists pending invitations with Cancel. | Owner needs to see/cancel unused codes (error recovery, user control). | Supports FR9; adds the I13 Delete operation. |
-| DV6 | I05 | Change Photo / Add Photo with upload, uploading and upload-error states | Initials avatar; "Photo upload will be available soon." | Photo upload needs Cloud Storage, which needs the Blaze billing plan (decision T6, not enabled yet). | FR1 still met (name, craft, about, location). Less visual trust; to add if Storage is enabled. |
+| DV1 | All | Choose Language: Sinhala / English / Tamil | All fixed text (labels, buttons, messages) is translated. Text people type, like product names and messages, stays as written. | Translating typed text would need a paid translation service | Language barrier mostly handled; some content can still be in another language |
+| DV2 | I01 | Google, biometrics and passkey sign in | Email and password only | Time, and Google sign in needs extra setup on each laptop. Flutter does support them. | Fewer sign-in choices; nothing else affected |
+| DV3 | I13 | "Tharushi will receive an invitation" | Invitation sent screen shows a 6-digit code, the steps to follow and a "Copy invitation message" button. The code can be opened again from Pending Invitations. | We have no SMS service; a phone number alone doesn't prove who someone is | One extra step for the artisan; safer |
+| DV4 | I13 | No screen for the supporter to accept | Profile > Accept support invitation: phone number + code | Needed for DV3 | Supporter still uses their own account |
+| DV5 | I13 | Only active support users listed | Pending invitations listed too, with a cancel button | The artisan can see or cancel unused codes | Adds a delete action |
+| DV6 | I05 | Change / add profile photo | Initials avatar with "Photo upload will be available soon" | Photo upload needs Cloud Storage (Blaze plan, not enabled) | Profile works without a photo |
+| DV7 | I01 | "Remember me" checkbox | Not shown | Firebase already keeps you signed in until you sign out | No effect |
+| DV8 | I01 | Intro screen with an artisan photo | Uses the logo for now | Waiting for the image | Visual only |

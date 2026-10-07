@@ -5,12 +5,13 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/support_models.dart';
 import '../state/auth_provider.dart';
 import '../state/family_support_provider.dart';
+import '../widgets/invite_code_card.dart';
 import 'add_support_user_screen.dart';
 import 'support_user_details_screen.dart';
 
 
-/// READ: authorised support users + pending invitations.
-/// DELETE: cancel a pending invitation.
+// read: authorised support users + pending invitations.
+// delete: cancel a pending invitation.
 class FamilyAssistanceScreen extends StatefulWidget {
   const FamilyAssistanceScreen({super.key});
 
@@ -29,6 +30,28 @@ class _FamilyAssistanceScreenState extends State<FamilyAssistanceScreen> {
     final support = context.read<FamilySupportProvider>();
     _grants = support.grantsFor(artisanId);
     _invites = support.pendingInvitesFor(artisanId);
+  }
+
+  void _showCode(SupportInviteModel invite) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('Invitation for ${invite.inviteeName}',
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 16),
+              InviteCodeCard(invite: invite),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _cancelInvite(SupportInviteModel invite) async {
@@ -120,9 +143,10 @@ class _FamilyAssistanceScreenState extends State<FamilyAssistanceScreen> {
                   const SizedBox(height: 10),
                   ...invites.map((i) => _PersonTile(
                         name: i.inviteeName,
-                        detail: i.isExpired ? 'Expired - cancel and invite again' : 'Code ${i.code}',
+                        detail: i.isExpired ? 'Expired - cancel and invite again' : 'Code ${i.code} - tap to share',
                         chip: i.isExpired ? 'Expired' : 'Pending',
                         chipColor: i.isExpired ? AppColors.error : AppColors.secondaryDark,
+                        onTap: i.isExpired ? null : () => _showCode(i),
                         trailing: IconButton(
                           tooltip: 'Cancel invitation',
                           icon: const Icon(Icons.close, color: AppColors.error),

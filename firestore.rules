@@ -1,7 +1,7 @@
 rules_version = '2';
 
-// Hasthakala Firestore security rules - v1.3
-// NFR3: access is enforced here, not only by hiding buttons in the app.
+// Hasthakala Firestore security rules - v1.4
+// access is enforced here, not only by hiding buttons in the app.
 // Field names follow docs/FIREBASE_SCHEMA.md (locked).
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -14,7 +14,7 @@ service cloud.firestore {
     // Fields in this update that differ from the stored document.
     function changed() { return request.resource.data.diff(resource.data).affectedKeys(); }
 
-    // ---------- I01 Entry/Auth: account documents (FINAL) ----------
+    // I01 Entry/Auth: account documents
     // A user can only see/edit their own account. There is no role field to
     // escalate: contexts come from artisanProfiles and supportGrants.
     match /users/{uid} {
@@ -32,15 +32,15 @@ service cloud.firestore {
       }
     }
 
-    // ---------- Admins: created ONLY from the Firebase console ----------
+    // Admins: created only from the Firebase console
     match /admins/{uid} {
       allow read: if isSelf(uid);
       allow write: if false;
     }
 
-    // ---------- I05 Artisan profile (FINAL) ----------
+    // I05 Artisan profile
     // Any signed-in user can view (public profile). Only the artisan edits it,
-    // and never the 'verified' badge (FR4). Only an admin can set 'verified'.
+    // and never the 'verified' badge. Only an admin can set 'verified'.
     match /artisanProfiles/{artisanUid} {
       allow read: if signedIn();
       allow create: if isSelf(artisanUid)
@@ -53,17 +53,17 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // ---------- TEMPORARY development rules - signed-in users only ----------
-    // MUST be replaced with owner/role/support-grant rules (v2) before
+    // temporary development rules - signed-in users only
+    // must be replaced with owner/role/support-grant rules (v2) before
     // functional testing. Tracked in docs/DECISIONS.md.
     match /products/{doc=**}      { allow read, write: if signedIn(); }
     match /orders/{doc=**}        { allow read, write: if signedIn(); }
     match /conversations/{doc=**} { allow read, write: if signedIn(); }
     match /reviews/{doc=**}       { allow read, write: if signedIn(); }
 
-    // ---------- I13 Family Assistance (FINAL) ----------
+    // I13 Family Assistance
     // Authentication = who you are (always yourself).
-    // Authorisation  = what you may do for an artisan: ONLY an active grant
+    // Authorisation  = what you may do for an artisan: only an active grant
     // whose scopes are true. Supporters can never manage support users.
     function hasArtisanProfile(uid) {
       return exists(/databases/$(database)/documents/artisanProfiles/$(uid));
@@ -121,6 +121,9 @@ service cloud.firestore {
         (resource.data.artisanId == request.auth.uid
           && changed().hasOnly(['status'])
           && request.resource.data.status == 'revoked')
+        // owner renamed their artisan profile
+        || (resource.data.artisanId == request.auth.uid
+          && changed().hasOnly(['artisanName']))
         // invitee marks it accepted, in the same write that creates the grant
         || (resource.data.status == 'pending'
           && changed().hasOnly(['status', 'acceptedBy'])
@@ -141,7 +144,7 @@ service cloud.firestore {
       allow update: if signedIn() && (
         // owner edits permissions or revokes
         (resource.data.artisanId == request.auth.uid
-          && changed().hasOnly(['scopes', 'status', 'updatedAt'])
+          && changed().hasOnly(['scopes', 'status', 'updatedAt', 'artisanName'])
           && validScopes(request.resource.data.scopes)
           && request.resource.data.status in ['active', 'revoked'])
         // supporter re-accepts a NEW invite (e.g. after a revoke)

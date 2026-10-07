@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../state/auth_provider.dart';
 
-// I05_HF_08 Artisan profile created (first-time artisan)
+// I05 Artisan profile created (first-time artisan)
 class ArtisanProfileCreatedScreen extends StatelessWidget {
   const ArtisanProfileCreatedScreen({super.key});
 

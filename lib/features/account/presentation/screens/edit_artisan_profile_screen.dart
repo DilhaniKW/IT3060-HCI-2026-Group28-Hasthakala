@@ -5,9 +5,10 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/craft_categories.dart';
 import '../../../../core/shared_models/artisan_profile_model.dart';
 import '../state/artisan_profile_provider.dart';
+import '../state/auth_provider.dart';
 import 'profile_updated_screen.dart';
 
-// I05_HF_03 Edit Artisan Profile (+ saving, save failed, offline, discard states)
+// I05 Edit Artisan Profile (+ saving, save failed, offline, discard states)
 class EditArtisanProfileScreen extends StatefulWidget {
   final ArtisanProfileModel profile;
   const EditArtisanProfileScreen({super.key, required this.profile});
@@ -59,7 +60,10 @@ class _EditArtisanProfileScreenState extends State<EditArtisanProfileScreen> {
       about: _about.text.trim(),
       location: _location.text.trim(),
     );
+    final auth = context.read<AuthProvider>();
     final result = await context.read<ArtisanProfileProvider>().save(updated);
+    if (!mounted) return;
+    if (result == ProfileSaveResult.saved) await auth.reloadCurrentUser();
     if (!mounted) return;
 
     switch (result) {

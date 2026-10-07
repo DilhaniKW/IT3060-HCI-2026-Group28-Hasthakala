@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
-/// Persistent "Supporting <artisan>" context (I13 refinement, FR9, NFR3):
-/// makes it clear the supporter is acting as THEMSELF on the artisan's behalf.
+// "Supporting <artisan>" banner, always visible in supporter mode
 class SupportContextBanner extends StatelessWidget {
   final String artisanName;
   final String supporterName;
