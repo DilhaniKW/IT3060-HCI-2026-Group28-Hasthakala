@@ -607,6 +607,46 @@ class AppStrings {
     'craft_home_decor': {'en': 'Home Decor', 'si': 'නිවාස අලංකරණ', 'ta': 'வீட்டு அலங்காரம்'},
     'craft_other': {'en': 'Other', 'si': 'වෙනත්', 'ta': 'மற்றவை'},
 
+    // ---- my artisan profile (I05) ----
+    'profile_load_error': {
+      'en': 'Your profile could not be loaded. Check your connection.',
+      'si': 'ඔබේ පැතිකඩ පූරණය කළ නොහැකි විය. සම්බන්ධතාව පරීක්ෂා කරන්න.',
+      'ta': 'உங்கள் சுயவிவரத்தை ஏற்ற முடியவில்லை. இணைப்பைச் சரிபார்க்கவும்.',
+    },
+    'profile_verified': {
+      'en': 'Verified artisan',
+      'si': 'තහවුරු කළ ශිල්පී',
+      'ta': 'சரிபார்க்கப்பட்ட கைவினைஞர்',
+    },
+    'profile_not_verified': {
+      'en': 'Not verified yet',
+      'si': 'තවම තහවුරු කර නැත',
+      'ta': 'இன்னும் சரிபார்க்கப்படவில்லை',
+    },
+    'profile_buyers_see': {
+      'en': 'This is what buyers see on your public profile.',
+      'si': 'ඔබේ පොදු පැතිකඩේ ගැනුම්කරුවන් දකින්නේ මෙයයි.',
+      'ta': 'உங்கள் பொது சுயவிவரத்தில் வாங்குபவர்கள் பார்ப்பது இதுதான்.',
+    },
+    'about_my_craft': {
+      'en': 'About My Craft',
+      'si': 'මගේ කලාව ගැන',
+      'ta': 'எனது கைவினை பற்றி',
+    },
+    'profile_about_empty': {
+      'en': 'Not added yet.',
+      'si': 'තවම එක් කර නැත.',
+      'ta': 'இன்னும் சேர்க்கப்படவில்லை.',
+    },
+    'profile_member_since': {'en': 'Member since', 'si': 'සාමාජිකත්වය ලැබූ දිනය', 'ta': 'உறுப்பினரான நாள்'},
+    'profile_last_updated': {'en': 'Last updated', 'si': 'අවසන් වරට යාවත්කාලීන කළේ', 'ta': 'கடைசியாகப் புதுப்பிக்கப்பட்டது'},
+    'edit_profile': {'en': 'Edit Profile', 'si': 'පැතිකඩ සංස්කරණය', 'ta': 'சுயவிவரத்தைத் திருத்து'},
+    'preview_public_profile': {
+      'en': 'Preview Public Profile',
+      'si': 'පොදු පැතිකඩ පෙරදසුන',
+      'ta': 'பொது சுயவிவர முன்னோட்டம்',
+    },
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
@@ -615,7 +655,7 @@ class AppStrings {
     'nav_profile': {'en': 'Profile', 'si': 'පැතිකඩ', 'ta': 'சுயவிவரம்'},
   };
 
-  // English messages from validators / Firebase -> key, so they can be shown
+  // English messages from validators / Firebase - key, so they can be shown
   // in the chosen language without changing where they come from
   static const Map<String, String> messageKeys = {
     'We could not save your choice. Check your connection and try again.': 'err_save_choice',
