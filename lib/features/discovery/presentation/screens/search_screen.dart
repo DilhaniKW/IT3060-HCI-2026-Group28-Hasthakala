@@ -154,6 +154,34 @@ class _SearchScreenState extends State<SearchScreen> {
                                 'price': provider.maxPrice!.toStringAsFixed(2)
                               }),
                           ].join(' · '))),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 12, bottom: 12),
+                      child: InputDecorator(
+                        decoration: InputDecoration(
+                          labelText: context.tr('discovery_sort'),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<DiscoverySort>(
+                            key: const ValueKey('discovery-sort'),
+                            isExpanded: true,
+                            value: provider.sort,
+                            items: [
+                              for (final sort in DiscoverySort.values)
+                                DropdownMenuItem(
+                                  value: sort,
+                                  child: Text(context
+                                      .tr('discovery_sort_${sort.name}')),
+                                ),
+                            ],
+                            onChanged: (sort) {
+                              if (sort != null) provider.setSort(sort);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
                     Expanded(
                       child: provider.isSearching
                           ? LoadingIndicator(
