@@ -4,7 +4,7 @@ Things we agreed on while building the app, and why. Newest at the bottom.
 
 | # | Date | What we decided | Why |
 |---|---|---|---|
-| T1 | 05 Oct | Flutter + Firebase (Auth, Firestore, Storage) | No separate backend to build and host |
+| T1 | 01 Oct | Flutter + Firebase (Auth, Firestore, Storage) | No separate backend to build and host,experimenting and fixing issues |
 | T2 | 05 Oct | Everyone uses Flutter 3.47.6 / Dart 3.13.5 | Same builds on every laptop |
 | T3 | 05 Oct | App ID `lk.hasthakala.app` | Had to be fixed before registering the app in Firebase |
 | T4 | 05 Oct | `kotlin.incremental=false` in android/gradle.properties | Builds failed on Windows when the project and the pub cache were on different drives |

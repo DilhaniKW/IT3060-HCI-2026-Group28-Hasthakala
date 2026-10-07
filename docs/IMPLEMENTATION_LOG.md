@@ -1,6 +1,6 @@
 # Implementation log - Member 4 (feature/account-support)
 
-## 05-06 Oct - getting the project running
+## 01-06 Oct - getting the project running 
 - Fixed the developer branch so it builds: wrong import paths, .gitignore, app id, package versions.
 - Connected Firebase and started it before anything else in main.dart.
 - Security rules for user accounts.
@@ -11,6 +11,7 @@
 Problems we hit: Flutter not on PATH, missing Android command-line tools and NDK 28.2.13676358,
 Windows Developer Mode needed for plugins, Kotlin build cache failing across drives, and the app hanging
 on launch because Firebase was used before it started.
+Started with interfaces I01,105,I13
 
 ## 06 Oct - I13 Family Assistance
 - Artisan side: add a support user (name, relationship, phone, permissions), invitation code, pending invitations, edit permissions, revoke.
@@ -23,7 +24,7 @@ on launch because Firebase was used before it started.
 - Preview Public Profile opens Member 1's screen.
 - Changing the name updates it everywhere it's copied.
 
-## 06 Oct - I01 sign in and sign up
+## 02-06 Oct - I01 sign in and sign up
 - Intro (first launch), Welcome Back, forgot password with a real reset email.
 - Create Account -> Account Created -> How will you start -> You're all set / artisan setup.
 
