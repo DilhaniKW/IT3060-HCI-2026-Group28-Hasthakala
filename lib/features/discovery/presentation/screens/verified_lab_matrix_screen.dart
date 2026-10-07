@@ -191,12 +191,12 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             GridView.count(
-              crossAxisCount: 2,
+              crossAxisCount: MediaQuery.sizeOf(context).width < 360 ? 1 : 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.5,
+              childAspectRatio: MediaQuery.sizeOf(context).width < 360 ? 1.8 : 1.5,
               children: [
                 _buildMetricCard('Thermal Retention', '94.2%', Icons.thermostat),
                 _buildMetricCard('Lead & Cadmium Test', '0.00% (Pass)', Icons.sanitizer),
