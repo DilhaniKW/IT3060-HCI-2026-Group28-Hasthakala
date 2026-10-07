@@ -58,6 +58,17 @@ class DiscoveryRemoteDataSource {
   }
 
   /// Get public artisan profile
+  Future<List<ArtisanProfileModel>> searchArtisans() async {
+    final snapshot = await _firestoreService.instance
+        .collection(FirestoreCollections.artisanProfiles)
+        .get()
+        .timeout(const Duration(seconds: 10));
+    return snapshot.docs
+        .map((doc) => ArtisanProfileModel.fromMap(doc.data(), doc.id))
+        .toList();
+  }
+
+  /// Get public artisan profile
   Future<ArtisanProfileModel?> getArtisanProfile(String artisanId) async {
     if (artisanId.isEmpty) return null;
     final doc = await _firestoreService
