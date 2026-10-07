@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// remembers if the first-launch intro was already shown (I01)
+// remembers if the first-launch intro was already shown
 class OnboardingProvider extends ChangeNotifier {
   static const _key = 'onboarding_seen';
 

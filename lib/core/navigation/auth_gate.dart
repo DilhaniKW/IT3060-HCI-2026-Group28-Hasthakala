@@ -21,9 +21,9 @@ import '../localization/language_provider.dart';
 import 'artisan_shell.dart';
 import 'buyer_shell.dart';
 
-/// Decides the first screen from the signed-in state (I01, decision D1):
-/// checking -> signed out -> artisan setup -> "Continue as" -> shell.
-/// Screens never navigate to a home screen themselves; 
+// Decides the first screen from the signed-in state:
+// checking -> signed out -> artisan setup -> "Continue as" -> shell.
+// Screens never navigate to a home screen themselves;
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
 

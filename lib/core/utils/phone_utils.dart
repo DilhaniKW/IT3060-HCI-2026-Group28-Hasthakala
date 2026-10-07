@@ -1,7 +1,7 @@
-/// SL Numbers
-/// Stored format: 10 digits starting with 0, e.g. 0771234567.
+// SL Numbers
+// Stored format: 10 digits starting with 0, e.g. 0771234567.
 class PhoneUtils {
-  /// Converts "+94 77 123 4567", "94771234567" or "077-123 4567" to "0771234567".
+  // Converts "+94 77 123 4567", "94771234567" or "077-123 4567" to "0771234567".
   static String normalize(String input) {
     var digits = input.replaceAll(RegExp(r'[^0-9]'), '');
     if (digits.startsWith('94') && digits.length == 11) {

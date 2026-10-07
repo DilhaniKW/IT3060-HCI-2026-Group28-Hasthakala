@@ -43,7 +43,7 @@ class HasthakalaApp extends StatelessWidget {
         ],
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
-        // AuthGate picks the first screen from the sign-in state (I01, D1).
+        // AuthGate picks the first screen from the sign-in state.
         home: const AuthGate(),
         onGenerateRoute: RouteGenerator.generateRoute,
         ),

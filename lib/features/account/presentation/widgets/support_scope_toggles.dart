@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/support_models.dart';
 
-/// The three I13 permission toggles + the locked "Sensitive account functions" row . Used by Add Support
-/// User and Support User Details so both stay consistent.
+// permission toggles, used on Add Support User and Support User Details
 class SupportScopeToggles extends StatelessWidget {
   final SupportScopes scopes;
   final ValueChanged<SupportScopes>? onChanged; // null = read-only

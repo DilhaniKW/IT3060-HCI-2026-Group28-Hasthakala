@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../discovery/presentation/screens/public_artisan_profile_screen.dart';
 
-// I05_HF_05 Profile updated
+// I05 Profile updated
 class ProfileUpdatedScreen extends StatelessWidget {
   final String artisanId;
   const ProfileUpdatedScreen({super.key, required this.artisanId});

@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../core/constants/firestore_collections.dart';
 import '../../../../core/shared_models/support_models.dart';
 
-/// Thrown when an invitation cannot be accepted (wrong code/phone, expired, used).
+// Thrown when an invitation cannot be accepted (wrong code/phone, expired, used).
 class SupportInviteException implements Exception {
   final String message;
   const SupportInviteException(this.message);
@@ -13,9 +13,9 @@ class SupportInviteException implements Exception {
   String toString() => message;
 }
 
-/// I13 Family Assistance data access
-/// Every operation here is also checked by firestore.rules - the app hiding
-/// a button is never the only protection.
+// I13 Family Assistance data access
+// Every operation here is also checked by firestore.rules - the app hiding
+// a button is never the only protection.
 class FamilySupportRemoteDataSource {
   final FirebaseFirestore _db;
   final Random _random = Random.secure();
@@ -28,9 +28,9 @@ class FamilySupportRemoteDataSource {
   CollectionReference<Map<String, dynamic>> get _grants =>
       _db.collection(FirestoreCollections.supportGrants);
 
-  // Artisan (owner) side 
+  // Artisan (owner) side
 
-  /// READ: everyone the artisan has authorised (active and revoked).
+  // read: everyone the artisan has authorised (active and revoked).
   Stream<List<SupportGrantModel>> watchGrantsForArtisan(String artisanId) {
     return _grants
         .where('artisanId', isEqualTo: artisanId)
@@ -38,7 +38,7 @@ class FamilySupportRemoteDataSource {
         .map((s) => s.docs.map((d) => SupportGrantModel.fromMap(d.data())).toList());
   }
 
-  /// READ: invitations not yet accepted.
+  // read: invitations not yet accepted.
   Stream<List<SupportInviteModel>> watchPendingInvites(String artisanId) {
     return _invites
         .where('artisanId', isEqualTo: artisanId)
@@ -47,7 +47,7 @@ class FamilySupportRemoteDataSource {
         .map((s) => s.docs.map((d) => SupportInviteModel.fromMap(d.data())).toList());
   }
 
-  /// CREATE: a new invitation with a random 6-digit code (decision D4).
+  // create: a new invitation with a random 6-digit code.
   Future<SupportInviteModel> createInvite({
     required String artisanId,
     required String artisanName,
@@ -78,10 +78,10 @@ class FamilySupportRemoteDataSource {
     throw const SupportInviteException('Could not create an invitation. Please try again.');
   }
 
-  /// DELETE: cancel an invitation that has not been accepted.
+  // delete: cancel an invitation that has not been accepted.
   Future<void> cancelInvite(String code) => _invites.doc(code).delete();
 
-  /// UPDATE: change what a supporter may do.
+  // update: change what a supporter may do.
   Future<void> updateScopes(String grantId, SupportScopes scopes) {
     return _grants.doc(grantId).update({
       'scopes': scopes.toMap(),
@@ -89,7 +89,7 @@ class FamilySupportRemoteDataSource {
     });
   }
 
-  /// UPDATE: revoke access (kept as a record rather than deleted).
+  // update: revoke access (kept as a record rather than deleted).
   Future<void> revokeGrant(String grantId) {
     return _grants.doc(grantId).update({
       'status': SupportGrantStatus.revoked.name,
@@ -99,7 +99,7 @@ class FamilySupportRemoteDataSource {
 
   // Supporter side (accepting an invite, watching their grant)
 
-  /// CREATE grant from an invitation. The supporter must know BOTH the code and the phone number the artisan entered (rules compare them).
+  // supporter accepts an invite - needs the code and the phone number the artisan used
   Future<SupportGrantModel> acceptInvite({
     required String code,
     required String phone,
@@ -136,7 +136,7 @@ class FamilySupportRemoteDataSource {
       throw const SupportInviteException('You cannot accept your own invitation.');
     }
 
-    // 3. Create the grant and mark the invite accepted in ONE write.
+    // 3. Create the grant and mark the invite accepted in one write.
     final grant = SupportGrantModel(
       artisanId: invite.artisanId,
       artisanName: invite.artisanName,
@@ -157,7 +157,7 @@ class FamilySupportRemoteDataSource {
     return grant;
   }
 
-  /// READ (live): the supporter's grant, so a revoke or permission change is shown immediately.
+  // read (live): the supporter's grant, so a revoke or permission change is shown immediately.
   Stream<SupportGrantModel?> watchGrant(String grantId) {
     return _grants.doc(grantId).snapshots().map(
         (d) => d.exists && d.data() != null ? SupportGrantModel.fromMap(d.data()!) : null);

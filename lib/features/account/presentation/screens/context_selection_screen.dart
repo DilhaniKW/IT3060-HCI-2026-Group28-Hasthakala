@@ -5,9 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/support_models.dart';
 import '../state/auth_provider.dart';
 
-/// I01 hi-fi "Continue as <name>" - shown ONLY when the person has more than
-/// one context (decision D1). Supporter contexts appear only from an
-/// I13 authorisation, never self-selected.
+// I01 Continue as - only when someone has more than one context
 class ContextSelectionScreen extends StatefulWidget {
   const ContextSelectionScreen({super.key});
 

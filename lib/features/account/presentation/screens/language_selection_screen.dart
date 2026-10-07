@@ -5,7 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/language_provider.dart';
 import '../../../../core/localization/tr.dart';
 
-// I01 Choose Language (hi-fi frame 1). Used on first launch and from Profile.
+// I01 Choose Language. Used on first launch and from Profile.
 class LanguageSelectionScreen extends StatelessWidget {
   final bool fromProfile;
   const LanguageSelectionScreen({super.key, this.fromProfile = false});

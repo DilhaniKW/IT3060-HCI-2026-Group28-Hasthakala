@@ -5,7 +5,7 @@ import '../../../../core/shared_models/support_models.dart';
 import '../widgets/invite_code_card.dart';
 import 'add_support_user_screen.dart';
 
-///  Invitation sent. Shows the 6-digit code (decision D4: no SMS backend, so the owner shares the code in person or by phone).
+//  Invitation sent. Shows the 6-digit code.
 class InvitationSentScreen extends StatelessWidget {
   final SupportInviteModel invite;
   const InvitationSentScreen({super.key, required this.invite});

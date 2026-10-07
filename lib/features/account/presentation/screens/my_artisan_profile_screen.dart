@@ -9,7 +9,7 @@ import '../state/artisan_profile_provider.dart';
 import '../state/auth_provider.dart';
 import 'edit_artisan_profile_screen.dart';
 
-// I05_HF_02 My Artisan Profile
+// I05 My Artisan Profile
 class MyArtisanProfileScreen extends StatefulWidget {
   const MyArtisanProfileScreen({super.key});
 

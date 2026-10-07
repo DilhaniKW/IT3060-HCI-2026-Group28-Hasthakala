@@ -8,7 +8,7 @@ import '../state/auth_provider.dart';
 import 'register_screen.dart';
 import 'reset_password_screen.dart';
 
-// I01 Welcome Back (hi-fi frame 3) + "Signing you in..." (frame 6)
+// I01 Welcome Back + Signing you in
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 

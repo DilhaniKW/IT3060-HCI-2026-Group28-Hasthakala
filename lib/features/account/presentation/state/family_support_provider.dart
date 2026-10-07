@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/shared_models/support_models.dart';
 import '../../data/datasources/family_support_remote_datasource.dart';
 
-/// I13 Family Assistance state (Member 4).
+// I13 Family Assistance state.
 class FamilySupportProvider extends ChangeNotifier {
   final FamilySupportRemoteDataSource _dataSource;
 

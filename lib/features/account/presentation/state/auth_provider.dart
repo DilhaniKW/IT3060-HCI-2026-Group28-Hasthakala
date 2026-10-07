@@ -9,22 +9,20 @@ import '../../../../core/shared_models/user_model.dart';
 import '../../data/datasources/auth_remote_datasource.dart';
 import '../../data/datasources/context_remote_datasource.dart';
 
-/// Where the app is in the sign-in process.
+// Where the app is in the sign-in process.
 enum AuthStatus { checking, signedOut, signedIn }
 
-/// Which "hat" the person is currently wearing (decision D1).
+// buyer, artisan or supporting someone
 enum AppContextType { buyer, artisan, supporter }
 
-/// I01 Entry/Auth state (Member 4) - shared by ALL members.
-///
-/// Other members should use:
-///   auth.currentUser        -> the signed-in person (always themselves)
-///   auth.actingArtisanId    -> whose shop I11/I12/I09 should load
-///                              (own uid for an artisan, the supported
-///                              artisan's uid for a supporter)
-///   auth.canManageProducts / canManageOrders / canRespondToCustomers
-///                           -> hide/disable actions in the UI. The real
-///                              protection is in firestore.rules (NFR3).
+// Sign-in state used across the app. Useful bits for other screens:
+//   auth.currentUser        -> the signed-in person (always themselves)
+//   auth.actingArtisanId    -> whose shop I11/I12/I09 should load
+//                              (own uid for an artisan, the supported
+//                              artisan's uid for a supporter)
+//   auth.canManageProducts / canManageOrders / canRespondToCustomers
+//                           -> hide/disable actions in the UI. The real
+//                              protection is in firestore.rules.
 class AuthProvider extends ChangeNotifier {
   final AuthRemoteDataSource _authDataSource;
   final ContextRemoteDataSource _contextDataSource;
@@ -82,15 +80,15 @@ class AuthProvider extends ChangeNotifier {
   bool get isArtisanContext => _activeContext == AppContextType.artisan;
   bool get isSupporterContext => _activeContext == AppContextType.supporter;
 
-  /// Chose "Sell my crafts" but has not completed the artisan profile yet.
+  // Chose "Sell my crafts" but has not completed the artisan profile yet.
   bool get needsArtisanSetup =>
       (_currentUser?.startedAsSeller ?? false) && !_hasArtisanProfile;
 
-  /// Number of contexts: buyer always + artisan + each active support grant.
+  // Number of contexts: buyer always + artisan + each active support grant.
   int get availableContextCount =>
       1 + (_hasArtisanProfile ? 1 : 0) + _supportGrants.length;
 
-  /// "Continue as" is shown only when there is more than one context (D1).
+  // "Continue as" is shown only when there is more than one context.
   bool get needsContextChoice =>
       _status == AuthStatus.signedIn &&
       !needsArtisanSetup &&
@@ -101,7 +99,7 @@ class AuthProvider extends ChangeNotifier {
       _activeContext == null &&
       availableContextCount > 1;
 
-  /// The artisan whose business I11 / I12 / I09 should show.
+  // The artisan whose business I11 / I12 / I09 should show.
   String? get actingArtisanId {
     if (isArtisanContext) return _currentUser?.uid;
     if (isSupporterContext) return _activeGrant?.artisanId;
@@ -124,7 +122,7 @@ class AuthProvider extends ChangeNotifier {
       return;
     }
     // During registration the users/{uid} document is written just after the
-    // Auth account is created; register() loads the session itself.
+    // Auth account is created; register loads the session itself.
     if (_isRegistering) return;
     await _loadSession(uid);
   }
@@ -291,7 +289,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  /// "Continue as" choice (I01, D1).
+  // "Continue as" choice.
   void selectContext(AppContextType type, {SupportGrantModel? grant}) {
     _grantSubscription?.cancel();
     _grantSubscription = null;
@@ -351,7 +349,7 @@ class AuthProvider extends ChangeNotifier {
     await _loadSession(uid);
   }
 
-  /// Go back to the "Continue as" screen (when more than one context exists).
+  // Go back to the "Continue as" screen (when more than one context exists).
   void switchContext() {
     if (availableContextCount < 2) return;
     _grantSubscription?.cancel();
@@ -361,8 +359,8 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// First-time artisan setup: CREATE artisanProfiles/{uid}, then continue
-  /// in the artisan context.
+  // First-time artisan setup: create artisanProfiles/{uid}, then continue
+  // in the artisan context.
   Future<bool> completeArtisanSetup(ArtisanProfileModel profile) async {
     _isLoading = true;
     _errorMessage = null;

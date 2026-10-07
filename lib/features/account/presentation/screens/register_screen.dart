@@ -5,7 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/input_validators.dart';
 import '../state/auth_provider.dart';
 
-// I01 Create Account (hi-fi frame 13). Shop/Sell is chosen on the next screen.
+// I01 Create Account. Shop/Sell is chosen on the next screen.
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 

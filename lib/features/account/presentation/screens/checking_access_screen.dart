@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/tr.dart';
 
-/// I01 hi-fi "Checking your available access..." (visibility of system status).
-/// Shown while the session and contexts are being loaded.
+// I01 Checking your available access
+// Shown while the session and contexts are being loaded.
 class CheckingAccessScreen extends StatelessWidget {
   const CheckingAccessScreen({super.key});
 

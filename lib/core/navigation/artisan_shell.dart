@@ -11,10 +11,10 @@ import '../localization/tr.dart';
 import '../widgets/restricted_access_view.dart';
 import '../widgets/support_context_banner.dart';
 
-/// Artisan navigation - LOCKED to Home | Products | Orders | Profile.
-/// Home | Products | Orders | Profile.
-/// Also reused by an authorised supporter (I13): same structure, persistent
-/// "Supporting <artisan>" banner, and only permitted areas available.
+// Artisan bottom navigation.
+// Home | Products | Orders | Profile.
+// Also reused by an authorised supporter: same structure, persistent
+// "Supporting <artisan>" banner, and only permitted areas available.
 class ArtisanShell extends StatefulWidget {
   const ArtisanShell({super.key});
 
@@ -33,19 +33,19 @@ class _ArtisanShellState extends State<ArtisanShell> {
     final isSupporter = auth.isSupporterContext;
 
     final tabs = <Widget>[
-      // I10  Supporter home is part of I13 .
+      // I10  Supporter home is part of I13.
       isSupporter
           ? SupporterHomeScreen(onOpenTab: (i) => setState(() => _index = i))
           : ArtisanDashboardScreen(artisanId: artisanId),
-      // I11 (Member 3)
+      // I11
       auth.canManageProducts
           ? ManageProductsScreen(artisanId: artisanId)
           : RestrictedAccessView(featureName: 'Manage products', artisanName: artisanName),
-      // I12 (Member 3)
+      // I12
       auth.canManageOrders
           ? const ArtisanOrdersScreen()
           : RestrictedAccessView(featureName: 'Manage orders', artisanName: artisanName),
-      // Profile: I05 Manage + I13 entry 
+      // Profile: I05 Manage + I13 entry
       const ProfileScreen(),
     ];
 

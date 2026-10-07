@@ -10,8 +10,8 @@ import 'add_support_user_screen.dart';
 import 'support_user_details_screen.dart';
 
 
-/// READ: authorised support users + pending invitations.
-/// DELETE: cancel a pending invitation.
+// read: authorised support users + pending invitations.
+// delete: cancel a pending invitation.
 class FamilyAssistanceScreen extends StatefulWidget {
   const FamilyAssistanceScreen({super.key});
 

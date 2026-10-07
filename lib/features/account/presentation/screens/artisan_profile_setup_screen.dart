@@ -6,9 +6,7 @@ import '../../../../core/constants/craft_categories.dart';
 import '../../../../core/shared_models/artisan_profile_model.dart';
 import '../state/auth_provider.dart';
 
-/// I05 first-time setup - hi-fi "Complete Your Artisan Profile" (FR1).
-/// CREATES artisanProfiles/{uid}. Profile photo is added later in
-/// I05 Manage once Cloud Storage is enabled (decision T6).
+// I05 Complete Your Artisan Profile (first time) - creates artisanProfiles/{uid}
 class ArtisanProfileSetupScreen extends StatefulWidget {
   const ArtisanProfileSetupScreen({super.key});
 

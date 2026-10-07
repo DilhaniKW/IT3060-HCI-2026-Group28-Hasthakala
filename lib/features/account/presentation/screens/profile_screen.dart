@@ -10,8 +10,8 @@ import 'family_assistance_screen.dart';
 import 'language_selection_screen.dart';
 import 'my_artisan_profile_screen.dart';
 
-/// Profile tab (Member 4) - the entry point to I05 Manage and I13.
-/// What it shows depends on the active context (decision D1).
+// Profile tab - the entry point to I05 Manage and I13.
+// What it shows depends on the active context.
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -80,7 +80,7 @@ class ProfileScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (_) => const FamilyAssistanceScreen())),
             ),
 
-          // buyer can accept an invite to help an artisan (I13)
+          // buyer can accept an invite to help an artisan
           if (auth.isBuyerContext)
             _MenuCard(
               icon: Icons.handshake_outlined,

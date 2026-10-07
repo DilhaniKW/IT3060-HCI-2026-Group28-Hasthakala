@@ -5,7 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/tr.dart';
 import '../state/onboarding_provider.dart';
 
-//  first-launch intro : Shown once, then the sign in screen.
+//  first-launch intro: Shown once, then the sign in screen.
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
 
@@ -27,7 +27,7 @@ class OnboardingScreen extends StatelessWidget {
               Text(context.tr('intro_title'),
                   style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700, height: 1.25)),
               const Spacer(),
-              // TODO(I01 UI): replace with the artisan photo from the hi-fi
+              // TODO: replace with the artisan photo from the hi-fi
               Center(child: Image.asset('assets/images/hasthakala_logo.png', width: 220)),
               const Spacer(),
               Text(context.tr('intro_line1'),

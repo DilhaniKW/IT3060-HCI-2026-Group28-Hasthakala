@@ -9,7 +9,7 @@ import '../state/family_support_provider.dart';
 import '../widgets/support_scope_toggles.dart';
 import 'invitation_sent_screen.dart';
 
-/// I13_Add Support User (owner). CREATE: supportInvites/{code}.
+// I13 Add Support User - creates supportInvites/{code}
 class AddSupportUserScreen extends StatefulWidget {
   const AddSupportUserScreen({super.key});
 

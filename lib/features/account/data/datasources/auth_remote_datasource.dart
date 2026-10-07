@@ -3,9 +3,7 @@ import '../../../../core/services/firebase/firebase_auth_service.dart';
 import '../../../../core/services/firebase/firestore_service.dart';
 import '../../../../core/shared_models/user_model.dart';
 
-/// I01 Entry/Auth data access (Member 4).
-/// Identity comes from Firebase Authentication; the account document is
-/// users/{uid} (see docs/FIREBASE_SCHEMA.md).
+// sign in / sign up data: Firebase Auth + users/{uid}
 class AuthRemoteDataSource {
   final FirebaseAuthService _authService;
   final FirestoreService _firestoreService;
@@ -16,12 +14,12 @@ class AuthRemoteDataSource {
   })  : _authService = authService ?? FirebaseAuthService(),
         _firestoreService = firestoreService ?? FirestoreService();
 
-  /// Emits the signed-in user's uid, or null when signed out.
-  /// Firebase keeps the session on the device, so this restores it on restart.
+  // Emits the signed-in user's uid, or null when signed out.
+  // Firebase keeps the session on the device, so this restores it on restart.
   Stream<String?> get uidChanges =>
       _authService.authStateChanges.map((user) => user?.uid);
 
-  /// READ users/{uid}
+  // read users/{uid}
   Future<UserModel?> fetchUser(String uid) async {
     final doc = await _firestoreService.getDocument(
       collection: FirestoreCollections.users,

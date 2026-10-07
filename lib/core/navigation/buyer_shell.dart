@@ -7,9 +7,9 @@ import '../../features/discovery/presentation/screens/home_screen.dart';
 import '../../features/discovery/presentation/screens/search_screen.dart';
 import '../widgets/placeholder_tab.dart';
 
-/// Buyer navigation - LOCKED to Home | Search | Orders | Profile.
-/// Home | Search | Orders | Profile. Cart is a contextual action, not a tab.
-/// Owners replace their tab's screen here when it is ready.
+// Buyer bottom navigation.
+// Home | Search | Orders | Profile. Cart is a contextual action, not a tab.
+// Owners replace their tab's screen here when it is ready.
 class BuyerShell extends StatefulWidget {
   const BuyerShell({super.key});
 
