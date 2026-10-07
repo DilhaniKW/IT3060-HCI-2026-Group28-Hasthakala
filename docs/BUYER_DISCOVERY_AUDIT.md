@@ -2,6 +2,12 @@
 
 Reviewed: 7 October 2026. Branch: `feature/buyer-discovery`.
 
+## Search layout refresh (8 October)
+
+- Reworked Search into a constrained, centered layout with a clear heading, full-width search field, prominent filter button, rounded Products/Artisans tabs and aligned category controls. Desktop results and compact sorting share a row; narrow screens stack them. Product grids use responsive column counts.
+- Replaced the sparse empty state with a compact bordered card. When a query or filter is active, Reset search clears both. Artisan controls align with the same content edge. Existing translation mappings render human-readable tab labels in the generated previews.
+- **100 automated tests passed**, including English/Sinhala/Tamil search and empty-state layouts at 320px, 390px and 960px. Inspected mobile populated and desktop empty previews in `.dart_tool/polish_previews/`. Mock product images in tests remain placeholders; no production imagery was removed.
+
 ## Artisan search completion (8 October)
 
 - Completed the interrupted Products/Artisans search switch with English/Sinhala/Tamil labels. Artisan mode reads public `artisanProfiles` on first entry, searches name/craft/about/location locally, and combines category and verified-only filters. It does not query private account documents or apply product price filters to artisans.
