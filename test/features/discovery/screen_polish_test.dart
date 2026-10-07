@@ -15,9 +15,18 @@ import 'package:hasthakala/features/purchase/presentation/state/cart_provider.da
 import 'package:hasthakala/features/purchase/presentation/screens/checkout_screen.dart';
 import 'package:hasthakala/features/discovery/discovery.dart';
 
-final craft = ProductModel(id: 'test-jug', artisanId: 'test-maker', artisanName: 'Sunil Kariyawasam',
-  title: 'Terracotta Heritage Water Jug', description: 'Handmade pottery from a local workshop.',
-  priceLkr: 2400, category: 'pottery', imageUrls: [], district: 'Kandy', materials: 'Terracotta clay', stockQuantity: 5);
+final craft = ProductModel(
+    id: 'test-jug',
+    artisanId: 'test-maker',
+    artisanName: 'Sunil Kariyawasam',
+    title: 'Terracotta Heritage Water Jug',
+    description: 'Handmade pottery from a local workshop.',
+    priceLkr: 2400,
+    category: 'pottery',
+    imageUrls: [],
+    district: 'Kandy',
+    materials: 'Terracotta clay',
+    stockQuantity: 5);
 
 void main() {
   setUpAll(() async {
@@ -25,15 +34,26 @@ void main() {
     loader.addFont(rootBundle.load('assets/fonts/PlusJakartaSans-Regular.ttf'));
     loader.addFont(rootBundle.load('assets/fonts/PlusJakartaSans-Bold.ttf'));
     await loader.load();
+    final icons = FontLoader('MaterialIcons');
+    icons.addFont(rootBundle.load('fonts/MaterialIcons-Regular.otf'));
+    await icons.load();
   });
   final screens = <String, Widget Function()>{
     'home': () => const HomeScreen(),
-    'explore': () => SearchScreen(search: ({query, category, district, maxPrice}) async => [craft]),
+    'explore': () => SearchScreen(
+        search: ({query, category, district, maxPrice}) async => [craft]),
     'details': () => ProductDetailsScreen(product: craft),
-    'profile': () => PublicArtisanProfileScreen(artisanId: 'test-maker',
-      loadProfile: (id) async => ArtisanProfileModel(artisanUid: id, displayName: 'Sunil Kariyawasam',
-        about: 'Preserving Sri Lankan pottery traditions through handmade craft.', craftType: 'pottery', location: 'Kandy', verified: true),
-      loadProducts: (_) async => [craft]),
+    'profile': () => PublicArtisanProfileScreen(
+        artisanId: 'test-maker',
+        loadProfile: (id) async => ArtisanProfileModel(
+            artisanUid: id,
+            displayName: 'Sunil Kariyawasam',
+            about:
+                'Preserving Sri Lankan pottery traditions through handmade craft.',
+            craftType: 'pottery',
+            location: 'Kandy',
+            verified: true),
+        loadProducts: (_) async => [craft]),
     'master': () => const MasterArtisanProfileScreen(),
     'catalog': () => const CraftCatalogScreen(),
     'reviews': () => const ArtisanReviewsScreen(),
@@ -43,43 +63,66 @@ void main() {
   };
   for (final width in [320.0, 390.0]) {
     for (final entry in screens.entries) {
-      testWidgets('${entry.key} fits ${width.toInt()}px and scrolls', (tester) async {
+      testWidgets('${entry.key} fits ${width.toInt()}px and scrolls',
+          (tester) async {
         SharedPreferences.setMockInitialValues({});
-        tester.view.physicalSize = Size(width, 844); tester.view.devicePixelRatio = 1;
-        addTearDown(tester.view.resetPhysicalSize); addTearDown(tester.view.resetDevicePixelRatio);
+        tester.view.physicalSize = Size(width, 844);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
         final favorites = FavoritesProvider();
         await tester.runAsync(() => favorites.setAccount('qa'));
         final boundaryKey = GlobalKey();
-        await tester.pumpWidget(MultiProvider(providers: [
-          ChangeNotifierProvider.value(value: favorites),
-          ChangeNotifierProvider(create: (_) => DiscoveryProvider(featuredProducts: () => Stream.value([craft]))),
-          ChangeNotifierProvider(create: (_) => CartProvider()..addProduct(craft)),
-        ], child: MaterialApp(theme: AppTheme.lightTheme, home: RepaintBoundary(key: boundaryKey,
-          child: MediaQuery(data: MediaQueryData(size: Size(width,844), textScaler: TextScaler.linear(width == 320 ? 1.2 : 1)), child: entry.value())))));
+        await tester.pumpWidget(MultiProvider(
+            providers: [
+              ChangeNotifierProvider.value(value: favorites),
+              ChangeNotifierProvider(
+                  create: (_) => DiscoveryProvider(
+                      featuredProducts: () => Stream.value([craft]))),
+              ChangeNotifierProvider(
+                  create: (_) => CartProvider()..addProduct(craft)),
+            ],
+            child: MaterialApp(
+                theme: AppTheme.lightTheme,
+                home: RepaintBoundary(
+                    key: boundaryKey,
+                    child: MediaQuery(
+                        data: MediaQueryData(
+                            size: Size(width, 844),
+                            textScaler:
+                                TextScaler.linear(width == 320 ? 1.2 : 1)),
+                        child: entry.value())))));
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull);
         if (width == 390) {
           await tester.runAsync(() async {
-            final boundary = boundaryKey.currentContext!.findRenderObject()! as RenderRepaintBoundary;
+            final boundary = boundaryKey.currentContext!.findRenderObject()!
+                as RenderRepaintBoundary;
             final image = await boundary.toImage(pixelRatio: 1);
-            final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
-            final directory = Directory('.dart_tool/polish_previews')..createSync(recursive: true);
-            File('${directory.path}/${entry.key}.png').writeAsBytesSync(bytes!.buffer.asUint8List());
+            final bytes =
+                await image.toByteData(format: ui.ImageByteFormat.png);
+            final directory = Directory('.dart_tool/polish_previews')
+              ..createSync(recursive: true);
+            File('${directory.path}/${entry.key}.png')
+                .writeAsBytesSync(bytes!.buffer.asUint8List());
             image.dispose();
           });
         }
         final scrollables = find.byType(Scrollable);
         if (scrollables.evaluate().isNotEmpty) {
           // The outer screen scroll covers lower sections without tapping actions.
-          final vertical = find.byWidgetPredicate((w) => w is Scrollable && w.axisDirection == AxisDirection.down);
+          final vertical = find.byWidgetPredicate(
+              (w) => w is Scrollable && w.axisDirection == AxisDirection.down);
           if (vertical.evaluate().isNotEmpty) {
-            for (var i=0;i<5;i++) {
-              await tester.drag(vertical.first, const Offset(0,-500)); await tester.pumpAndSettle();
+            for (var i = 0; i < 5; i++) {
+              await tester.drag(vertical.first, const Offset(0, -500));
+              await tester.pumpAndSettle();
               expect(tester.takeException(), isNull);
             }
           }
         }
-        await tester.pumpWidget(const SizedBox()); favorites.dispose();
+        await tester.pumpWidget(const SizedBox());
+        favorites.dispose();
       });
     }
   }
