@@ -1,7 +1,7 @@
 import '../../../../core/constants/firestore_collections.dart';
 import '../../../../core/services/firebase/firestore_service.dart';
 import '../../../../core/shared_models/product_model.dart';
-import '../../../../core/shared_models/user_model.dart';
+import '../../../../core/shared_models/artisan_profile_model.dart';
 import '../discovery_filters.dart';
 
 /// Assigned to: JAYAWARDANA V. K. A.
@@ -48,24 +48,29 @@ class DiscoveryRemoteDataSource {
   }
 
   /// Get public artisan profile
-  Future<UserModel?> getArtisanProfile(String artisanId) async {
-    try {
-      if (artisanId.isEmpty ||
-          artisanId.startsWith('artisan_') ||
-          artisanId.startsWith('sample_')) {
-        return null;
-      }
-      final doc = await _firestoreService
-          .getDocument(
-            collection: FirestoreCollections.users,
-            docId: artisanId,
-          )
-          .timeout(const Duration(seconds: 2));
+  Future<ArtisanProfileModel?> getArtisanProfile(String artisanId) async {
+    if (artisanId.isEmpty) return null;
+    final doc = await _firestoreService
+        .getDocument(
+          collection: FirestoreCollections.artisanProfiles,
+          docId: artisanId,
+        )
+        .timeout(const Duration(seconds: 10));
 
-      if (!doc.exists || doc.data() == null) return null;
-      return UserModel.fromMap(doc.data()!, doc.id);
-    } catch (_) {
-      return null;
-    }
+    if (!doc.exists || doc.data() == null) return null;
+    return ArtisanProfileModel.fromMap(doc.data()!, doc.id);
+  }
+
+  Future<List<ProductModel>> getArtisanProducts(String artisanId) async {
+    if (artisanId.isEmpty) return [];
+    final snapshot = await _firestoreService.instance
+        .collection(FirestoreCollections.products)
+        .where('artisanId', isEqualTo: artisanId)
+        .get()
+        .timeout(const Duration(seconds: 10));
+    return snapshot.docs
+        .map((doc) => ProductModel.fromMap(doc.data(), doc.id))
+        .where((product) => product.isAvailable)
+        .toList();
   }
 }
