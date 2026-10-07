@@ -14,7 +14,15 @@ class _CustomCommissionScreenState extends State<CustomCommissionScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _budgetController = TextEditingController(text: '5000');
   String _selectedCategory = 'Pottery & Clay';
-  String _selectedArtisan = 'Sunil Kariyawasam (Kelaniya)';
+  String _selectedArtisan = 'Sunil Kariyawasam (Kelaniya Guild)';
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    _budgetController.dispose();
+    super.dispose();
+  }
 
   final List<String> _categories = [
     'Pottery & Clay',
