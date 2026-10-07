@@ -7,6 +7,7 @@ import '../../../../core/shared_models/artisan_profile_model.dart';
 import '../state/artisan_profile_provider.dart';
 import 'craft_name.dart';
 import 'profile_cover_header.dart';
+import 'profile_covers.dart';
 
 // small preview of the artisan profile with a green tick on the corner.
 // used on "Artisan profile created!" and "Profile updated".
@@ -44,7 +45,10 @@ class _ProfilePreviewCardState extends State<ProfilePreviewCard> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              ProfileCoverHeader(
+              ArtisanCoverStyle(
+                uid: widget.artisanId,
+                builder: (context, style) => ProfileCoverHeader(
+                coverStyle: style,
                 name: p.displayName,
                 photoUrl: p.photoUrl,
                 chip: ProfileChip(
@@ -67,6 +71,7 @@ class _ProfilePreviewCardState extends State<ProfilePreviewCard> {
                       ],
                     ),
                 ],
+              ),
               ),
               const Positioned(top: -14, right: -8, child: _Tick(size: 22)),
             ],

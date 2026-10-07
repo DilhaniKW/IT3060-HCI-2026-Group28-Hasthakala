@@ -18,6 +18,15 @@ class ArtisanProfileRemoteDataSource {
         d.exists && d.data() != null ? ArtisanProfileModel.fromMap(d.data()!, d.id) : null);
   }
 
+  // cover style is kept apart from the edit form, so saving one never touches the other
+  Stream<String?> watchCoverStyle(String uid) {
+    return _doc(uid).snapshots().map((d) => d.data()?['coverStyle'] as String?);
+  }
+
+  Future<void> updateCoverStyle(String uid, String style) async {
+    await _doc(uid).update({'coverStyle': style});
+  }
+
   // only the editable fields are sent - verified can't be changed by the artisan
   Future<void> updateProfile(ArtisanProfileModel profile) async {
     await _doc(profile.artisanUid).update({

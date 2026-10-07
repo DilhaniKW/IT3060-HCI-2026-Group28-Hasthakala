@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import 'profile_avatar_widget.dart';
+import 'profile_covers.dart';
 
-// card with the HASTHAKALA cover photo, the avatar on its edge,
+// card with the cover (photo or one of the colour covers), the avatar on its edge,
 // then the name and a small chip. Used on Profile and My Artisan Profile.
 class ProfileCoverHeader extends StatelessWidget {
   final String name;
   final String? photoUrl;
   final Widget? chip;
   final List<Widget> details;
+  final String? coverStyle;
+  final Widget? coverAction; // e.g. the Change cover button, top right
 
   const ProfileCoverHeader({
     super.key,
@@ -17,6 +20,8 @@ class ProfileCoverHeader extends StatelessWidget {
     this.photoUrl,
     this.chip,
     this.details = const [],
+    this.coverStyle,
+    this.coverAction,
   });
 
   static const _coverHeight = 118.0;
@@ -42,7 +47,7 @@ class ProfileCoverHeader extends StatelessWidget {
                   left: 0,
                   right: 0,
                   height: _coverHeight,
-                  child: Image.asset('assets/images/profile_cover.jpg', fit: BoxFit.cover),
+                  child: CoverArt(cover: coverFor(coverStyle)),
                 ),
                 // fade the bottom of the photo into the card
                 Positioned(
@@ -63,6 +68,7 @@ class ProfileCoverHeader extends StatelessWidget {
                     ),
                   ),
                 ),
+                if (coverAction != null) Positioned(top: 8, right: 8, child: coverAction!),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: ProfileAvatarWidget(

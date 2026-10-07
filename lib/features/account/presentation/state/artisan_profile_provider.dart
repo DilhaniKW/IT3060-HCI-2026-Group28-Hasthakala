@@ -18,6 +18,20 @@ class ArtisanProfileProvider extends ChangeNotifier {
 
   Stream<ArtisanProfileModel?> watchProfile(String uid) => _dataSource.watchProfile(uid);
 
+  Stream<String?> watchCoverStyle(String uid) => _dataSource.watchCoverStyle(uid);
+
+  // same offline check as save(), but without the saving overlay
+  Future<ProfileSaveResult> saveCoverStyle(String uid, String style) async {
+    try {
+      await _dataSource.updateCoverStyle(uid, style).timeout(const Duration(seconds: 10));
+      return ProfileSaveResult.saved;
+    } on TimeoutException {
+      return ProfileSaveResult.offline;
+    } catch (_) {
+      return ProfileSaveResult.failed;
+    }
+  }
+
   Future<ProfileSaveResult> save(ArtisanProfileModel profile) async {
     _isSaving = true;
     notifyListeners();

@@ -791,12 +791,39 @@ class AppStrings {
     },
     'view_my_profile': {'en': 'View My Profile', 'si': 'මගේ පැතිකඩ බලන්න', 'ta': 'எனது சுயவிவரத்தைப் பார்'},
 
+    // ---- profile cover (I05) ----
+    'cover_change': {'en': 'Change cover', 'si': 'කවරය වෙනස් කරන්න', 'ta': 'அட்டையை மாற்று'},
+    'cover_title': {'en': 'Choose a cover', 'si': 'කවරයක් තෝරන්න', 'ta': 'அட்டையைத் தேர்ந்தெடுக்கவும்'},
+    'cover_sub': {
+      'en': 'Buyers see this at the top of your profile.',
+      'si': 'ගැනුම්කරුවන් මෙය ඔබේ පැතිකඩේ ඉහළින් දකිති.',
+      'ta': 'வாங்குபவர்கள் இதை உங்கள் சுயவிவரத்தின் மேலே பார்ப்பார்கள்.',
+    },
+    'cover_photo': {'en': 'Hasthakala crafts', 'si': 'හස්තකලා නිර්මාණ', 'ta': 'ஹஸ்தகலா கைவினைகள்'},
+    'cover_collage': {'en': 'Crafts collage', 'si': 'නිර්මාණ එකතුව', 'ta': 'கைவினைத் தொகுப்பு'},
+    'cover_clay': {'en': 'Terracotta clay', 'si': 'මැටි රතු', 'ta': 'சுடுமண் சிவப்பு'},
+    'cover_sunset': {'en': 'Golden sunset', 'si': 'රන්වන් සැන්දෑව', 'ta': 'பொன் அந்தி'},
+    'cover_paddy': {'en': 'Paddy field', 'si': 'කුඹුර', 'ta': 'நெல் வயல்'},
+    'cover_linen': {'en': 'Raw linen', 'si': 'ලිනන් රෙදි', 'ta': 'லினன் துணி'},
+    'cover_saving': {'en': 'Changing cover...', 'si': 'කවරය වෙනස් කරමින්...', 'ta': 'அட்டை மாற்றப்படுகிறது...'},
+    'cover_saved': {'en': 'Cover updated', 'si': 'කවරය යාවත්කාලීන විය', 'ta': 'அட்டை புதுப்பிக்கப்பட்டது'},
+    'cover_offline': {
+      'en': "You're offline. The cover will change when you're connected again.",
+      'si': 'ඔබ නොබැඳි ය. නැවත සම්බන්ධ වූ විට කවරය වෙනස් වේ.',
+      'ta': 'நீங்கள் இணைப்பில் இல்லை. மீண்டும் இணைந்ததும் அட்டை மாறும்.',
+    },
+    'cover_failed': {
+      'en': "We couldn't change the cover. Please try again.",
+      'si': 'කවරය වෙනස් කිරීමට නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'அட்டையை மாற்ற முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
     'nav_orders': {'en': 'Orders', 'si': 'ඇණවුම්', 'ta': 'ஆர்டர்கள்'},
     'nav_products': {'en': 'Products', 'si': 'නිෂ්පාදන', 'ta': 'தயாரிப்புகள்'},
-    'nav_profile': {'en': 'Profile', 'si': 'පැතිකඩ/ප්‍රොෆයිල්', 'ta': 'சுயவிவரம்'},
+    'nav_profile': {'en': 'Profile', 'si': 'ප්‍රොෆයිල්', 'ta': 'சுயவிவரம்'},
   };
 
   // English messages from validators / Firebase - key, so they can be shown

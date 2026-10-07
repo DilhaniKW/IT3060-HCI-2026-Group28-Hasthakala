@@ -27,6 +27,7 @@ Cart: `users/{uid}/cart/{productId}` - productId, artisanId, title, unitPrice, q
 
 **artisanProfiles/{uid}** - artisan profile (ArtisanProfileModel)
 artisanUid, displayName, craftType, about, location, photoUrl, verified, createdAt, updatedAt.
+Optional `coverStyle` (`photo`, `collage`, `clay`, `sunset`, `paddy`, `linen`) - the cover the artisan picked; missing means `photo`. Saved on its own, not by the edit form.
 Only an admin can change `verified`. Ratings are worked out from reviews.
 
 **products/{productId}** (ProductModel)

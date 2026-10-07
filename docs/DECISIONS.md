@@ -31,6 +31,7 @@ Things we agreed on while building the app, and why. Newest at the bottom.
 | I01d | 06 Oct | Circular logo (`assets/images/hasthakala_logo.png`) | The logo had to be circular; works well at small sizes |
 | I05a | 06 Oct | Changing the artisan name also updates the account name, products, support grants and pending invites | The old name was still showing on some screens |
 | I05b | 06 Oct | If a save gets no reply in 10 seconds we show "You're offline" | Firestore waits instead of failing when there's no connection |
+| I05c | 07 Oct | Artisans can pick a profile cover (2 photos or 4 colour covers from our palette) | Lets artisans make their profile a bit more their own while keeping the brand colours and readable text |
 | U1 | 06 Oct | Dark mode is a planned improvement, not done now | Colours are set per screen in everyone's code, so a half-done dark mode would look broken in testing |
 | B1 | 06 Oct | Animated splash, Hasthakala app icon and launch screen | Replace the default Flutter logo |
 | B2 | 06 Oct | Plus Jakarta Sans font included; Sinhala and Tamil use the phone's fonts | Font from the hi-fi; it has no Sinhala or Tamil letters |

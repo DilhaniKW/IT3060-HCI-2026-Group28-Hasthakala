@@ -8,6 +8,7 @@ import '../state/artisan_profile_provider.dart';
 import '../state/auth_provider.dart';
 import '../widgets/craft_name.dart';
 import '../widgets/profile_cover_header.dart';
+import '../widgets/profile_covers.dart';
 import '../../../../core/localization/tr.dart';
 import 'accept_support_invitation_screen.dart';
 import 'family_assistance_screen.dart';
@@ -213,7 +214,10 @@ class _ArtisanHeaderState extends State<_ArtisanHeader> {
       stream: _profile,
       builder: (context, snapshot) {
         final p = snapshot.data;
-        return ProfileCoverHeader(
+        return ArtisanCoverStyle(
+          uid: widget.uid,
+          builder: (context, style) => ProfileCoverHeader(
+          coverStyle: style,
           name: (p != null && p.displayName.isNotEmpty) ? p.displayName : widget.fallbackName,
           photoUrl: p?.photoUrl ?? widget.photoUrl,
           chip: ProfileChip(
@@ -237,6 +241,7 @@ class _ArtisanHeaderState extends State<_ArtisanHeader> {
                 ],
               ),
           ],
+        ),
         );
       },
     );

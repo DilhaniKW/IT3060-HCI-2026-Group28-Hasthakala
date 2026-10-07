@@ -8,8 +8,10 @@ import '../../../../core/shared_models/artisan_profile_model.dart';
 import '../../../discovery/presentation/screens/public_artisan_profile_screen.dart';
 import '../state/artisan_profile_provider.dart';
 import '../state/auth_provider.dart';
+import '../widgets/cover_picker_sheet.dart';
 import '../widgets/craft_name.dart';
 import '../widgets/profile_cover_header.dart';
+import '../widgets/profile_covers.dart';
 import 'edit_artisan_profile_screen.dart';
 
 // I05 My Artisan Profile
@@ -78,7 +80,13 @@ class _MyArtisanProfileScreenState extends State<MyArtisanProfileScreen> {
                   child: ListView(
                     padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
                     children: [
-                      ProfileCoverHeader(
+                      ArtisanCoverStyle(
+                        uid: _uid,
+                        builder: (context, style) => ProfileCoverHeader(
+                        coverStyle: style,
+                        coverAction: ChangeCoverButton(
+                          onPressed: () => showCoverPicker(context, uid: _uid, current: style),
+                        ),
                         name: p.displayName,
                         photoUrl: p.photoUrl,
                         chip: ProfileChip(
@@ -114,6 +122,7 @@ class _MyArtisanProfileScreenState extends State<MyArtisanProfileScreen> {
                                   color: AppColors.textSecondary,
                                 ),
                         ],
+                      ),
                       ),
                       const SizedBox(height: 14),
                       Row(
