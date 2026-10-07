@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../state/cart_provider.dart';
+
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
 
@@ -11,10 +12,9 @@ class CheckoutScreen extends StatefulWidget {
 }
 
 class _CheckoutScreenState extends State<CheckoutScreen> {
-  final TextEditingController _nameController = TextEditingController(text: 'Kasun Kalhara');
-  final TextEditingController _addressController =
-      TextEditingController(text: 'No. 45, Temple Road, Kelaniya');
-  final TextEditingController _phoneController = TextEditingController(text: '0771234567');
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   int _selectedPaymentIndex = 0;
 
   @override
@@ -28,7 +28,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final List<Map<String, dynamic>> _paymentMethods = [
     {
       'title': 'Cash on Delivery (COD)',
-      'subtitle': 'Pay directly upon delivery to support local artisan logistics',
+      'subtitle':
+          'Pay directly upon delivery to support local artisan logistics',
       'icon': Icons.payments_outlined,
       'badge': 'Popular in SL',
     },
@@ -84,7 +85,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 Icon(Icons.verified, size: 14, color: AppColors.accent),
                 SizedBox(width: 4),
                 Text(
-                  'Verified Order',
+                  'Order review',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
@@ -101,91 +102,47 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Order Summary Card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
+                  color: Colors.white, borderRadius: BorderRadius.circular(16)),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
- alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
-                    children: const [
-                      Text(
-                        'Item Summary',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      Text(
-                        '1 Craft Piece',
-                        style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-                      ),
-                    ],
-                  ),
-                  const Divider(height: 24),
-                  Row(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=200',
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
-                            width: 60,
-                            height: 60,
-                            color: AppColors.surface,
-                            child: const Icon(Icons.brush, color: AppColors.secondary),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              'Heritage Terracotta Jug',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
-                            SizedBox(height: 2),
-                            Text(
-                              'Master Sunil Kariyawasam • Kelaniya',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.textSecondary,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'LKR 2,400',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Item Summary (${cart.totalItemCount})',
+                        style: const TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    if (cart.cartItems.isEmpty)
+                      const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Text(
+                              'Your cart is empty. Add a craft before checkout.')),
+                    for (final item in cart.cartItems)
+                      Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Row(children: [
+                            const Icon(Icons.shopping_bag_outlined,
+                                color: AppColors.primary),
+                            const SizedBox(width: 12),
+                            Expanded(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                  Text(item.title,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  Text('Quantity: ${item.quantity}',
+                                      style: const TextStyle(
+                                          color: AppColors.textSecondary)),
+                                  Text(
+                                      CurrencyFormatter.formatLKR(
+                                          item.lineTotal),
+                                      style: const TextStyle(
+                                          color: AppColors.primary)),
+                                ])),
+                          ])),
+                  ]),
             ),
             const SizedBox(height: 20),
 
@@ -263,10 +220,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     margin: const EdgeInsets.only(bottom: 10),
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.primary.withOpacity(0.05) : Colors.white,
+                      color: isSelected
+                          ? AppColors.primary.withOpacity(0.05)
+                          : Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: isSelected ? AppColors.primary : Colors.grey.shade200,
+                        color: isSelected
+                            ? AppColors.primary
+                            : Colors.grey.shade200,
                         width: isSelected ? 1.8 : 1,
                       ),
                     ),
@@ -274,7 +235,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       children: [
                         Icon(
                           item['icon'] as IconData,
-                          color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.textSecondary,
                           size: 24,
                         ),
                         const SizedBox(width: 12),
@@ -282,7 +245,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Wrap(spacing: 4, runSpacing: 4,
+                              Wrap(
+                                spacing: 4,
+                                runSpacing: 4,
                                 children: [
                                   Text(
                                     item['title'] as String,
@@ -299,7 +264,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 6, vertical: 2),
                                     decoration: BoxDecoration(
-                                      color: AppColors.secondary.withOpacity(0.15),
+                                      color:
+                                          AppColors.secondary.withOpacity(0.15),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
@@ -325,8 +291,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ),
                         ),
                         Icon(
-                          isSelected ? Icons.check_circle : Icons.circle_outlined,
-                          color: isSelected ? AppColors.primary : Colors.grey.shade400,
+                          isSelected
+                              ? Icons.check_circle
+                              : Icons.circle_outlined,
+                          color: isSelected
+                              ? AppColors.primary
+                              : Colors.grey.shade400,
                         ),
                       ],
                     ),
@@ -342,11 +312,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF264E36).withOpacity(0.08),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFF264E36).withOpacity(0.2)),
+                border:
+                    Border.all(color: const Color(0xFF264E36).withOpacity(0.2)),
               ),
               child: Row(
                 children: const [
-                  Icon(Icons.workspace_premium, color: Color(0xFF264E36), size: 28),
+                  Icon(Icons.workspace_premium,
+                      color: Color(0xFF264E36), size: 28),
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(
@@ -373,31 +345,42 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Column(
                 children: [
                   Wrap(
- alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 12,
+                    runSpacing: 8,
                     children: [
                       const Text('Item Subtotal',
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+                          style: TextStyle(
+                              color: AppColors.textSecondary, fontSize: 13)),
                       Text(CurrencyFormatter.formatLKR(subtotal),
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13)),
                     ],
                   ),
                   const SizedBox(height: 8),
                   Wrap(
- alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
-                    children: const [
-                      Text('Islandwide Artisan Courier',
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
-                      Text('LKR 350.00',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 12,
+                    runSpacing: 8,
+                    children: [
+                      const Text('Islandwide Artisan Courier',
+                          style: TextStyle(
+                              color: AppColors.textSecondary, fontSize: 13)),
+                      Text(CurrencyFormatter.formatLKR(deliveryFee),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13)),
                     ],
                   ),
                   const Divider(height: 20),
                   Wrap(
- alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 12,
+                    runSpacing: 8,
                     children: [
                       const Text(
                         'Total Payable',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       Text(
                         CurrencyFormatter.formatLKR(grandTotal),
@@ -440,13 +423,31 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
                 elevation: 0,
               ),
-              onPressed: () {
-                showDialog<void>(context: context, builder: (context) => AlertDialog(
-                  title: const Text('Order summary'),
-                  content: Text('${cart.totalItemCount} items\nTotal: ${CurrencyFormatter.formatLKR(grandTotal)}\n\nOrder submission is not available yet. No order has been placed.'),
-                  actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Back to checkout'))],
-                ));
-              },
+              onPressed: cart.cartItems.isEmpty
+                  ? null
+                  : () {
+                      if (_nameController.text.trim().isEmpty ||
+                          _addressController.text.trim().isEmpty ||
+                          !RegExp(r'^\+?[0-9 ()-]{9,16}$')
+                              .hasMatch(_phoneController.text.trim())) {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                                'Enter your name, delivery address and a valid phone number.')));
+                        return;
+                      }
+                      showDialog<void>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text('Order summary'),
+                                content: Text(
+                                    '${cart.totalItemCount} items\nTotal: ${CurrencyFormatter.formatLKR(grandTotal)}\n\nOrder submission is not available yet. No order has been placed.'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Back to checkout'))
+                                ],
+                              ));
+                    },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
