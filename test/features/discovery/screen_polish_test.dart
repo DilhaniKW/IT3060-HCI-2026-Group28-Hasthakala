@@ -53,6 +53,8 @@ void main() {
     'home': () => const HomeScreen(),
     'explore': () => SearchScreen(
         search: ({query, category, district, maxPrice}) async => [craft]),
+    'search-empty': () => SearchScreen(
+        search: ({query, category, district, maxPrice}) async => []),
     'artisan-search': () => SearchScreen(
         search: ({query, category, district, maxPrice}) async => [],
         loadArtisans: () async => [
@@ -84,11 +86,20 @@ void main() {
     'checkout': () => const CheckoutScreen(),
   };
   for (final language in ['en', 'si', 'ta']) {
-    for (final width in [320.0, 390.0]) {
+    for (final width in [320.0, 390.0, 960.0]) {
       for (final entry in screens.entries) {
+        if (width == 960 &&
+            !['explore', 'search-empty', 'artisan-search'].contains(entry.key))
+          continue;
         if (language != 'en' &&
-            !['home', 'explore', 'artisan-search', 'details', 'profile']
-                .contains(entry.key)) continue;
+            ![
+              'home',
+              'explore',
+              'search-empty',
+              'artisan-search',
+              'details',
+              'profile'
+            ].contains(entry.key)) continue;
         testWidgets(
             '${entry.key} $language fits ${width.toInt()}px and scrolls',
             (tester) async {
@@ -159,7 +170,7 @@ void main() {
             await tester.pumpAndSettle();
           }
           expect(tester.takeException(), isNull);
-          if (width == 390) {
+          if (width >= 390) {
             await tester.runAsync(() async {
               final boundary = boundaryKey.currentContext!.findRenderObject()!
                   as RenderRepaintBoundary;
@@ -168,7 +179,7 @@ void main() {
                   await image.toByteData(format: ui.ImageByteFormat.png);
               final directory = Directory('.dart_tool/polish_previews')
                 ..createSync(recursive: true);
-              File('${directory.path}/${entry.key}_$language.png')
+              File('${directory.path}/${entry.key}_${language}${width == 960 ? '_wide' : ''}.png')
                   .writeAsBytesSync(bytes!.buffer.asUint8List());
               image.dispose();
             });
