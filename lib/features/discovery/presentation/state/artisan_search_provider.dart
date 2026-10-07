@@ -28,9 +28,12 @@ class ArtisanSearchProvider extends ChangeNotifier {
     final term = _query.trim().toLowerCase();
     return List.unmodifiable(_artisans.where((artisan) =>
         (!_verifiedOnly || artisan.verified) &&
-        (_category == null || discoveryCategoryKey(artisan.craftType) == _category) &&
-        (term.isEmpty || '${artisan.displayName} ${artisan.craftType} ${artisan.about} ${artisan.location}'
-            .toLowerCase().contains(term))));
+        (_category == null ||
+            discoveryCategoryKey(artisan.craftType) == _category) &&
+        (term.isEmpty ||
+            '${artisan.displayName} ${artisan.craftType} ${artisan.about} ${artisan.location}'
+                .toLowerCase()
+                .contains(term))));
   }
 
   void setQuery(String query) {
