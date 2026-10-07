@@ -317,6 +317,208 @@ class AppStrings {
       'ta': 'உங்கள் கணக்கை ஏற்ற முடியவில்லை. இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.',
     },
 
+    // ---- account setup, reset password, contexts ----
+    'account_created_title': {
+      'en': 'Account Created!',
+      'si': 'ගිණුම සාදන ලදී!',
+      'ta': 'கணக்கு உருவாக்கப்பட்டது!',
+    },
+    'account_created_sub': {
+      'en': 'Welcome to HASTHAKALA. Let\'s get started on your journey.',
+      'si': 'HASTHAKALA වෙත සාදරයෙන් පිළිගනිමු. ඔබේ ගමන ආරම්භ කරමු.',
+      'ta': 'HASTHAKALA-வுக்கு வரவேற்கிறோம். உங்கள் பயணத்தைத் தொடங்குவோம்.',
+    },
+    'purpose_title': {
+      'en': 'How will you start using HASTHAKALA?',
+      'si': 'ඔබ HASTHAKALA භාවිතා කිරීම ආරම්භ කරන්නේ කෙසේද?',
+      'ta': 'HASTHAKALA-வை எப்படிப் பயன்படுத்தத் தொடங்குவீர்கள்?',
+    },
+    'purpose_sub': {
+      'en': 'Choose how you want to begin. Sellers can still shop too.',
+      'si': 'ආරම්භ කිරීමට අවශ්‍ය ආකාරය තෝරන්න. විකුණන අයටත් මිලදී ගත හැක.',
+      'ta': 'எப்படித் தொடங்க வேண்டும் என்பதைத் தேர்ந்தெடுங்கள். விற்பவர்களும் வாங்கலாம்.',
+    },
+    'purpose_shop': {
+      'en': 'Shop for Crafts',
+      'si': 'අත්කම් මිලදී ගන්න',
+      'ta': 'கைவினைப் பொருட்களை வாங்குங்கள்',
+    },
+    'purpose_shop_sub': {
+      'en': 'Discover and support local artisans',
+      'si': 'දේශීය ශිල්පීන් සොයාගෙන ඔවුන්ට සහාය වන්න',
+      'ta': 'உள்ளூர் கைவினைஞர்களைக் கண்டறிந்து ஆதரியுங்கள்',
+    },
+    'purpose_sell': {
+      'en': 'Sell My Crafts',
+      'si': 'මගේ අත්කම් විකුණන්න',
+      'ta': 'என் கைவினைப் பொருட்களை விற்கவும்',
+    },
+    'purpose_sell_sub': {
+      'en': 'Create and manage your artisan presence',
+      'si': 'ඔබේ ශිල්පී පැතිකඩ සාදා කළමනාකරණය කරන්න',
+      'ta': 'உங்கள் கைவினைஞர் இருப்பை உருவாக்கி நிர்வகிக்கவும்',
+    },
+    'sign_out': {
+      'en': 'Sign out',
+      'si': 'ඉවත් වන්න',
+      'ta': 'வெளியேறு',
+    },
+    'all_set_title': {
+      'en': 'You\'re all set!',
+      'si': 'සියල්ල සූදානම්!',
+      'ta': 'எல்லாம் தயார்!',
+    },
+    'all_set_sub': {
+      'en': 'Start exploring handmade crafts from across Sri Lanka.',
+      'si': 'ශ්‍රී ලංකාව පුරා අත්කම් නිර්මාණ ගවේෂණය කිරීම අරඹන්න.',
+      'ta': 'இலங்கை முழுவதிலுமிருந்து கைவினைப் பொருட்களை ஆராயத் தொடங்குங்கள்.',
+    },
+    'continue_home': {
+      'en': 'Continue to Home',
+      'si': 'මුල් පිටුවට යන්න',
+      'ta': 'முகப்புக்குச் செல்லவும்',
+    },
+    'artisan_started_title': {
+      'en': 'Your artisan setup has started!',
+      'si': 'ඔබේ ශිල්පී සැකසුම ආරම්භ විය!',
+      'ta': 'உங்கள் கைவினைஞர் அமைப்பு தொடங்கியது!',
+    },
+    'artisan_started_sub': {
+      'en': 'Next, let\'s complete your profile to showcase your crafts.',
+      'si': 'ඊළඟට, ඔබේ නිර්මාණ පෙන්වීමට පැතිකඩ සම්පූර්ණ කරමු.',
+      'ta': 'அடுத்து, உங்கள் கைவினைகளைக் காட்ட சுயவிவரத்தை நிறைவு செய்வோம்.',
+    },
+    'continue_profile': {
+      'en': 'Continue to Profile',
+      'si': 'පැතිකඩට යන්න',
+      'ta': 'சுயவிவரத்துக்குச் செல்லவும்',
+    },
+    'reset_title': {
+      'en': 'Reset Your Password',
+      'si': 'ඔබේ මුරපදය යළි සකසන්න',
+      'ta': 'உங்கள் கடவுச்சொல்லை மீட்டமைக்கவும்',
+    },
+    'reset_sub': {
+      'en': 'We\'ll send you a link to reset your password.',
+      'si': 'මුරපදය යළි සැකසීමට අපි ඔබට සබැඳියක් එවන්නෙමු.',
+      'ta': 'கடவுச்சொல்லை மீட்டமைக்க ஒரு இணைப்பை அனுப்புவோம்.',
+    },
+    'send_reset_link': {
+      'en': 'Send Reset Link',
+      'si': 'යළි සැකසීමේ සබැඳිය යවන්න',
+      'ta': 'மீட்டமைப்பு இணைப்பை அனுப்பு',
+    },
+    'back_to_sign_in': {
+      'en': 'Back to Sign In',
+      'si': 'පුරනය වීමට ආපසු',
+      'ta': 'உள்நுழைவுக்குத் திரும்பு',
+    },
+    'check_email_title': {
+      'en': 'Check your email',
+      'si': 'ඔබේ විද්‍යුත් තැපෑල පරීක්ෂා කරන්න',
+      'ta': 'உங்கள் மின்னஞ்சலைச் சரிபார்க்கவும்',
+    },
+    'check_email_sub': {
+      'en': 'If an account exists for {email}, we sent password recovery instructions to it.',
+      'si': '{email} සඳහා ගිණුමක් තිබේ නම්, මුරපදය ප්‍රතිසාධනය කිරීමේ උපදෙස් එයට යවා ඇත.',
+      'ta': '{email} க்கு கணக்கு இருந்தால், கடவுச்சொல் மீட்பு வழிமுறைகளை அனுப்பியுள்ளோம்.',
+    },
+    'resend': {
+      'en': 'Resend',
+      'si': 'නැවත යවන්න',
+      'ta': 'மீண்டும் அனுப்பு',
+    },
+    'continue_as': {
+      'en': 'Continue as {name}',
+      'si': '{name} ලෙස ඉදිරියට',
+      'ta': '{name} ஆக தொடரவும்',
+    },
+    'continue_as_sub': {
+      'en': 'You have more than one way to use HASTHAKALA. Choose how you\'d like to continue.',
+      'si': 'ඔබට HASTHAKALA භාවිතා කිරීමට ක්‍රම කිහිපයක් ඇත. ඉදිරියට යන ආකාරය තෝරන්න.',
+      'ta': 'HASTHAKALA-வைப் பயன்படுத்த உங்களுக்குப் பல வழிகள் உள்ளன. எப்படித் தொடர வேண்டும் என்பதைத் தேர்ந்தெடுங்கள்.',
+    },
+    'ctx_buyer': {
+      'en': 'Buyer',
+      'si': 'ගැනුම්කරු',
+      'ta': 'வாங்குபவர்',
+    },
+    'ctx_buyer_sub': {
+      'en': 'Shop for unique handmade crafts from local artisans',
+      'si': 'දේශීය ශිල්පීන්ගෙන් අද්විතීය අත්කම් මිලදී ගන්න',
+      'ta': 'உள்ளூர் கைவினைஞர்களிடமிருந்து தனித்துவமான கைவினைப் பொருட்களை வாங்குங்கள்',
+    },
+    'ctx_artisan': {
+      'en': 'Artisan',
+      'si': 'ශිල්පියා',
+      'ta': 'கைவினைஞர்',
+    },
+    'ctx_artisan_sub': {
+      'en': 'Manage your crafts, orders and business',
+      'si': 'ඔබේ නිර්මාණ, ඇණවුම් සහ ව්‍යාපාරය කළමනාකරණය කරන්න',
+      'ta': 'உங்கள் கைவினைகள், ஆர்டர்கள் மற்றும் வணிகத்தை நிர்வகிக்கவும்',
+    },
+    'ctx_supporting': {
+      'en': 'Supporting {name}',
+      'si': '{name} ට සහාය වෙමින්',
+      'ta': '{name} க்கு உதவுகிறீர்கள்',
+    },
+    'ctx_supporting_sub': {
+      'en': 'Help with the activities you were allowed',
+      'si': 'ඔබට අවසර දුන් කටයුතුවලට උදව් කරන්න',
+      'ta': 'உங்களுக்கு அனுமதிக்கப்பட்ட செயல்களில் உதவுங்கள்',
+    },
+    'check_verified': {
+      'en': 'Account verified',
+      'si': 'ගිණුම තහවුරු විය',
+      'ta': 'கணக்கு சரிபார்க்கப்பட்டது',
+    },
+    'check_profiles': {
+      'en': 'Checking your profiles...',
+      'si': 'ඔබේ පැතිකඩ පරීක්ෂා කරමින්...',
+      'ta': 'உங்கள் சுயவிவரங்களைச் சரிபார்க்கிறது...',
+    },
+    'check_workspace': {
+      'en': 'Loading your workspace...',
+      'si': 'ඔබේ වැඩ අවකාශය පූරණය කරමින්...',
+      'ta': 'உங்கள் பணியிடத்தை ஏற்றுகிறது...',
+    },
+    'sign_out_title': {
+      'en': 'Sign out?',
+      'si': 'ඉවත් වන්නද?',
+      'ta': 'வெளியேறவா?',
+    },
+    'sign_out_body': {
+      'en': 'You will need to sign in again to access your account.',
+      'si': 'ඔබේ ගිණුමට පිවිසීමට නැවත පුරනය වීමට සිදුවේ.',
+      'ta': 'உங்கள் கணக்கை அணுக மீண்டும் உள்நுழைய வேண்டும்.',
+    },
+    'cancel': {
+      'en': 'Cancel',
+      'si': 'අවලංගු කරන්න',
+      'ta': 'ரத்துசெய்',
+    },
+    'support_removed_title': {
+      'en': 'Support access is no longer available',
+      'si': 'සහාය ප්‍රවේශය තවදුරටත් නොමැත',
+      'ta': 'உதவி அணுகல் இனி கிடைக்காது',
+    },
+    'support_removed_sub': {
+      'en': 'Your access to {name}\'s business has changed or been removed.',
+      'si': '{name} ගේ ව්‍යාපාරයට ඔබේ ප්‍රවේශය වෙනස් කර හෝ ඉවත් කර ඇත.',
+      'ta': '{name} இன் வணிகத்துக்கான உங்கள் அணுகல் மாற்றப்பட்டது அல்லது நீக்கப்பட்டது.',
+    },
+    'err_save_choice': {
+      'en': 'We could not save your choice. Check your connection and try again.',
+      'si': 'ඔබේ තේරීම සුරැකීමට නොහැකි විය. සම්බන්ධතාව පරීක්ෂා කර නැවත උත්සාහ කරන්න.',
+      'ta': 'உங்கள் தேர்வைச் சேமிக்க முடியவில்லை. இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_reset_failed': {
+      'en': 'We could not send the reset link. Please try again.',
+      'si': 'යළි සැකසීමේ සබැඳිය යැවිය නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'மீட்டமைப்பு இணைப்பை அனுப்ப முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
@@ -328,6 +530,8 @@ class AppStrings {
   // English messages from validators / Firebase -> key, so they can be shown
   // in the chosen language without changing where they come from
   static const Map<String, String> messageKeys = {
+    'We could not save your choice. Check your connection and try again.': 'err_save_choice',
+    'We could not send the reset link. Please try again.': 'err_reset_failed',
     'Please enter your full name': 'err_name_required',
     'Passwords do not match': 'err_password_mismatch',
     'Email address is required': 'err_email_required',

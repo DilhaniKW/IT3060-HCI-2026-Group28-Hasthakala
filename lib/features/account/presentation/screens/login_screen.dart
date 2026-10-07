@@ -46,6 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Image.asset('assets/images/hasthakala_logo.png', width: 96),
+              const SizedBox(height: 24),
               const CircularProgressIndicator(color: AppColors.primary),
               const SizedBox(height: 16),
               Text(context.tr('signing_in'),

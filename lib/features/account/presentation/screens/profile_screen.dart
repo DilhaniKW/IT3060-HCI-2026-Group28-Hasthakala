@@ -19,14 +19,14 @@ class ProfileScreen extends StatelessWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Sign out?'),
-        content: const Text('You will need to sign in again to access your account.'),
+        title: Text(ctx.tr('sign_out_title')),
+        content: Text(ctx.tr('sign_out_body')),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(ctx.tr('cancel'))),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Sign Out'),
+            child: Text(ctx.tr('sign_out')),
           ),
         ],
       ),
@@ -125,7 +125,7 @@ class ProfileScreen extends StatelessWidget {
               foregroundColor: AppColors.error,
               side: const BorderSide(color: AppColors.error),
             ),
-            child: const Text('Sign Out'),
+            child: Text(context.tr('sign_out')),
           ),
         ],
       ),

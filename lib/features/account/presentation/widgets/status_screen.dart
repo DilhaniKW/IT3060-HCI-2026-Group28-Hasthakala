@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
 
-// simple full-screen message used by the sign up steps
+// full-screen message (account created, all set, check your email...):
+// icon, title and text in the middle, buttons at the bottom
 class StatusScreen extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -12,6 +13,8 @@ class StatusScreen extends StatelessWidget {
   final String? secondaryLabel;
   final VoidCallback? onSecondary;
   final bool loading;
+  final Widget? extra;
+  final Color color;
 
   const StatusScreen({
     super.key,
@@ -23,6 +26,8 @@ class StatusScreen extends StatelessWidget {
     this.secondaryLabel,
     this.onSecondary,
     this.loading = false,
+    this.extra,
+    this.color = AppColors.accent,
   });
 
   @override
@@ -30,25 +35,44 @@ class StatusScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: AppColors.accent,
-                child: Icon(icon, size: 40, color: AppColors.onPrimary),
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // soft ring around the icon
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: color.withValues(alpha: 0.12),
+                          ),
+                          child: CircleAvatar(
+                            radius: 52,
+                            backgroundColor: color,
+                            child: Icon(icon, size: 52, color: AppColors.onPrimary),
+                          ),
+                        ),
+                        const SizedBox(height: 28),
+                        Text(title,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w700)),
+                        const SizedBox(height: 10),
+                        Text(message,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                color: AppColors.textSecondary, fontSize: 15, height: 1.5)),
+                        if (extra != null) ...[const SizedBox(height: 28), extra!],
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 20),
-              Text(title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-              const SizedBox(height: 8),
-              Text(message,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.textSecondary)),
-              const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: loading ? null : onPrimary,
                 child: loading

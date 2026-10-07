@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/localization/tr.dart';
 import '../../../../core/shared_models/user_model.dart';
 import '../state/auth_provider.dart';
 import '../widgets/status_screen.dart';
 
-// frames 16 ("You're all set!") and 17 ("Your artisan setup has started!")
+// I01 "You're all set!" / "Your artisan setup has started!"
 class PurposeConfirmedScreen extends StatelessWidget {
   const PurposeConfirmedScreen({super.key});
 
@@ -15,12 +16,10 @@ class PurposeConfirmedScreen extends StatelessWidget {
     final selling = auth.purposeJustChosen == AccountPurpose.sell;
 
     return StatusScreen(
-      icon: Icons.check,
-      title: selling ? 'Your artisan setup has started!' : "You're all set!",
-      message: selling
-          ? "Next, let's complete your profile to showcase your crafts."
-          : 'Start exploring handmade crafts from across Sri Lanka.',
-      primaryLabel: selling ? 'Continue to Profile' : 'Continue to Home',
+      icon: selling ? Icons.storefront_rounded : Icons.check_rounded,
+      title: context.tr(selling ? 'artisan_started_title' : 'all_set_title'),
+      message: context.tr(selling ? 'artisan_started_sub' : 'all_set_sub'),
+      primaryLabel: context.tr(selling ? 'continue_profile' : 'continue_home'),
       onPrimary: auth.finishPurposeConfirmation,
     );
   }
