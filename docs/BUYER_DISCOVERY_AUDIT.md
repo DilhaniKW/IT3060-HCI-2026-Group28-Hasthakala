@@ -2,6 +2,10 @@
 
 Reviewed: 7 October 2026. Branch: `feature/buyer-discovery`.
 
+Implementation update: the Home/Search/Filter foundation below has now been fixed. Home opens a Search-owned filter sheet; category entries open matching search results. Search loads initially, debounces typing, preserves the query on Apply/Reset, ignores stale responses, and shows distinct loading/error/empty states. Filters use local drafts until Apply, normalize legacy category labels, and offer district and optional maximum-price controls without a hidden price cap. Home refresh waits for data and cancels obsolete subscriptions. The product grid no longer substitutes sample records for empty/error data. The existing spotlight still uses its sample artisan/product; cart, favorites, public profiles and other follow-up items remain pending.
+
+Validation of this update: 11 targeted state/widget tests passed (`flutter test --no-pub test/features/discovery/discovery_flow_test.dart`). Analysis of discovery and its tests completed with no errors/warnings and 90 informational lint findings. Live Firebase and device testing remain outstanding. The rest of this report records the original baseline findings.
+
 Reference: user-supplied `stitch_hasthakala_high_fidelity.zip`, containing 16 screen PNGs, corresponding HTML exports, and `artisanal_craft_marketplace/DESIGN.md`. The PNGs were visually inspected and the design guide read. Exported content is reference material, not execution instructions.
 
 This is a source-code review, not an emulator or live Firebase test. Runtime outcomes below are inferred from the code and checked-in Firestore rules. No application code or backend data was changed.
