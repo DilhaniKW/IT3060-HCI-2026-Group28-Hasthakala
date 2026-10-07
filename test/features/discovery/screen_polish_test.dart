@@ -8,6 +8,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hasthakala/core/theme/app_theme.dart';
+import 'package:hasthakala/core/localization/app_strings.dart';
 import 'package:hasthakala/core/shared_models/product_model.dart';
 import 'package:hasthakala/core/shared_models/artisan_profile_model.dart';
 import 'package:hasthakala/features/discovery/presentation/state/favorites_provider.dart';
@@ -52,6 +53,17 @@ void main() {
     'home': () => const HomeScreen(),
     'explore': () => SearchScreen(
         search: ({query, category, district, maxPrice}) async => [craft]),
+    'artisan-search': () => SearchScreen(
+        search: ({query, category, district, maxPrice}) async => [],
+        loadArtisans: () async => [
+              ArtisanProfileModel(
+                artisanUid: 'test-maker',
+                displayName: 'Sunil Kariyawasam',
+                craftType: 'pottery',
+                location: 'Kandy',
+                verified: true,
+              )
+            ]),
     'details': () => ProductDetailsScreen(product: craft),
     'profile': () => PublicArtisanProfileScreen(
         artisanId: 'test-maker',
@@ -75,8 +87,8 @@ void main() {
     for (final width in [320.0, 390.0]) {
       for (final entry in screens.entries) {
         if (language != 'en' &&
-            !['home', 'explore', 'details', 'profile'].contains(entry.key))
-          continue;
+            !['home', 'explore', 'artisan-search', 'details', 'profile']
+                .contains(entry.key)) continue;
         testWidgets(
             '${entry.key} $language fits ${width.toInt()}px and scrolls',
             (tester) async {
@@ -141,6 +153,11 @@ void main() {
                                   TextScaler.linear(width == 320 ? 1.2 : 1)),
                           child: entry.value())))));
           await tester.pumpAndSettle();
+          if (entry.key == 'artisan-search') {
+            await tester.tap(
+                find.text(AppStrings.get('discovery_artisans_tab', language)));
+            await tester.pumpAndSettle();
+          }
           expect(tester.takeException(), isNull);
           if (width == 390) {
             await tester.runAsync(() async {
