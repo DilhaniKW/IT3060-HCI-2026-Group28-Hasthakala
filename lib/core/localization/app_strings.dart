@@ -519,6 +519,94 @@ class AppStrings {
       'ta': 'மீட்டமைப்பு இணைப்பை அனுப்ப முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
     },
 
+    // ---- profile tab (I05 / I13) ----
+    'profile_section_business': {'en': 'My business', 'si': 'මගේ ව්‍යාපාරය', 'ta': 'எனது வணிகம்'},
+    'profile_section_help': {
+      'en': 'Help an artisan',
+      'si': 'ශිල්පියෙකුට උදව් කරන්න',
+      'ta': 'கைவினைஞருக்கு உதவுங்கள்',
+    },
+    'profile_section_access': {
+      'en': 'Your support access',
+      'si': 'ඔබේ සහාය ප්‍රවේශය',
+      'ta': 'உங்கள் உதவி அணுகல்',
+    },
+    'profile_section_settings': {'en': 'Settings', 'si': 'සැකසුම්', 'ta': 'அமைப்புகள்'},
+    'profile_my_artisan': {
+      'en': 'My Artisan Profile',
+      'si': 'මගේ ශිල්පී පැතිකඩ',
+      'ta': 'எனது கைவினைஞர் சுயவிவரம்',
+    },
+    'profile_my_artisan_sub': {
+      'en': 'View and manage your public artisan information',
+      'si': 'ඔබේ පොදු ශිල්පී තොරතුරු බලන්න සහ කළමනාකරණය කරන්න',
+      'ta': 'உங்கள் பொது கைவினைஞர் தகவலைப் பார்த்து நிர்வகிக்கவும்',
+    },
+    'family_assistance': {'en': 'Family Assistance', 'si': 'පවුලේ සහාය', 'ta': 'குடும்ப உதவி'},
+    'family_assistance_sub': {
+      'en': 'Manage authorized support',
+      'si': 'බලයලත් සහාය කළමනාකරණය කරන්න',
+      'ta': 'அங்கீகரிக்கப்பட்ட உதவியை நிர்வகிக்கவும்',
+    },
+    'accept_invite': {
+      'en': 'Accept support invitation',
+      'si': 'සහාය ආරාධනාව පිළිගන්න',
+      'ta': 'உதவி அழைப்பை ஏற்கவும்',
+    },
+    'accept_invite_sub': {
+      'en': 'Help an artisan with their business using a code',
+      'si': 'කේතයක් භාවිතයෙන් ශිල්පියෙකුගේ ව්‍යාපාරයට උදව් කරන්න',
+      'ta': 'ஒரு குறியீட்டைப் பயன்படுத்தி கைவினைஞரின் வணிகத்திற்கு உதவுங்கள்',
+    },
+    'profile_supporting_sub': {
+      'en': 'Allowed: {scopes}. Account settings stay with the owner.',
+      'si': 'අවසර ඇති දේ: {scopes}. ගිණුම් සැකසුම් හිමිකරු සතුව පවතී.',
+      'ta': 'அனுமதி: {scopes}. கணக்கு அமைப்புகள் உரிமையாளரிடமே இருக்கும்.',
+    },
+    'scope_messages': {
+      'en': 'Customer messages',
+      'si': 'පාරිභෝගික පණිවිඩ',
+      'ta': 'வாடிக்கையாளர் செய்திகள்',
+    },
+    'scope_none': {'en': 'No permissions', 'si': 'අවසර නැත', 'ta': 'அனுமதிகள் இல்லை'},
+    'switch_context': {
+      'en': 'Switch context',
+      'si': 'භාවිත ආකාරය මාරු කරන්න',
+      'ta': 'பயன்முறையை மாற்றவும்',
+    },
+    'switch_context_sub': {
+      'en': 'Now using: {ctx}',
+      'si': 'දැන් භාවිතා කරන්නේ: {ctx}',
+      'ta': 'இப்போது: {ctx}',
+    },
+    'ctx_supporter': {'en': 'Supporter', 'si': 'සහායක', 'ta': 'உதவியாளர்'},
+    'craft_artisan': {'en': '{craft} Artisan', 'si': '{craft} ශිල්පී', 'ta': '{craft} கைவினைஞர்'},
+
+    // ---- craft names (keys from craft_categories.dart) ----
+    'craft_pottery': {'en': 'Pottery', 'si': 'මැටි බඩු', 'ta': 'மட்பாண்டம்'},
+    'craft_batik': {'en': 'Batik', 'si': 'බතික්', 'ta': 'பத்திக்'},
+    'craft_wood_carving': {'en': 'Wood Carving', 'si': 'ලී කැටයම්', 'ta': 'மரச் செதுக்கல்'},
+    'craft_masks': {'en': 'Masks', 'si': 'වෙස් මුහුණු', 'ta': 'முகமூடிகள்'},
+    'craft_handloom_textiles': {
+      'en': 'Handloom & Textiles',
+      'si': 'අත්යන්ත්‍ර සහ රෙදි',
+      'ta': 'கைத்தறி மற்றும் துணிகள்',
+    },
+    'craft_jewellery': {'en': 'Jewellery', 'si': 'ආභරණ', 'ta': 'நகைகள்'},
+    'craft_brassware': {'en': 'Brassware', 'si': 'පිත්තල භාණ්ඩ', 'ta': 'பித்தளைப் பொருட்கள்'},
+    'craft_cane_bamboo': {
+      'en': 'Cane & Bamboo',
+      'si': 'වේවැල් සහ උණ',
+      'ta': 'பிரம்பு மற்றும் மூங்கில்',
+    },
+    'craft_coconut_shell': {
+      'en': 'Coconut Shell Craft',
+      'si': 'පොල්කටු නිර්මාණ',
+      'ta': 'தேங்காய் ஓட்டுக் கைவினை',
+    },
+    'craft_home_decor': {'en': 'Home Decor', 'si': 'නිවාස අලංකරණ', 'ta': 'வீட்டு அலங்காரம்'},
+    'craft_other': {'en': 'Other', 'si': 'වෙනත්', 'ta': 'மற்றவை'},
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
