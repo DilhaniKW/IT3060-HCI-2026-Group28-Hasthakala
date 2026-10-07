@@ -2,6 +2,12 @@
 
 Reviewed: 7 October 2026. Branch: `feature/buyer-discovery`.
 
+## Search price sorting (7 October)
+
+- Added Default order, Price: low to high and Price: high to low to the main Search screen, with English/Sinhala/Tamil labels. Default order restores the data source order; it does not claim a relevance ranking.
+- Sorting uses the current search results without an extra Firebase request or source-list mutation. Equal-price products retain their source order. The selection survives query/filter changes, filter clearing, refresh/retry and locale changes during the screen session.
+- Added stable/reversible sorting and in-flight/filter/retry regression coverage, plus localized dropdown interaction checks. **74 tests passed**, including multilingual 320px/390px layout tests. Analysis of all changed Dart files found no issues. Live Firebase/mobile checks remain pending.
+
 ## Core Discovery localization (7 October)
 
 - Connected Home, Search/Filter, Product Details, Public Artisan Profile and Saved Crafts to the existing `context.tr` locale mechanism, including shared cart actions, favorites, gallery, share sheet and Home guidance. English/Sinhala/Tamil strings live in `lib/core/localization/discovery_strings.dart`, merged into `AppStrings`.
