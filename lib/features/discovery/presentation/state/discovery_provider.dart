@@ -45,20 +45,34 @@ class DiscoveryProvider extends ChangeNotifier {
       _finish();
       notifyListeners();
     });
-    _subscription = _featuredStream().listen((products) {
-      if (_disposed || generation != _generation) return;
-      _featuredProducts = products;
-      _isLoading = false;
-      _errorMessage = null;
-      _finish();
-      notifyListeners();
-    }, onError: (Object error) {
+    void fail() {
       if (_disposed || generation != _generation) return;
       _isLoading = false;
       _errorMessage = 'Could not load crafts. Please try again.';
       _finish();
       notifyListeners();
-    });
+    }
+
+    var receivedProducts = false;
+    try {
+      _subscription = _featuredStream().listen((products) {
+        if (_disposed || generation != _generation) return;
+        receivedProducts = true;
+        _featuredProducts = products;
+        _isLoading = false;
+        _errorMessage = null;
+        _finish();
+        notifyListeners();
+      }, onError: (Object error) {
+        fail();
+      }, onDone: () {
+        // A closed stream without a snapshot is not a successful empty catalog.
+        if (!receivedProducts) fail();
+      });
+    } catch (_) {
+      // Query creation can fail before a stream subscription exists.
+      fail();
+    }
     return refresh.future;
   }
 
