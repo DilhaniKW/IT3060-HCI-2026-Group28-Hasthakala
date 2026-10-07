@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../widgets/product_purchase_bar.dart';
+import '../widgets/favorite_button.dart';
+import '../widgets/product_gallery.dart';
+import '../widgets/product_share.dart';
 import '../widgets/discovery_cart_action.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/product_model.dart';
@@ -18,17 +21,9 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  bool _isWishlisted = false;
-  int _selectedImageIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
-    final images = product.imageUrls.isNotEmpty
-        ? product.imageUrls
-        : [
-            'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=800'
-          ];
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -53,81 +48,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
             actions: [
               const DiscoveryCartAction(),
-              CircleAvatar(
-                backgroundColor: Colors.white.withOpacity(0.9),
-                child: IconButton(
-                  icon: Icon(
-                    _isWishlisted ? Icons.favorite : Icons.favorite_border,
-                    color: _isWishlisted
-                        ? AppColors.primary
-                        : AppColors.textPrimary,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    setState(() => _isWishlisted = !_isWishlisted);
-                  },
-                ),
-              ),
+              FavoriteButton(productId: product.id),
               const SizedBox(width: 8),
               CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.9),
                 child: IconButton(
                   icon: const Icon(Icons.share_outlined,
                       color: AppColors.textPrimary, size: 20),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Craft link copied to clipboard!')),
-                    );
-                  },
+                  tooltip: 'Share product details',
+                  onPressed: () => showProductShare(context, product),
                 ),
               ),
               const SizedBox(width: 12),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Image.network(
-                      images[_selectedImageIndex],
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: AppColors.surface,
-                        child: const Icon(Icons.brush,
-                            size: 60, color: AppColors.secondary),
-                      ),
-                    ),
-                  ),
-                  // Bottom Location Badge Overlay
-                  Positioned(
-                    bottom: 16,
-                    left: 16,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1C1917).withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.location_on,
-                              size: 12, color: AppColors.secondary),
-                          const SizedBox(width: 4),
-                          Text(
-                            'Craft Origin: ${product.district.isNotEmpty ? product.district : "Sri Lanka"}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              background: Padding(
+                  padding: const EdgeInsets.only(top: 80),
+                  child: ProductGallery(
+                      key: ValueKey(product.id), images: product.imageUrls)),
             ),
           ),
 
@@ -142,52 +80,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Badges Row
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          product.category.toUpperCase(),
-                          style: const TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.6,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.accent.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.verified,
-                                size: 12, color: AppColors.accent),
-                            SizedBox(width: 3),
-                            Text(
-                              'Verified Ancestral Lineage',
-                              style: TextStyle(
-                                color: AppColors.accent,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  Chip(label: Text(product.category)),
                   const SizedBox(height: 12),
 
                   // Title & Rating
@@ -206,7 +99,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           size: 16, color: AppColors.secondary),
                       const SizedBox(width: 4),
                       Text(
-                        '${product.rating > 0 ? product.rating.toStringAsFixed(1) : "4.9"}',
+                        product.reviewCount > 0
+                            ? product.rating.toStringAsFixed(1)
+                            : 'No reviews yet',
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
@@ -214,7 +109,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                       ),
                       Text(
-                        ' (${product.reviewCount > 0 ? product.reviewCount : 24} customer reviews)',
+                        product.reviewCount > 0
+                            ? ' (${product.reviewCount} customer reviews)'
+                            : '',
                         style: const TextStyle(
                           fontSize: 13,
                           color: AppColors.textSecondary,
@@ -371,7 +268,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Text(
                     product.description.isNotEmpty
                         ? product.description
-                        : 'Handcrafted with traditional Sri Lankan techniques passed down through generations. Using 100% natural organic materials sourced directly from local rural communities.',
+                        : 'The artisan has not added a description yet.',
                     style: const TextStyle(
                       fontSize: 14,
                       color: AppColors.textSecondary,
@@ -405,14 +302,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           'Raw Materials',
                           product.materials.isNotEmpty
                               ? product.materials
-                              : '100% Earthen Terracotta & Wild River Water',
+                              : 'Details unavailable',
                         ),
                         const Divider(height: 16),
-                        _buildSpecRow('Craft Technique',
-                            'Traditional Hand-Wheel Pit Spin'),
+                        _buildSpecRow('Craft Technique', 'Details unavailable'),
                         const Divider(height: 16),
-                        _buildSpecRow(
-                            'Packaging', 'Insured Biodegradable Coir Box'),
+                        _buildSpecRow('Packaging', 'Details unavailable'),
                       ],
                     ),
                   ),
