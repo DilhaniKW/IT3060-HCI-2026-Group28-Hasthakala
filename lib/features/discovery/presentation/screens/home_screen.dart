@@ -14,6 +14,7 @@ import '../widgets/provenance_guarantee_card.dart';
 import 'product_details_screen.dart';
 import 'public_artisan_profile_screen.dart';
 import 'search_screen.dart';
+import 'favorites_screen.dart';
 
 /// Assigned to: JAYAWARDANA V. K. A.
 /// Branch: feature/buyer-discovery
@@ -110,7 +111,8 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: const Icon(Icons.favorite_border,
                     color: AppColors.textPrimary, size: 22),
-                onPressed: () {},
+                onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const FavoritesScreen())),
               ),
               Positioned(
                 top: 10,
