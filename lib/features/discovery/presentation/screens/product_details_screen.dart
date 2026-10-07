@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/product_purchase_bar.dart';
+import '../widgets/discovery_cart_action.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/product_model.dart';
 import '../../../../core/utils/currency_formatter.dart';
@@ -43,18 +45,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.9),
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary, size: 20),
+                  icon: const Icon(Icons.arrow_back,
+                      color: AppColors.textPrimary, size: 20),
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
             ),
             actions: [
+              const DiscoveryCartAction(),
               CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.9),
                 child: IconButton(
                   icon: Icon(
                     _isWishlisted ? Icons.favorite : Icons.favorite_border,
-                    color: _isWishlisted ? AppColors.primary : AppColors.textPrimary,
+                    color: _isWishlisted
+                        ? AppColors.primary
+                        : AppColors.textPrimary,
                     size: 20,
                   ),
                   onPressed: () {
@@ -66,10 +72,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.9),
                 child: IconButton(
-                  icon: const Icon(Icons.share_outlined, color: AppColors.textPrimary, size: 20),
+                  icon: const Icon(Icons.share_outlined,
+                      color: AppColors.textPrimary, size: 20),
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Craft link copied to clipboard!')),
+                      const SnackBar(
+                          content: Text('Craft link copied to clipboard!')),
                     );
                   },
                 ),
@@ -85,7 +93,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) => Container(
                         color: AppColors.surface,
-                        child: const Icon(Icons.brush, size: 60, color: AppColors.secondary),
+                        child: const Icon(Icons.brush,
+                            size: 60, color: AppColors.secondary),
                       ),
                     ),
                   ),
@@ -94,14 +103,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     bottom: 16,
                     left: 16,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: const Color(0xFF1C1917).withOpacity(0.8),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.location_on, size: 12, color: AppColors.secondary),
+                          const Icon(Icons.location_on,
+                              size: 12, color: AppColors.secondary),
                           const SizedBox(width: 4),
                           Text(
                             'Craft Origin: ${product.district.isNotEmpty ? product.district : "Sri Lanka"}',
@@ -135,7 +146,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
                           color: AppColors.primary.withOpacity(0.12),
                           borderRadius: BorderRadius.circular(12),
@@ -152,14 +164,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
                           color: AppColors.accent.withOpacity(0.12),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
-                          children: const [
-                            Icon(Icons.verified, size: 12, color: AppColors.accent),
+                          children: [
+                            Icon(Icons.verified,
+                                size: 12, color: AppColors.accent),
                             SizedBox(width: 3),
                             Text(
                               'Verified Ancestral Lineage',
@@ -188,7 +202,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   const SizedBox(height: 6),
                   Row(
                     children: [
-                      const Icon(Icons.star, size: 16, color: AppColors.secondary),
+                      const Icon(Icons.star,
+                          size: 16, color: AppColors.secondary),
                       const SizedBox(width: 4),
                       Text(
                         '${product.rating > 0 ? product.rating.toStringAsFixed(1) : "4.9"}',
@@ -244,17 +259,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
                             color: const Color(0xFF264E36).withOpacity(0.1),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
-                            children: const [
-                              Icon(Icons.inventory, size: 14, color: AppColors.accent),
+                            children: [
+                              Icon(Icons.inventory,
+                                  size: 14, color: AppColors.accent),
                               SizedBox(width: 4),
                               Text(
-                                'In Stock • Ready to ship',
+                                product.isAvailable && product.stockQuantity > 0
+                                    ? 'In stock'
+                                    : 'Out of stock',
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
@@ -275,16 +294,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     decoration: BoxDecoration(
                       color: const Color(0xFFFAF2EE),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.border.withOpacity(0.6)),
+                      border:
+                          Border.all(color: AppColors.border.withOpacity(0.6)),
                     ),
                     child: Row(
                       children: [
                         CircleAvatar(
                           radius: 24,
                           backgroundColor: AppColors.primary.withOpacity(0.2),
-                          backgroundImage: const NetworkImage(
-                            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
-                          ),
+                          child: const Icon(Icons.person_outline),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -294,7 +312,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               Text(
                                 product.artisanName.isNotEmpty
                                     ? product.artisanName
-                                    : 'Sunil Kariyawasam',
+                                    : 'Meet the maker',
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -313,18 +331,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => PublicArtisanProfileScreen(
-                                  artisanId: product.artisanId.isNotEmpty
-                                      ? product.artisanId
-                                      : 'artisan_sunil',
-                                ),
-                              ),
-                            );
-                          },
+                          onPressed: product.artisanId.isEmpty
+                              ? null
+                              : () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          PublicArtisanProfileScreen(
+                                        artisanId: product.artisanId,
+                                      ),
+                                    ),
+                                  );
+                                },
                           child: const Text(
                             'View Studio',
                             style: TextStyle(
@@ -389,9 +408,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               : '100% Earthen Terracotta & Wild River Water',
                         ),
                         const Divider(height: 16),
-                        _buildSpecRow('Craft Technique', 'Traditional Hand-Wheel Pit Spin'),
+                        _buildSpecRow('Craft Technique',
+                            'Traditional Hand-Wheel Pit Spin'),
                         const Divider(height: 16),
-                        _buildSpecRow('Packaging', 'Insured Biodegradable Coir Box'),
+                        _buildSpecRow(
+                            'Packaging', 'Insured Biodegradable Coir Box'),
                       ],
                     ),
                   ),
@@ -402,66 +423,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
         ],
       ),
-
-      // Bottom Actions Bar
-      bottomSheet: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.06),
-              blurRadius: 10,
-              offset: const Offset(0, -4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${product.title} added to cart!'),
-                      backgroundColor: AppColors.accent,
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.shopping_bag_outlined, size: 18),
-                label: const Text('Add to Cart', style: TextStyle(fontWeight: FontWeight.bold)),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.primary,
-                  side: const BorderSide(color: AppColors.primary, width: 1.5),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Proceeding to Checkout...'),
-                      backgroundColor: AppColors.primary,
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.flash_on, size: 18),
-                label: const Text('Buy Now', style: TextStyle(fontWeight: FontWeight.bold)),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: AppColors.onPrimary,
-                  backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: ProductPurchaseBar(product: product),
     );
   }
 
