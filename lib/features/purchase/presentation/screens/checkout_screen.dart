@@ -17,6 +17,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final TextEditingController _phoneController = TextEditingController(text: '0771234567');
   int _selectedPaymentIndex = 0;
 
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _addressController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
   final List<Map<String, dynamic>> _paymentMethods = [
     {
       'title': 'Cash on Delivery (COD)',
@@ -433,13 +441,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 elevation: 0,
               ),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Order placed successfully with Provenance Guarantee!'),
-                    backgroundColor: AppColors.accent,
-                  ),
-                );
-                Navigator.pop(context);
+                showDialog<void>(context: context, builder: (context) => AlertDialog(
+                  title: const Text('Order summary'),
+                  content: Text('${cart.totalItemCount} items\nTotal: ${CurrencyFormatter.formatLKR(grandTotal)}\n\nOrder submission is not available yet. No order has been placed.'),
+                  actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Back to checkout'))],
+                ));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
