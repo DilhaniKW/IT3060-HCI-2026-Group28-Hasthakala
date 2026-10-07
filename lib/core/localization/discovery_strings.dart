@@ -1,5 +1,50 @@
 // Fixed text for the core Buyer Discovery flow.
 const discoveryStrings = <String, Map<String, String>>{
+  'discovery_products_tab': {
+    'en': 'Products',
+    'si': 'නිෂ්පාදන',
+    'ta': 'தயாரிப்புகள்'
+  },
+  'discovery_artisans_tab': {
+    'en': 'Artisans',
+    'si': 'ශිල්පීන්',
+    'ta': 'கைவினைஞர்கள்'
+  },
+  'discovery_artisans_hint': {
+    'en': 'Search artisans or places...',
+    'si': 'ශිල්පීන් හෝ ප්‍රදේශ සොයන්න...',
+    'ta': 'கைவினைஞர்கள் அல்லது இடங்களைத் தேடுக...'
+  },
+  'discovery_verified_only': {
+    'en': 'Verified artisans only',
+    'si': 'තහවුරු කළ ශිල්පීන් පමණයි',
+    'ta': 'சரிபார்க்கப்பட்ட கைவினைஞர்கள் மட்டும்'
+  },
+  'discovery_artisans_loading': {
+    'en': 'Loading artisans...',
+    'si': 'ශිල්පීන් පූරණය වෙමින්...',
+    'ta': 'கைவினைஞர்கள் ஏற்றப்படுகின்றனர்...'
+  },
+  'discovery_artisans_error': {
+    'en': 'Unable to load artisans',
+    'si': 'ශිල්පීන් පූරණය කළ නොහැක',
+    'ta': 'கைவினைஞர்களை ஏற்ற முடியவில்லை'
+  },
+  'discovery_artisans_empty': {
+    'en': 'No artisans found',
+    'si': 'ශිල්පීන් හමු නොවීය',
+    'ta': 'கைவினைஞர்கள் கிடைக்கவில்லை'
+  },
+  'discovery_artisans_count': {
+    'en': 'Artisans ({count})',
+    'si': 'ශිල්පීන් ({count})',
+    'ta': 'கைவினைஞர்கள் ({count})'
+  },
+  'discovery_refresh': {
+    'en': 'Refresh',
+    'si': 'නැවත පූරණය කරන්න',
+    'ta': 'புதுப்பிக்கவும்'
+  },
   'discovery_sort': {'en': 'Sort by', 'si': 'පිළිවෙළ', 'ta': 'வரிசைப்படுத்தல்'},
   'discovery_sort_defaultOrder': {
     'en': 'Default order',
