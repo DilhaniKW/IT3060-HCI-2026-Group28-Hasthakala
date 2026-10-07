@@ -1,3 +1,4 @@
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 
@@ -27,10 +28,12 @@ class _ProductGalleryState extends State<ProductGallery> {
         builder: (context) => Dialog.fullscreen(
               child: Scaffold(
                 appBar: AppBar(
-                    title:
-                        Text('Photo ${_index + 1} of ${widget.images.length}'),
+                    title: Text(context.tr('discovery_photo', {
+                      'index': '${_index + 1}',
+                      'count': '${widget.images.length}'
+                    })),
                     leading: IconButton(
-                        tooltip: 'Close photo',
+                        tooltip: context.tr('discovery_close_photo'),
                         icon: const Icon(Icons.close),
                         onPressed: () => Navigator.pop(context))),
                 body: Center(
@@ -46,9 +49,9 @@ class _ProductGalleryState extends State<ProductGallery> {
   @override
   Widget build(BuildContext context) {
     if (widget.images.isEmpty)
-      return const ColoredBox(
+      return ColoredBox(
           color: AppColors.surface,
-          child: Center(child: Text('No product photos available')));
+          child: Center(child: Text(context.tr('discovery_no_photos'))));
     return Column(children: [
       Expanded(
           child: Stack(children: [
@@ -81,7 +84,8 @@ class _ProductGalleryState extends State<ProductGallery> {
                         duration: const Duration(milliseconds: 200),
                         curve: Curves.easeOut),
                     child: Tooltip(
-                        message: 'View photo ${index + 1}',
+                        message: context.tr(
+                            'discovery_view_photo', {'index': '${index + 1}'}),
                         child: Container(
                             width: 48,
                             decoration: BoxDecoration(
