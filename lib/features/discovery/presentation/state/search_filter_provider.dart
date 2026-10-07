@@ -11,6 +11,8 @@ typedef DiscoverySearch = Future<List<ProductModel>> Function({
   double? maxPrice,
 });
 
+enum DiscoverySort { defaultOrder, priceLowToHigh, priceHighToLow }
+
 class SearchFilterProvider extends ChangeNotifier {
   SearchFilterProvider(
       {DiscoveryRemoteDataSource? dataSource, DiscoverySearch? search})
@@ -28,8 +30,31 @@ class SearchFilterProvider extends ChangeNotifier {
   String? _selectedDistrict;
   double? _maxPrice;
   String? _errorMessage;
+  DiscoverySort _sort = DiscoverySort.defaultOrder;
 
-  List<ProductModel> get searchResults => List.unmodifiable(_searchResults);
+  DiscoverySort get sort => _sort;
+
+  List<ProductModel> get searchResults {
+    if (_sort == DiscoverySort.defaultOrder) {
+      return List.unmodifiable(_searchResults);
+    }
+    // Keep the source order intact, including stable ordering of equal prices.
+    final indexed = _searchResults.asMap().entries.toList();
+    indexed.sort((a, b) {
+      final comparison = _sort == DiscoverySort.priceLowToHigh
+          ? a.value.priceLkr.compareTo(b.value.priceLkr)
+          : b.value.priceLkr.compareTo(a.value.priceLkr);
+      return comparison == 0 ? a.key.compareTo(b.key) : comparison;
+    });
+    return List.unmodifiable(indexed.map((entry) => entry.value));
+  }
+
+  void setSort(DiscoverySort value) {
+    if (_disposed || value == _sort) return;
+    _sort = value;
+    notifyListeners();
+  }
+
   bool get isSearching => _isSearching;
   String get query => _query;
   String? get selectedCategory => _selectedCategory;
