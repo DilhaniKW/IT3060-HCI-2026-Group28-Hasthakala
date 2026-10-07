@@ -818,6 +818,226 @@ class AppStrings {
       'ta': 'அட்டையை மாற்ற முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
     },
 
+    // ---- family assistance (I13) ----
+    'rel_family': {'en': 'Family Member', 'si': 'පවුලේ සාමාජිකයෙක්', 'ta': 'குடும்ப உறுப்பினர்'},
+    'rel_child': {'en': 'Son / Daughter', 'si': 'පුතා / දුව', 'ta': 'மகன் / மகள்'},
+    'rel_spouse': {'en': 'Spouse', 'si': 'කලත්‍රයා', 'ta': 'வாழ்க்கைத் துணை'},
+    'rel_sibling': {'en': 'Sibling', 'si': 'සහෝදරයා / සහෝදරිය', 'ta': 'உடன்பிறப்பு'},
+    'rel_relative': {'en': 'Relative', 'si': 'ඥාතියෙක්', 'ta': 'உறவினர்'},
+    'fa_intro': {
+      'en': 'Authorize trusted family members to support your business.',
+      'si': 'ඔබේ ව්‍යාපාරයට සහාය වීමට විශ්වාසවන්ත පවුලේ සාමාජිකයින්ට බලය දෙන්න.',
+      'ta': 'உங்கள் வணிகத்திற்கு உதவ நம்பகமான குடும்ப உறுப்பினர்களுக்கு அனுமதி வழங்குங்கள்.',
+    },
+    'fa_sec_users': {
+      'en': 'Authorized Support Users',
+      'si': 'බලයලත් සහායකයින්',
+      'ta': 'அங்கீகரிக்கப்பட்ட உதவியாளர்கள்',
+    },
+    'fa_sec_pending': {
+      'en': 'Pending Invitations',
+      'si': 'පොරොත්තු ආරාධනා',
+      'ta': 'நிலுவையிலுள்ள அழைப்புகள்',
+    },
+    'fa_empty_title': {
+      'en': 'No support users yet',
+      'si': 'තවම සහායකයින් නැත',
+      'ta': 'இன்னும் உதவியாளர்கள் இல்லை',
+    },
+    'fa_empty_sub': {
+      'en': 'Tap Add Support User to invite someone.',
+      'si': 'කෙනෙකුට ආරාධනා කිරීමට සහායකයෙක් එක් කරන්න ඔබන්න.',
+      'ta': 'ஒருவரை அழைக்க உதவியாளரைச் சேர் என்பதைத் தட்டவும்.',
+    },
+    'fa_load_error': {
+      'en': 'Support users could not be loaded. Check your connection.',
+      'si': 'සහායකයින් පූරණය කළ නොහැකි විය. සම්බන්ධතාව පරීක්ෂා කරන්න.',
+      'ta': 'உதவியாளர்களை ஏற்ற முடியவில்லை. இணைப்பைச் சரிபார்க்கவும்.',
+    },
+    'fa_trust': {
+      'en': 'Support users can help only in areas you authorize.',
+      'si': 'සහායකයින්ට උදව් කළ හැක්කේ ඔබ අවසර දෙන කටයුතුවලට පමණි.',
+      'ta': 'நீங்கள் அனுமதிக்கும் பகுதிகளில் மட்டுமே உதவியாளர்கள் உதவ முடியும்.',
+    },
+    'add_support_user': {
+      'en': 'Add Support User',
+      'si': 'සහායකයෙක් එක් කරන්න',
+      'ta': 'உதவியாளரைச் சேர்',
+    },
+    'status_active': {'en': 'Active', 'si': 'සක්‍රියයි', 'ta': 'செயலில்'},
+    'status_pending': {'en': 'Pending', 'si': 'පොරොත්තුවෙන්', 'ta': 'நிலுவையில்'},
+    'status_expired': {'en': 'Expired', 'si': 'කල් ඉකුත් වී ඇත', 'ta': 'காலாவதியானது'},
+    'invite_code_line': {
+      'en': 'Code {code}, valid until {date}',
+      'si': 'කේතය {code}, {date} දක්වා වලංගුයි',
+      'ta': 'குறியீடு {code}, {date} வரை செல்லும்',
+    },
+    'invite_expired_hint': {
+      'en': 'This code has expired. Cancel it and invite again.',
+      'si': 'මෙම කේතය කල් ඉකුත් වී ඇත. එය අවලංගු කර නැවත ආරාධනා කරන්න.',
+      'ta': 'இந்தக் குறியீடு காலாவதியானது. அதை ரத்துசெய்து மீண்டும் அழைக்கவும்.',
+    },
+    'invite_share': {'en': 'Share code', 'si': 'කේතය බෙදාගන්න', 'ta': 'குறியீட்டைப் பகிர்'},
+    'invite_cancel': {'en': 'Cancel', 'si': 'අවලංගු කරන්න', 'ta': 'ரத்துசெய்'},
+    'invite_for': {
+      'en': 'Invitation for {name}',
+      'si': '{name} සඳහා ආරාධනාව',
+      'ta': '{name} க்கான அழைப்பு',
+    },
+    'cancel_invite_title': {
+      'en': 'Cancel invitation?',
+      'si': 'ආරාධනාව අවලංගු කරන්නද?',
+      'ta': 'அழைப்பை ரத்துசெய்யவா?',
+    },
+    'cancel_invite_body': {
+      'en': '{name} will no longer be able to use code {code}.',
+      'si': '{name} ට තවදුරටත් {code} කේතය භාවිතා කළ නොහැක.',
+      'ta': '{name} இனி {code} குறியீட்டைப் பயன்படுத்த முடியாது.',
+    },
+    'keep': {'en': 'Keep', 'si': 'තබාගන්න', 'ta': 'வைத்திரு'},
+    'cancel_invitation': {
+      'en': 'Cancel invitation',
+      'si': 'ආරාධනාව අවලංගු කරන්න',
+      'ta': 'அழைப்பை ரத்துசெய்',
+    },
+    'invite_cancelled': {
+      'en': 'Invitation cancelled',
+      'si': 'ආරාධනාව අවලංගු කළා',
+      'ta': 'அழைப்பு ரத்துசெய்யப்பட்டது',
+    },
+    'sec_person': {'en': 'Who is helping?', 'si': 'උදව් කරන්නේ කවුද?', 'ta': 'யார் உதவுகிறார்?'},
+    'label_full_name': {'en': 'Full Name', 'si': 'සම්පූර්ණ නම', 'ta': 'முழுப் பெயர்'},
+    'hint_full_name': {
+      'en': 'Enter their full name',
+      'si': 'ඔවුන්ගේ සම්පූර්ණ නම ඇතුළත් කරන්න',
+      'ta': 'அவர்களின் முழுப் பெயரை உள்ளிடவும்',
+    },
+    'label_relationship': {'en': 'Relationship', 'si': 'සම්බන්ධතාවය', 'ta': 'உறவுமுறை'},
+    'label_phone': {
+      'en': 'Contact / Phone Number',
+      'si': 'දුරකථන අංකය',
+      'ta': 'தொலைபேசி எண்',
+    },
+    'sec_support_access': {'en': 'Support Access', 'si': 'සහාය ප්‍රවේශය', 'ta': 'உதவி அணுகல்'},
+    'perm_products': {'en': 'Manage products', 'si': 'නිෂ්පාදන කළමනාකරණය', 'ta': 'தயாரிப்புகளை நிர்வகி'},
+    'perm_products_sub': {
+      'en': 'Add, edit and update products',
+      'si': 'නිෂ්පාදන එක් කිරීම, සංස්කරණය සහ යාවත්කාලීන කිරීම',
+      'ta': 'தயாரிப்புகளைச் சேர்க்க, திருத்த, புதுப்பிக்க',
+    },
+    'perm_orders': {'en': 'Manage orders', 'si': 'ඇණවුම් කළමනාකරණය', 'ta': 'ஆர்டர்களை நிர்வகி'},
+    'perm_orders_sub': {
+      'en': 'View and update order status',
+      'si': 'ඇණවුම් තත්ත්වය බැලීම සහ යාවත්කාලීන කිරීම',
+      'ta': 'ஆர்டர் நிலையைப் பார்க்க, புதுப்பிக்க',
+    },
+    'perm_messages': {
+      'en': 'Respond to customers',
+      'si': 'පාරිභෝගිකයින්ට පිළිතුරු දීම',
+      'ta': 'வாடிக்கையாளர்களுக்குப் பதிலளி',
+    },
+    'perm_messages_sub': {
+      'en': 'Reply to messages about orders',
+      'si': 'ඇණවුම් ගැන පණිවිඩවලට පිළිතුරු දීම',
+      'ta': 'ஆர்டர்கள் பற்றிய செய்திகளுக்குப் பதிலளிக்க',
+    },
+    'perm_sensitive': {
+      'en': 'Sensitive account functions',
+      'si': 'සංවේදී ගිණුම් කටයුතු',
+      'ta': 'முக்கியமான கணக்கு செயல்பாடுகள்',
+    },
+    'perm_owner_only': {'en': 'Owner only', 'si': 'හිමිකරුට පමණි', 'ta': 'உரிமையாளருக்கு மட்டும்'},
+    'sensitive_note': {
+      'en': 'Sensitive owner account settings remain restricted.',
+      'si': 'සංවේදී හිමිකරු ගිණුම් සැකසුම් සීමා කර ඇත.',
+      'ta': 'முக்கியமான உரிமையாளர் கணக்கு அமைப்புகள் கட்டுப்படுத்தப்பட்டுள்ளன.',
+    },
+    'scope_summary': {
+      'en': '{name} will be able to help with: {scopes}',
+      'si': '{name} ට උදව් කළ හැකි දේ: {scopes}',
+      'ta': '{name} உதவக்கூடியவை: {scopes}',
+    },
+    'scope_none_hint': {
+      'en': 'Turn on at least one activity.',
+      'si': 'අවම වශයෙන් එක් කටයුත්තක් සක්‍රිය කරන්න.',
+      'ta': 'குறைந்தது ஒரு செயலையாவது இயக்கவும்.',
+    },
+    'this_person': {'en': 'This person', 'si': 'මෙම පුද්ගලයා', 'ta': 'இவர்'},
+    'send_invitation': {'en': 'Send Invitation', 'si': 'ආරාධනාව යවන්න', 'ta': 'அழைப்பை அனுப்பு'},
+
+    // ---- family assistance messages from code (I13) ----
+    'err_full_name': {
+      'en': 'Please enter their full name',
+      'si': 'කරුණාකර ඔවුන්ගේ සම්පූර්ණ නම ඇතුළත් කරන්න',
+      'ta': 'அவர்களின் முழுப் பெயரை உள்ளிடவும்',
+    },
+    'err_phone_required': {
+      'en': 'Please enter a phone number',
+      'si': 'කරුණාකර දුරකථන අංකයක් ඇතුළත් කරන්න',
+      'ta': 'தொலைபேசி எண்ணை உள்ளிடவும்',
+    },
+    'err_phone_invalid': {
+      'en': 'Enter a valid number, e.g. 077 123 4567',
+      'si': 'වලංගු අංකයක් ඇතුළත් කරන්න, උදා: 077 123 4567',
+      'ta': 'சரியான எண்ணை உள்ளிடவும், எ.கா. 077 123 4567',
+    },
+    'err_scope_none': {
+      'en': 'Turn on at least one activity this person may help with',
+      'si': 'මෙම පුද්ගලයාට උදව් කළ හැකි අවම වශයෙන් එක් කටයුත්තක් සක්‍රිය කරන්න',
+      'ta': 'இவர் உதவக்கூடிய குறைந்தது ஒரு செயலையாவது இயக்கவும்',
+    },
+    'err_invite_send': {
+      'en': 'The invitation could not be sent. Please try again.',
+      'si': 'ආරාධනාව යැවිය නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'அழைப்பை அனுப்ப முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_invite_create': {
+      'en': 'Could not create an invitation. Please try again.',
+      'si': 'ආරාධනාවක් සෑදිය නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'அழைப்பை உருவாக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_invite_cancel': {
+      'en': 'The invitation could not be cancelled. Please try again.',
+      'si': 'ආරාධනාව අවලංගු කළ නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'அழைப்பை ரத்துசெய்ய முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_access_update': {
+      'en': 'Access could not be updated. Please try again.',
+      'si': 'ප්‍රවේශය යාවත්කාලීන කළ නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'அணுகலைப் புதுப்பிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_access_revoke': {
+      'en': 'Access could not be revoked. Please try again.',
+      'si': 'ප්‍රවේශය ඉවත් කළ නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'அணுகலை நீக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_invite_accept': {
+      'en': 'The invitation could not be accepted. Please try again.',
+      'si': 'ආරාධනාව පිළිගත නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'அழைப்பை ஏற்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_invite_mismatch': {
+      'en': 'This code and phone number do not match a pending invitation. Check both with the artisan who invited you.',
+      'si': 'මෙම කේතය සහ දුරකථන අංකය පොරොත්තු ආරාධනාවකට නොගැළපේ. ඔබට ආරාධනා කළ ශිල්පියා සමඟ දෙකම පරීක්ෂා කරන්න.',
+      'ta': 'இந்தக் குறியீடும் தொலைபேசி எண்ணும் நிலுவையிலுள்ள அழைப்புடன் பொருந்தவில்லை. உங்களை அழைத்த கைவினைஞரிடம் இரண்டையும் சரிபார்க்கவும்.',
+    },
+    'err_invite_notfound': {
+      'en': 'Invitation not found. Check the code.',
+      'si': 'ආරාධනාව හමු නොවීය. කේතය පරීක්ෂා කරන්න.',
+      'ta': 'அழைப்பு கிடைக்கவில்லை. குறியீட்டைச் சரிபார்க்கவும்.',
+    },
+    'err_invite_expired': {
+      'en': 'This invitation has expired. Ask the artisan to send a new one.',
+      'si': 'මෙම ආරාධනාව කල් ඉකුත් වී ඇත. නව එකක් එවන ලෙස ශිල්පියාගෙන් ඉල්ලන්න.',
+      'ta': 'இந்த அழைப்பு காலாவதியானது. புதிய ஒன்றை அனுப்புமாறு கைவினைஞரிடம் கேளுங்கள்.',
+    },
+    'err_invite_own': {
+      'en': 'You cannot accept your own invitation.',
+      'si': 'ඔබට ඔබේම ආරාධනාව පිළිගත නොහැක.',
+      'ta': 'உங்கள் சொந்த அழைப்பை ஏற்க முடியாது.',
+    },
+    'err_try_again': {'en': 'Please try again.', 'si': 'නැවත උත්සාහ කරන්න.', 'ta': 'மீண்டும் முயற்சிக்கவும்.'},
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
@@ -829,6 +1049,21 @@ class AppStrings {
   // English messages from validators / Firebase - key, so they can be shown
   // in the chosen language without changing where they come from
   static const Map<String, String> messageKeys = {
+    'Please enter their full name': 'err_full_name',
+    'Please enter a phone number': 'err_phone_required',
+    'Enter a valid number, e.g. 077 123 4567': 'err_phone_invalid',
+    'Turn on at least one activity this person may help with': 'err_scope_none',
+    'The invitation could not be sent. Please try again.': 'err_invite_send',
+    'Could not create an invitation. Please try again.': 'err_invite_create',
+    'The invitation could not be cancelled. Please try again.': 'err_invite_cancel',
+    'Access could not be updated. Please try again.': 'err_access_update',
+    'Access could not be revoked. Please try again.': 'err_access_revoke',
+    'The invitation could not be accepted. Please try again.': 'err_invite_accept',
+    'This code and phone number do not match a pending invitation. Check both with the artisan who invited you.': 'err_invite_mismatch',
+    'Invitation not found. Check the code.': 'err_invite_notfound',
+    'This invitation has expired. Ask the artisan to send a new one.': 'err_invite_expired',
+    'You cannot accept your own invitation.': 'err_invite_own',
+    'Please try again.': 'err_try_again',
     'Artisan name is required.': 'err_artisan_name',
     'Please select a craft type.': 'err_craft_type',
     'Please write a short description (10+ characters).': 'err_about_short',
