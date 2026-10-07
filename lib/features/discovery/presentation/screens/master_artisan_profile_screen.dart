@@ -8,10 +8,12 @@ class MasterArtisanProfileScreen extends StatefulWidget {
   const MasterArtisanProfileScreen({super.key});
 
   @override
-  State<MasterArtisanProfileScreen> createState() => _MasterArtisanProfileScreenState();
+  State<MasterArtisanProfileScreen> createState() =>
+      _MasterArtisanProfileScreenState();
 }
 
-class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen> {
+class _MasterArtisanProfileScreenState
+    extends State<MasterArtisanProfileScreen> {
   final List<ProductModel> _artisanCrafts = [
     ProductModel(
       id: 'm_1',
@@ -35,7 +37,8 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
       artisanId: 'artisan_sunil',
       artisanName: 'Sunil Kariyawasam',
       title: 'Ancient Sri Lankan Clay Water Pot',
-      description: 'Earthen pot for natural water cooling and traditional cooking.',
+      description:
+          'Earthen pot for natural water cooling and traditional cooking.',
       priceLkr: 1950.0,
       category: 'Pottery & Clay',
       materials: 'Natural Terracotta',
@@ -64,7 +67,8 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
               child: CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.9),
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary, size: 20),
+                  icon: const Icon(Icons.arrow_back,
+                      color: AppColors.textPrimary, size: 20),
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
@@ -76,21 +80,24 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                     child: Image.network(
                       'https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&q=80&w=800',
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(color: AppColors.surface),
+                      errorBuilder: (_, __, ___) =>
+                          Container(color: AppColors.surface),
                     ),
                   ),
                   Positioned(
                     bottom: 16,
                     right: 16,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.75),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Row(
                         children: const [
-                          Icon(Icons.location_on, color: Colors.white, size: 14),
+                          Icon(Icons.location_on,
+                              color: Colors.white, size: 14),
                           SizedBox(width: 4),
                           Text(
                             'Kelaniya Riverbank Shed',
@@ -126,7 +133,9 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Wrap(spacing: 4, runSpacing: 4,
+                            Wrap(
+                              spacing: 4,
+                              runSpacing: 4,
                               children: const [
                                 Text(
                                   'Sunil Kariyawasam',
@@ -137,21 +146,27 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                                   ),
                                 ),
                                 SizedBox(width: 6),
-                                Icon(Icons.verified, color: AppColors.accent, size: 18),
+                                Icon(Icons.verified,
+                                    color: AppColors.accent, size: 18),
                               ],
                             ),
                             const SizedBox(height: 2),
                             const Text(
                               'Master Terracotta Craftsman • 35 Yrs Experience',
-                              style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                              style: TextStyle(
+                                  fontSize: 12, color: AppColors.textSecondary),
                             ),
                             const SizedBox(height: 6),
-                            Wrap(spacing: 4, runSpacing: 4,
+                            Wrap(
+                              spacing: 4,
+                              runSpacing: 4,
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 2),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFF264E36).withOpacity(0.1),
+                                    color: const Color(0xFF264E36)
+                                        .withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: const Text(
@@ -164,11 +179,14 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                const Icon(Icons.star, color: Colors.amber, size: 14),
+                                const Icon(Icons.star,
+                                    color: Colors.amber, size: 14),
                                 const SizedBox(width: 2),
                                 const Text(
                                   '4.9 (48 Reviews)',
-                                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
@@ -179,6 +197,9 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                   ),
                   const SizedBox(height: 16),
 
+                  const Text('Sample artisan profile',
+                      style: TextStyle(color: AppColors.textSecondary)),
+                  const SizedBox(height: 8),
                   // Maker Philosophy Quote
                   Container(
                     padding: const EdgeInsets.all(12),
@@ -189,7 +210,8 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
-                        Icon(Icons.format_quote, color: AppColors.primary, size: 20),
+                        Icon(Icons.format_quote,
+                            color: AppColors.primary, size: 20),
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
@@ -222,7 +244,9 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                               size: 18, color: AppColors.primary),
                           label: const Text(
                             'Read Reviews',
-                            style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
                             Navigator.pushNamed(context, '/artisan-reviews');
@@ -239,10 +263,13 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                           ),
-                          icon: const Icon(Icons.brush, size: 18, color: Colors.white),
+                          icon: const Icon(Icons.brush,
+                              size: 18, color: Colors.white),
                           label: const Text(
                             'Commission Piece',
-                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                           onPressed: () {
                             Navigator.pushNamed(context, '/custom-commission');
@@ -282,7 +309,9 @@ class _MasterArtisanProfileScreenState extends State<MasterArtisanProfileScreen>
                   final p = _artisanCrafts[index];
                   return ProductCard(
                     product: p,
-                    onTap: () => Navigator.pushNamed(context, '/product-details', arguments: p),
+                    onTap: () => Navigator.pushNamed(
+                        context, '/product-details',
+                        arguments: p),
                   );
                 },
                 childCount: _artisanCrafts.length,
