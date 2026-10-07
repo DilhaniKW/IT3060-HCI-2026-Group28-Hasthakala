@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/shared_models/product_model.dart';
+
 import '../../../../core/widgets/loading_indicator.dart';
 import '../state/discovery_provider.dart';
 import '../../../../core/constants/craft_categories.dart';
@@ -9,6 +9,7 @@ import '../../../../core/widgets/empty_state_view.dart';
 import '../widgets/craft_category_chip.dart';
 import '../widgets/master_artisan_spotlight_card.dart';
 import '../widgets/product_card.dart';
+import '../widgets/discovery_cart_action.dart';
 import '../widgets/provenance_guarantee_card.dart';
 import 'product_details_screen.dart';
 import 'public_artisan_profile_screen.dart';
@@ -24,78 +25,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // High-fidelity fallback sample products matching Stitch Canvas
-  final List<ProductModel> _sampleProducts = [
-    ProductModel(
-      id: 'sample_1',
-      artisanId: 'artisan_sunil',
-      artisanName: 'Sunil K.',
-      title: 'Heritage Jug',
-      description:
-          'Organic raw unglazed terracotta water jug, handmade with rustic ridged grooves and earthen textures in Kelaniya pottery studio.',
-      priceLkr: 2400.0,
-      category: 'Pottery & Clay',
-      materials: 'Terracotta Clay',
-      district: 'Kelaniya',
-      rating: 4.9,
-      reviewCount: 24,
-      imageUrls: [
-        'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=600',
-      ],
-    ),
-    ProductModel(
-      id: 'sample_2',
-      artisanId: 'artisan_kamal',
-      artisanName: 'Kamal P.',
-      title: 'Raksha Mask',
-      description:
-          'Intricately hand-carved traditional Sri Lankan Gurulu Raksha demon mask with vivid natural mineral pigments.',
-      priceLkr: 3200.0,
-      category: 'Traditional Masks',
-      materials: 'Kaduru Wood',
-      district: 'Ambalangoda',
-      rating: 4.8,
-      reviewCount: 19,
-      imageUrls: [
-        'https://images.unsplash.com/photo-1584727638096-042c45049ebe?auto=format&fit=crop&q=80&w=600',
-      ],
-    ),
-    ProductModel(
-      id: 'sample_3',
-      artisanId: 'artisan_nimali',
-      artisanName: 'Nimali F.',
-      title: 'Coconut Bowl',
-      description:
-          'Finely polished natural coconut shell dessert bowl treated with pure wild kitul oil for smooth tactile finish.',
-      priceLkr: 1200.0,
-      category: 'Woodcarving',
-      materials: 'Coconut Shell & Kitul Oil',
-      district: 'Kurunegala',
-      rating: 4.7,
-      reviewCount: 15,
-      imageUrls: [
-        'https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&fit=crop&q=80&w=600',
-      ],
-    ),
-    ProductModel(
-      id: 'sample_4',
-      artisanId: 'artisan_nalini',
-      artisanName: 'Nalini A.',
-      title: 'Dumbara Mat',
-      description:
-          'Traditional Sri Lankan Dumbara handwoven reed table mat with intricate geometric patterns crafted on pit-loom.',
-      priceLkr: 1800.0,
-      category: 'Batik & Weave',
-      materials: 'Nidi Grass & Dye',
-      district: 'Kandy',
-      rating: 5.0,
-      reviewCount: 31,
-      imageUrls: [
-        'https://images.unsplash.com/photo-1606744824163-985d376605aa?auto=format&fit=crop&q=80&w=600',
-      ],
-    ),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -197,35 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.shopping_bag_outlined,
-                    color: AppColors.textPrimary, size: 22),
-                onPressed: () {},
-              ),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Text(
-                    '2',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 9,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+          const DiscoveryCartAction(),
           const SizedBox(width: 4),
           const CircleAvatar(
             radius: 15,
@@ -346,28 +247,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 20),
 
                 // Master Artisan Spotlight Card
-                MasterArtisanSpotlightCard(
-                  onViewWorkshop: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const PublicArtisanProfileScreen(
-                          artisanId: 'artisan_sunil',
+                if (displayProducts.isNotEmpty)
+                  MasterArtisanSpotlightCard(
+                    product: displayProducts.first,
+                    onViewWorkshop: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PublicArtisanProfileScreen(
+                            artisanId: displayProducts.first.artisanId,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  onFeaturedProductTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ProductDetailsScreen(
-                          product: _sampleProducts.first,
+                      );
+                    },
+                    onFeaturedProductTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ProductDetailsScreen(
+                            product: displayProducts.first,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
                 const SizedBox(height: 24),
 
                 // Section Header: Curated Masterpieces
