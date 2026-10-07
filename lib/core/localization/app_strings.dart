@@ -158,12 +158,192 @@ class AppStrings {
       'ta': 'உங்கள் கணக்கைச் சரிபார்த்து பணியிடத்தை ஏற்றுகிறது.',
     },
 
+    // ---- create account ----
+    'create_account_title': {
+      'en': 'Create Your Account',
+      'si': 'ඔබේ ගිණුම සාදන්න',
+      'ta': 'உங்கள் கணக்கை உருவாக்குங்கள்',
+    },
+    'create_account_sub': {
+      'en': 'Join our community of artisans and craft lovers.',
+      'si': 'ශිල්පීන් සහ අත්කම් ලෝලීන්ගේ ප්‍රජාවට එක්වන්න.',
+      'ta': 'கைவினைஞர்கள் மற்றும் கைவினை ஆர்வலர்களின் சமூகத்தில் சேருங்கள்.',
+    },
+    'full_name': {'en': 'Full Name', 'si': 'සම්පූර්ණ නම', 'ta': 'முழுப் பெயர்'},
+    'full_name_hint': {
+      'en': 'Enter your full name',
+      'si': 'ඔබේ සම්පූර්ණ නම ඇතුළත් කරන්න',
+      'ta': 'உங்கள் முழுப் பெயரை உள்ளிடவும்',
+    },
+    'email_hint': {
+      'en': 'Enter your email',
+      'si': 'ඔබේ විද්‍යුත් තැපෑල ඇතුළත් කරන්න',
+      'ta': 'உங்கள் மின்னஞ்சலை உள்ளிடவும்',
+    },
+    'password_hint': {
+      'en': 'Enter your password',
+      'si': 'ඔබේ මුරපදය ඇතුළත් කරන්න',
+      'ta': 'உங்கள் கடவுச்சொல்லை உள்ளிடவும்',
+    },
+    'confirm_password': {
+      'en': 'Confirm Password',
+      'si': 'මුරපදය තහවුරු කරන්න',
+      'ta': 'கடவுச்சொல்லை உறுதிப்படுத்தவும்',
+    },
+    'confirm_password_hint': {
+      'en': 'Enter your password again',
+      'si': 'මුරපදය නැවත ඇතුළත් කරන්න',
+      'ta': 'கடவுச்சொல்லை மீண்டும் உள்ளிடவும்',
+    },
+    'password_rule': {
+      'en': 'At least 6 characters',
+      'si': 'අවම වශයෙන් අකුරු 6ක්',
+      'ta': 'குறைந்தது 6 எழுத்துகள்',
+    },
+    'passwords_match': {
+      'en': 'Passwords match',
+      'si': 'මුරපද ගැළපේ',
+      'ta': 'கடவுச்சொற்கள் பொருந்துகின்றன',
+    },
+    'agree_terms': {
+      'en': 'I agree to the Terms & Conditions',
+      'si': 'නියම සහ කොන්දේසිවලට මම එකඟ වෙමි',
+      'ta': 'விதிமுறைகள் மற்றும் நிபந்தனைகளை ஏற்கிறேன்',
+    },
+    'view': {'en': 'View', 'si': 'බලන්න', 'ta': 'பார்க்க'},
+    'close': {'en': 'Close', 'si': 'වසන්න', 'ta': 'மூடு'},
+    'terms_title': {
+      'en': 'Terms & Conditions',
+      'si': 'නියම සහ කොන්දේසි',
+      'ta': 'விதிமுறைகள் மற்றும் நிபந்தனைகள்',
+    },
+    'terms_body': {
+      'en': 'HASTHAKALA is a student project (IT3060, Group 28).\n\n'
+          '- Use accurate information about yourself and your products.\n'
+          '- Only share support access with people you trust.\n'
+          '- Test accounts and data may be removed when the project ends.\n'
+          '- Your data is stored in Firebase and only used for this app.',
+      'si': 'HASTHAKALA ශිෂ්‍ය ව්‍යාපෘතියකි (IT3060, කණ්ඩායම 28).\n\n'
+          '- ඔබ සහ ඔබේ නිෂ්පාදන ගැන නිවැරදි තොරතුරු භාවිතා කරන්න.\n'
+          '- සහාය ප්‍රවේශය ඔබ විශ්වාස කරන අය සමඟ පමණක් බෙදාගන්න.\n'
+          '- ව්‍යාපෘතිය අවසානයේ පරීක්ෂණ ගිණුම් සහ දත්ත ඉවත් කළ හැක.\n'
+          '- ඔබේ දත්ත Firebase හි ගබඩා කර මෙම යෙදුම සඳහා පමණක් භාවිතා වේ.',
+      'ta': 'HASTHAKALA ஒரு மாணவர் திட்டம் (IT3060, குழு 28).\n\n'
+          '- உங்களைப் பற்றியும் உங்கள் தயாரிப்புகள் பற்றியும் சரியான தகவலைப் பயன்படுத்துங்கள்.\n'
+          '- நீங்கள் நம்பும் நபர்களுடன் மட்டுமே உதவி அணுகலைப் பகிருங்கள்.\n'
+          '- திட்டம் முடிந்ததும் சோதனைக் கணக்குகளும் தரவும் நீக்கப்படலாம்.\n'
+          '- உங்கள் தரவு Firebase-இல் சேமிக்கப்பட்டு இந்த செயலிக்கு மட்டுமே பயன்படுத்தப்படும்.',
+    },
+    'have_account': {
+      'en': 'Already have an account?',
+      'si': 'දැනටමත් ගිණුමක් තිබේද?',
+      'ta': 'ஏற்கனவே கணக்கு உள்ளதா?',
+    },
+
+    // ---- messages (validation and sign-in errors) ----
+    'err_email_required': {
+      'en': 'Email address is required',
+      'si': 'විද්‍යුත් තැපැල් ලිපිනය අවශ්‍යයි',
+      'ta': 'மின்னஞ்சல் முகவரி தேவை',
+    },
+    'err_email_invalid': {
+      'en': 'Enter a valid email address',
+      'si': 'වලංගු විද්‍යුත් තැපැල් ලිපිනයක් ඇතුළත් කරන්න',
+      'ta': 'சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்',
+    },
+    'err_password_required': {
+      'en': 'Password is required',
+      'si': 'මුරපදය අවශ්‍යයි',
+      'ta': 'கடவுச்சொல் தேவை',
+    },
+    'err_password_short': {
+      'en': 'Password must be at least 6 characters',
+      'si': 'මුරපදයේ අවම වශයෙන් අකුරු 6ක් තිබිය යුතුය',
+      'ta': 'கடவுச்சொல் குறைந்தது 6 எழுத்துகள் இருக்க வேண்டும்',
+    },
+    'err_name_required': {
+      'en': 'Please enter your full name',
+      'si': 'කරුණාකර ඔබේ සම්පූර්ණ නම ඇතුළත් කරන්න',
+      'ta': 'உங்கள் முழுப் பெயரை உள்ளிடவும்',
+    },
+    'err_password_mismatch': {
+      'en': 'Passwords do not match',
+      'si': 'මුරපද නොගැළපේ',
+      'ta': 'கடவுச்சொற்கள் பொருந்தவில்லை',
+    },
+    'err_terms': {
+      'en': 'Please agree to the Terms & Conditions to continue.',
+      'si': 'ඉදිරියට යාමට නියම සහ කොන්දේසිවලට එකඟ වන්න.',
+      'ta': 'தொடர விதிமுறைகள் மற்றும் நிபந்தனைகளை ஏற்கவும்.',
+    },
+    'err_wrong_login': {
+      'en': 'Email or password is incorrect. Please try again.',
+      'si': 'විද්‍යුත් තැපෑල හෝ මුරපදය වැරදියි. නැවත උත්සාහ කරන්න.',
+      'ta': 'மின்னஞ்சல் அல்லது கடவுச்சொல் தவறானது. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_email_in_use': {
+      'en': 'An account already exists with this email. Try signing in instead.',
+      'si': 'මෙම විද්‍යුත් තැපෑලෙන් දැනටමත් ගිණුමක් ඇත. ඒ වෙනුවට පුරනය වන්න.',
+      'ta': 'இந்த மின்னஞ்சலுடன் ஏற்கனவே ஒரு கணக்கு உள்ளது. உள்நுழைய முயற்சிக்கவும்.',
+    },
+    'err_offline': {
+      'en': 'No internet connection. Check your connection and try again.',
+      'si': 'අන්තර්ජාල සම්බන්ධතාවක් නැත. සම්බන්ධතාව පරීක්ෂා කර නැවත උත්සාහ කරන්න.',
+      'ta': 'இணைய இணைப்பு இல்லை. இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_too_many': {
+      'en': 'Too many attempts. Please wait a moment and try again.',
+      'si': 'උත්සාහයන් වැඩියි. මොහොතක් රැඳී නැවත උත්සාහ කරන්න.',
+      'ta': 'அதிக முயற்சிகள். சிறிது நேரம் காத்திருந்து மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_disabled': {
+      'en': 'This account has been disabled. Please contact support.',
+      'si': 'මෙම ගිණුම අක්‍රිය කර ඇත. සහාය අමතන්න.',
+      'ta': 'இந்தக் கணக்கு முடக்கப்பட்டுள்ளது. உதவியைத் தொடர்பு கொள்ளவும்.',
+    },
+    'err_generic': {
+      'en': 'Something went wrong. Please try again.',
+      'si': 'යම් දෝෂයක් සිදුවිය. නැවත උත්සාහ කරන්න.',
+      'ta': 'ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_create_account': {
+      'en': 'We could not create your account. Please try again.',
+      'si': 'ඔබේ ගිණුම සෑදීමට නොහැකි විය. නැවත උත්සාහ කරන්න.',
+      'ta': 'உங்கள் கணக்கை உருவாக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.',
+    },
+    'err_load_account': {
+      'en': 'We could not load your account. Check your connection and try again.',
+      'si': 'ඔබේ ගිණුම පූරණය කළ නොහැකි විය. සම්බන්ධතාව පරීක්ෂා කර නැවත උත්සාහ කරන්න.',
+      'ta': 'உங்கள் கணக்கை ஏற்ற முடியவில்லை. இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.',
+    },
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
     'nav_orders': {'en': 'Orders', 'si': 'ඇණවුම්', 'ta': 'ஆர்டர்கள்'},
     'nav_products': {'en': 'Products', 'si': 'නිෂ්පාදන', 'ta': 'தயாரிப்புகள்'},
     'nav_profile': {'en': 'Profile', 'si': 'පැතිකඩ', 'ta': 'சுயவிவரம்'},
+  };
+
+  // English messages from validators / Firebase -> key, so they can be shown
+  // in the chosen language without changing where they come from
+  static const Map<String, String> messageKeys = {
+    'Please enter your full name': 'err_name_required',
+    'Passwords do not match': 'err_password_mismatch',
+    'Email address is required': 'err_email_required',
+    'Enter a valid email address': 'err_email_invalid',
+    'Please enter a valid email address.': 'err_email_invalid',
+    'Password is required': 'err_password_required',
+    'Password must be at least 6 characters': 'err_password_short',
+    'Password must be at least 6 characters.': 'err_password_short',
+    'Email or password is incorrect. Please try again.': 'err_wrong_login',
+    'An account already exists with this email. Try signing in instead.': 'err_email_in_use',
+    'No internet connection. Check your connection and try again.': 'err_offline',
+    'Too many attempts. Please wait a moment and try again.': 'err_too_many',
+    'This account has been disabled. Please contact support.': 'err_disabled',
+    'Something went wrong. Please try again.': 'err_generic',
+    'We could not create your account. Please try again.': 'err_create_account',
+    'We could not load your account. Check your connection and try again.': 'err_load_account',
   };
 
   static String get(String key, String lang) {

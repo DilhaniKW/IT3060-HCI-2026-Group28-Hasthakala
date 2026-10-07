@@ -9,4 +9,12 @@ extension Translate on BuildContext {
     args?.forEach((k, v) => text = text.replaceAll('{$k}', v));
     return text;
   }
+
+  // translates a known English message (validator or sign-in error);
+  // anything unknown is shown as it is
+  String? trMessage(String? message) {
+    if (message == null) return null;
+    final key = AppStrings.messageKeys[message];
+    return key == null ? message : tr(key);
+  }
 }
