@@ -105,8 +105,8 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
                     ],
                   ),
                   const Divider(color: Colors.white24, height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+ alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                     children: const [
                       Text(
                         'Registry ID: #HK-2026-8841',
