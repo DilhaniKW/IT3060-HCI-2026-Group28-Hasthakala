@@ -1,3 +1,4 @@
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../config/routes/app_routes.dart';
@@ -36,18 +37,18 @@ class _ProductPurchaseBarState extends State<ProductPurchaseBar> {
                   available
                       ? CurrencyFormatter.formatLKR(product.priceLkr * quantity)
                       : product.isAvailable && product.stockQuantity > 0
-                          ? 'Available stock is in your cart'
-                          : 'Out of stock',
+                          ? context.tr('discovery_stock_in_cart')
+                          : context.tr('discovery_out_stock'),
                   style: const TextStyle(fontWeight: FontWeight.bold))),
           IconButton(
-              tooltip: 'Decrease quantity',
+              tooltip: context.tr('discovery_decrease'),
               onPressed: quantity > 1
                   ? () => setState(() => _quantity = quantity - 1)
                   : null,
               icon: const Icon(Icons.remove)),
           Text('$quantity', key: const ValueKey('purchase-quantity')),
           IconButton(
-              tooltip: 'Increase quantity',
+              tooltip: context.tr('discovery_increase'),
               onPressed: available && quantity < remaining
                   ? () => setState(() => _quantity = quantity + 1)
                   : null,
@@ -63,7 +64,7 @@ class _ProductPurchaseBarState extends State<ProductPurchaseBar> {
                               quantity: quantity))
                             setState(() => _quantity = 1);
                         },
-                  child: const Text('Add to Cart'))),
+                  child: Text(context.tr('discovery_add_cart')))),
           const SizedBox(width: 12),
           Expanded(
               child: ElevatedButton(
@@ -75,7 +76,7 @@ class _ProductPurchaseBarState extends State<ProductPurchaseBar> {
                             Navigator.pushNamed(context, AppRoutes.checkout);
                           }
                         },
-                  child: const Text('Buy Now'))),
+                  child: Text(context.tr('discovery_buy_now')))),
         ]),
       ]),
     ));
