@@ -12,10 +12,13 @@ import '../widgets/product_card.dart';
 import '../widgets/search_filter_bottom_sheet.dart';
 import 'product_details_screen.dart';
 import 'favorites_screen.dart';
+import '../state/artisan_search_provider.dart';
+import '../widgets/artisan_search_results.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen(
-      {super.key, this.initialCategory, this.openFilters = false, this.search});
+      {super.key, this.initialCategory, this.openFilters = false, this.search, this.loadArtisans});
+  final ArtisanLoader? loadArtisans;
   final String? initialCategory;
   final bool openFilters;
   final DiscoverySearch? search;
@@ -26,6 +29,34 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final _controller = TextEditingController();
   late final SearchFilterProvider _provider;
+  ArtisanSearchProvider? _artisanProvider;
+  bool _showArtisans = false;
+
+  void _changeMode(bool artisans) {
+    if (artisans == _showArtisans) return;
+    if (artisans) {
+      if (_artisanProvider == null) {
+        _artisanProvider = ArtisanSearchProvider(load: widget.loadArtisans);
+        _artisanProvider!.setCategory(widget.initialCategory);
+        _artisanProvider!.refresh();
+      }
+      _artisanProvider!.setQuery(_controller.text);
+    } else {
+      _provider.performSearch(query: _controller.text);
+    }
+    setState(() => _showArtisans = artisans);
+  }
+
+  void _queryChanged(String value, {bool submit = false}) {
+    if (_showArtisans) {
+      _artisanProvider!.setQuery(value);
+      setState(() {});
+    } else if (submit) {
+      _provider.performSearch(query: value);
+    } else {
+      _provider.updateQuery(value);
+    }
+  }
 
   @override
   void initState() {
@@ -54,6 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void dispose() {
     _controller.dispose();
     _provider.dispose();
+    _artisanProvider?.dispose();
     super.dispose();
   }
 
@@ -68,11 +100,11 @@ class _SearchScreenState extends State<SearchScreen> {
               automaticallyImplyLeading: Navigator.of(context).canPop(),
               title: TextField(
                 controller: _controller,
-                onChanged: provider.updateQuery,
-                onSubmitted: (value) => provider.performSearch(query: value),
+                onChanged: _queryChanged,
+                onSubmitted: (value) => _queryChanged(value, submit: true),
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                  hintText: context.tr('discovery_search'),
+                  hintText: context.tr(_showArtisans ? 'discovery_artisans_hint' : 'discovery_search'),
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: _controller.text.isEmpty
                       ? null
@@ -81,7 +113,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           icon: const Icon(Icons.clear),
                           onPressed: () {
                             _controller.clear();
-                            provider.performSearch(query: '');
+                            _queryChanged('', submit: true);
                           },
                         ),
                 ),
@@ -94,13 +126,27 @@ class _SearchScreenState extends State<SearchScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (_) => const FavoritesScreen()))),
-                IconButton(
+                if (!_showArtisans) IconButton(
                     tooltip: context.tr('discovery_filter_action'),
                     onPressed: _openFilters,
                     icon: const Icon(Icons.tune)),
               ],
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(56),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  child: SegmentedButton<bool>(
+                    segments: [
+                      ButtonSegment(value: false, label: Text(context.tr('discovery_products_tab'))),
+                      ButtonSegment(value: true, label: Text(context.tr('discovery_artisans_tab'))),
+                    ],
+                    selected: {_showArtisans},
+                    onSelectionChanged: (selected) => _changeMode(selected.single),
+                  ),
+                ),
+              ),
             ),
-            body: Padding(
+            body: _showArtisans ? ArtisanSearchResults(provider: _artisanProvider!) : Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
