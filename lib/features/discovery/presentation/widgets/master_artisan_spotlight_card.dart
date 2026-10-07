@@ -1,3 +1,5 @@
+import '../discovery_labels.dart';
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/product_model.dart';
@@ -20,17 +22,18 @@ class MasterArtisanSpotlightCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(24),
             border: Border.all(color: AppColors.border)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('ARTISAN SPOTLIGHT',
+          Text(context.tr('discovery_spotlight'),
               style: TextStyle(
                   color: AppColors.accent, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           Text(
               product.artisanName.isEmpty
-                  ? 'Meet the maker'
+                  ? context.tr('discovery_meet_maker')
                   : product.artisanName,
               style:
                   const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-          if (product.district.isNotEmpty) Text(product.district),
+          if (product.district.isNotEmpty)
+            Text(discoveryOriginLabel(context, product.district)),
           const SizedBox(height: 8),
           Text(product.title,
               style: const TextStyle(color: AppColors.textSecondary)),
@@ -38,10 +41,10 @@ class MasterArtisanSpotlightCard extends StatelessWidget {
           Wrap(spacing: 8, runSpacing: 8, children: [
             OutlinedButton(
                 onPressed: product.artisanId.isEmpty ? null : onViewWorkshop,
-                child: const Text('View Workshop')),
+                child: Text(context.tr('discovery_workshop'))),
             ElevatedButton(
                 onPressed: onFeaturedProductTap,
-                child: const Text('View Craft')),
+                child: Text(context.tr('discovery_view_craft'))),
           ]),
         ]),
       );
