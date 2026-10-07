@@ -23,6 +23,43 @@ ProductModel craft(String id,
     );
 
 void main() {
+  test('Home query startup failure exposes retry and retry recovers', () async {
+    var fail = true;
+    final provider = DiscoveryProvider(featuredProducts: () {
+      if (fail) throw StateError('query startup failed');
+      return Stream.value([craft('recovered')]);
+    });
+    addTearDown(provider.dispose);
+    await provider.listenToFeaturedProducts();
+    expect(provider.isLoading, isFalse);
+    expect(provider.errorMessage, isNotNull);
+    fail = false;
+    await provider.listenToFeaturedProducts();
+    expect(provider.errorMessage, isNull);
+    expect(provider.featuredProducts.single.id, 'recovered');
+  });
+
+  test('Home stream closing without a snapshot ends refresh with an error',
+      () async {
+    final provider =
+        DiscoveryProvider(featuredProducts: () => const Stream.empty());
+    addTearDown(provider.dispose);
+    await provider.listenToFeaturedProducts();
+    expect(provider.isLoading, isFalse);
+    expect(provider.errorMessage, isNotNull);
+  });
+
+  test('Home empty snapshot is a successful empty catalog', () async {
+    final provider =
+        DiscoveryProvider(featuredProducts: () => Stream.value([]));
+    addTearDown(provider.dispose);
+    await provider.listenToFeaturedProducts();
+    await Future<void>.delayed(Duration.zero);
+    expect(provider.isLoading, isFalse);
+    expect(provider.errorMessage, isNull);
+    expect(provider.featuredProducts, isEmpty);
+  });
+
   test('Home refresh replaces subscriptions and waits for fresh data',
       () async {
     final streams = <StreamController<List<ProductModel>>>[];
