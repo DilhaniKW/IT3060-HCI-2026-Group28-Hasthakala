@@ -1,5 +1,20 @@
 // Fixed text for the core Buyer Discovery flow.
 const discoveryStrings = <String, Map<String, String>>{
+  'discovery_explore_title': {
+    'en': 'Discover local craft',
+    'si': 'දේශීය අත්කම් සොයාගන්න',
+    'ta': 'உள்ளூர் கைவினைகளை அறியுங்கள்'
+  },
+  'discovery_explore_subtitle': {
+    'en': 'Thoughtful creations. Talented makers. Find something with a story.',
+    'si': 'අගනා නිර්මාණ සහ දක්ෂ ශිල්පීන් හඳුනාගන්න.',
+    'ta': 'அழகிய படைப்புகளையும் திறமையான கைவினைஞர்களையும் கண்டறியுங்கள்.'
+  },
+  'discovery_reset_search': {
+    'en': 'Reset search',
+    'si': 'සෙවුම යළි සකසන්න',
+    'ta': 'தேடலை மீட்டமைக்கவும்'
+  },
   'discovery_products_tab': {
     'en': 'Products',
     'si': 'නිෂ්පාදන',
