@@ -23,6 +23,60 @@ ProductModel craft(String id,
     );
 
 void main() {
+  test(
+      'price sorting is stable, reversible and does not refetch or mutate source',
+      () async {
+    final source = [
+      craft('high', price: 5000),
+      craft('low', price: 1000),
+      craft('equal', price: 1000)
+    ];
+    var calls = 0;
+    final provider = SearchFilterProvider(
+        search: ({query, category, district, maxPrice}) async {
+      calls++;
+      return source;
+    });
+    addTearDown(provider.dispose);
+    await provider.performSearch();
+    provider.setSort(DiscoverySort.priceLowToHigh);
+    expect(provider.searchResults.map((p) => p.id), ['low', 'equal', 'high']);
+    provider.setSort(DiscoverySort.priceHighToLow);
+    expect(provider.searchResults.map((p) => p.id), ['high', 'low', 'equal']);
+    provider.setSort(DiscoverySort.defaultOrder);
+    expect(provider.searchResults.map((p) => p.id), ['high', 'low', 'equal']);
+    expect(source.first.id, 'high');
+    expect(calls, 1);
+  });
+
+  test('sort selected while loading persists through filtering and retry',
+      () async {
+    final pending = Completer<List<ProductModel>>();
+    var calls = 0;
+    final provider =
+        SearchFilterProvider(search: ({query, category, district, maxPrice}) {
+      calls++;
+      if (calls == 1) return pending.future;
+      if (calls == 2) throw StateError('offline');
+      return Future.value(
+          [craft('high', price: 5000), craft('low', price: 1000)]);
+    });
+    addTearDown(provider.dispose);
+    final request = provider.performSearch(query: 'jug');
+    provider.setSort(DiscoverySort.priceLowToHigh);
+    pending.complete([craft('high', price: 5000), craft('low', price: 1000)]);
+    await request;
+    expect(provider.searchResults.first.id, 'low');
+    await provider.setCategory('pottery');
+    expect(provider.errorMessage, isNotNull);
+    await provider.performSearch();
+    expect(provider.searchResults.first.id, 'low');
+    await provider.clearFilters();
+    expect(provider.sort, DiscoverySort.priceLowToHigh);
+    expect(provider.query, 'jug');
+    expect(provider.searchResults.first.id, 'low');
+  });
+
   test('Home query startup failure exposes retry and retry recovers', () async {
     var fail = true;
     final provider = DiscoveryProvider(featuredProducts: () {
