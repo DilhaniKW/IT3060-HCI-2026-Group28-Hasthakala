@@ -2,6 +2,14 @@
 
 Reviewed: 7 October 2026. Branch: `feature/buyer-discovery`.
 
+## Discovery verification follow-up (7 October)
+
+- Re-ran the existing 50 automated tests successfully. Fixed Home refresh handling for a synchronous query-start failure and for a stream that closes before its first snapshot; both now finish loading and expose the retry state. An actual empty snapshot remains a successful empty catalog.
+- Added three regression tests covering startup failure/recovery, closure without data, and a valid empty snapshot. The full suite now passes **53 tests**.
+- Replaced unsupported Home certification, 88% payout and insured-packaging claims with factual browsing guidance. The link to the preview lab report now explicitly says `View Sample Lab Report`.
+- Analysis of the changed Dart files reported no errors or warnings, with 9 informational style/deprecation findings.
+- Device discovery found Windows, Chrome and Edge, but no phone/emulator. The user chose automated verification for this pass. No live Firebase/mobile end-to-end verification was performed; tests use controlled data. Translations and the additional reference features remain outstanding.
+
 ## Screen polish pass (7 October)
 
 The existing colour palette was preserved as explicitly requested. This pass covers the 10 distinct implemented views represented by the 16 Stitch exports (the Home/Explore/Details/Profile exports include alternative versions). It is a responsive UI and interaction polish pass, not a claim of exact pixel parity or completed backend integration.
