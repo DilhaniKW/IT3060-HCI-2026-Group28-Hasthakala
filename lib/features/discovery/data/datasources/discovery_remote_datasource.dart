@@ -2,6 +2,7 @@ import '../../../../core/constants/firestore_collections.dart';
 import '../../../../core/services/firebase/firestore_service.dart';
 import '../../../../core/shared_models/product_model.dart';
 import '../../../../core/shared_models/user_model.dart';
+import '../discovery_filters.dart';
 
 /// Assigned to: JAYAWARDANA V. K. A.
 /// Branch: feature/buyer-discovery
@@ -16,10 +17,12 @@ class DiscoveryRemoteDataSource {
     return _firestoreService
         .streamCollection(
           collection: FirestoreCollections.products,
-          queryBuilder: (q) => q.where('isAvailable', isEqualTo: true).limit(20),
+          queryBuilder: (q) =>
+              q.where('isAvailable', isEqualTo: true).limit(20),
         )
-        .map((snapshot) =>
-            snapshot.docs.map((doc) => ProductModel.fromMap(doc.data(), doc.id)).toList());
+        .map((snapshot) => snapshot.docs
+            .map((doc) => ProductModel.fromMap(doc.data(), doc.id))
+            .toList());
   }
 
   /// Search & filter products by craft category or district
@@ -29,38 +32,27 @@ class DiscoveryRemoteDataSource {
     String? district,
     double? maxPrice,
   }) async {
-    try {
-      final snapshot = await _firestoreService.instance
-          .collection(FirestoreCollections.products)
-          .where('isAvailable', isEqualTo: true)
-          .get()
-          .timeout(const Duration(seconds: 3));
+    final snapshot = await _firestoreService.instance
+        .collection(FirestoreCollections.products)
+        .where('isAvailable', isEqualTo: true)
+        .get()
+        .timeout(const Duration(seconds: 10));
 
-      return snapshot.docs
-          .map((doc) => ProductModel.fromMap(doc.data(), doc.id))
-          .where((product) {
-            final matchesQuery = query == null ||
-                query.isEmpty ||
-                product.title.toLowerCase().contains(query.toLowerCase()) ||
-                product.description.toLowerCase().contains(query.toLowerCase());
-            final matchesCategory =
-                category == null || category.isEmpty || product.category == category;
-            final matchesDistrict =
-                district == null || district.isEmpty || product.district == district;
-            final matchesPrice = maxPrice == null || product.priceLkr <= maxPrice;
-
-            return matchesQuery && matchesCategory && matchesDistrict && matchesPrice;
-          })
-          .toList();
-    } catch (_) {
-      return [];
-    }
+    return filterDiscoveryProducts(
+      snapshot.docs.map((doc) => ProductModel.fromMap(doc.data(), doc.id)),
+      query: query,
+      category: category,
+      district: district,
+      maxPrice: maxPrice,
+    );
   }
 
   /// Get public artisan profile
   Future<UserModel?> getArtisanProfile(String artisanId) async {
     try {
-      if (artisanId.isEmpty || artisanId.startsWith('artisan_') || artisanId.startsWith('sample_')) {
+      if (artisanId.isEmpty ||
+          artisanId.startsWith('artisan_') ||
+          artisanId.startsWith('sample_')) {
         return null;
       }
       final doc = await _firestoreService
