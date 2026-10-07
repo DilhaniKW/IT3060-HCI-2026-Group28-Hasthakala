@@ -1,3 +1,5 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hasthakala/features/discovery/presentation/state/favorites_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -30,8 +32,12 @@ ProductModel product(
       isAvailable: available,
     );
 
-Widget app(CartProvider cart, Widget home) => ChangeNotifierProvider.value(
-      value: cart,
+Widget app(CartProvider cart, Widget home) => MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: cart),
+        ChangeNotifierProvider(
+            create: (_) => FavoritesProvider()..setAccount('test'))
+      ],
       child: MaterialApp(home: home, routes: {
         AppRoutes.cart: (_) => const CartScreen(),
         AppRoutes.checkout: (_) =>
@@ -40,6 +46,7 @@ Widget app(CartProvider cart, Widget home) => ChangeNotifierProvider.value(
     );
 
 void main() {
+  setUp(() => SharedPreferences.setMockInitialValues({}));
   test('cart merges additions, enforces stock and retains item identity', () {
     final cart = CartProvider();
     addTearDown(cart.dispose);
