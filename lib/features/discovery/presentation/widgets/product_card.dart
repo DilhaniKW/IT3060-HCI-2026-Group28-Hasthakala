@@ -1,3 +1,5 @@
+import '../discovery_labels.dart';
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/product_model.dart';
@@ -39,8 +41,8 @@ class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
     final locationText = widget.product.district.isNotEmpty
-        ? widget.product.district
-        : 'Sri Lanka';
+        ? discoveryOriginLabel(context, widget.product.district)
+        : context.tr('discovery_country');
 
     return GestureDetector(
       onTap: widget.onTap,
@@ -130,7 +132,7 @@ class _ProductCardState extends State<ProductCard> {
                   Text(
                     widget.product.artisanName.isNotEmpty
                         ? widget.product.artisanName
-                        : 'Master Artisan',
+                        : context.tr('discovery_artisan'),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -152,13 +154,15 @@ class _ProductCardState extends State<ProductCard> {
                   ),
                   const SizedBox(height: 6),
                   Wrap(
- alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 12,
+                    runSpacing: 8,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'PRICE',
+                          Text(
+                            context.tr('discovery_price'),
                             style: TextStyle(
                               color: AppColors.textMuted,
                               fontSize: 9,
