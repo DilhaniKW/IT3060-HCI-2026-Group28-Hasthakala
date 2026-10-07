@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/product_model.dart';
 import '../../../../core/utils/currency_formatter.dart';
+import 'discovery_cart_action.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductModel product;
@@ -24,18 +25,12 @@ class _ProductCardState extends State<ProductCard> {
   bool _isAdded = false;
 
   void _handleQuickAdd() {
-    setState(() => _isAdded = true);
     if (widget.onAddToCart != null) {
       widget.onAddToCart!();
+      return;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${widget.product.title} added to cart!'),
-        duration: const Duration(seconds: 1),
-        backgroundColor: AppColors.accent,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    if (!addDiscoveryProduct(context, widget.product)) return;
+    setState(() => _isAdded = true);
     Future.delayed(const Duration(milliseconds: 1200), () {
       if (mounted) setState(() => _isAdded = false);
     });
@@ -71,7 +66,8 @@ class _ProductCardState extends State<ProductCard> {
                 children: [
                   Positioned.fill(
                     child: ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                      borderRadius:
+                          const BorderRadius.vertical(top: Radius.circular(15)),
                       child: Container(
                         color: AppColors.background,
                         child: widget.product.imageUrls.isNotEmpty
@@ -79,11 +75,13 @@ class _ProductCardState extends State<ProductCard> {
                                 widget.product.imageUrls.first,
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) => const Center(
-                                  child: Icon(Icons.image_not_supported, color: AppColors.textMuted),
+                                  child: Icon(Icons.image_not_supported,
+                                      color: AppColors.textMuted),
                                 ),
                               )
                             : const Center(
-                                child: Icon(Icons.brush, color: AppColors.secondary, size: 40),
+                                child: Icon(Icons.brush,
+                                    color: AppColors.secondary, size: 40),
                               ),
                       ),
                     ),
@@ -94,7 +92,8 @@ class _ProductCardState extends State<ProductCard> {
                     bottom: 8,
                     left: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
                         color: const Color(0xFF1C1917).withOpacity(0.75),
                         borderRadius: BorderRadius.circular(12),
@@ -133,9 +132,13 @@ class _ProductCardState extends State<ProductCard> {
                           ],
                         ),
                         child: Icon(
-                          _isWishlisted ? Icons.favorite : Icons.favorite_border,
+                          _isWishlisted
+                              ? Icons.favorite
+                              : Icons.favorite_border,
                           size: 16,
-                          color: _isWishlisted ? AppColors.primary : AppColors.textSecondary,
+                          color: _isWishlisted
+                              ? AppColors.primary
+                              : AppColors.textSecondary,
                         ),
                       ),
                     ),
@@ -191,7 +194,8 @@ class _ProductCardState extends State<ProductCard> {
                           ),
                           const SizedBox(height: 1),
                           Text(
-                            CurrencyFormatter.formatLKR(widget.product.priceLkr),
+                            CurrencyFormatter.formatLKR(
+                                widget.product.priceLkr),
                             style: const TextStyle(
                               color: AppColors.textPrimary,
                               fontWeight: FontWeight.w700,
@@ -215,7 +219,9 @@ class _ProductCardState extends State<ProductCard> {
                           child: Icon(
                             _isAdded ? Icons.check : Icons.add,
                             size: 18,
-                            color: _isAdded ? AppColors.onPrimary : AppColors.primary,
+                            color: _isAdded
+                                ? AppColors.onPrimary
+                                : AppColors.primary,
                           ),
                         ),
                       ),
