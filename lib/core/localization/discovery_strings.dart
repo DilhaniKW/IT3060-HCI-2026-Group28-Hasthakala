@@ -1,5 +1,21 @@
 // Fixed text for the core Buyer Discovery flow.
 const discoveryStrings = <String, Map<String, String>>{
+  'discovery_sort': {'en': 'Sort by', 'si': 'පිළිවෙළ', 'ta': 'வரிசைப்படுத்தல்'},
+  'discovery_sort_defaultOrder': {
+    'en': 'Default order',
+    'si': 'සාමාන්‍ය පිළිවෙළ',
+    'ta': 'இயல்புநிலை வரிசை'
+  },
+  'discovery_sort_priceLowToHigh': {
+    'en': 'Price: low to high',
+    'si': 'මිල: අඩු සිට වැඩි',
+    'ta': 'விலை: குறைவிலிருந்து அதிகம்'
+  },
+  'discovery_sort_priceHighToLow': {
+    'en': 'Price: high to low',
+    'si': 'මිල: වැඩි සිට අඩු',
+    'ta': 'விலை: அதிகத்திலிருந்து குறைவு'
+  },
   'discovery_my_profile': {
     'en': 'My profile',
     'si': 'මගේ පැතිකඩ',
