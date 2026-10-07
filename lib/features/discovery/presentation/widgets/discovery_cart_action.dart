@@ -1,3 +1,4 @@
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../config/routes/app_routes.dart';
@@ -11,11 +12,11 @@ bool addDiscoveryProduct(BuildContext context, ProductModel product,
   if (!added || showSuccess) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(added
-          ? '${product.title} added to cart'
-          : 'Not enough stock available. Check the quantity already in your cart.'),
+          ? context.tr('discovery_added', {'name': product.title})
+          : context.tr('discovery_cart_stock')),
       action: added
           ? SnackBarAction(
-              label: 'View cart',
+              label: context.tr('discovery_view_cart'),
               onPressed: () => Navigator.pushNamed(context, AppRoutes.cart))
           : null,
     ));
@@ -30,7 +31,7 @@ class DiscoveryCartAction extends StatelessWidget {
     final count =
         context.select<CartProvider, int>((cart) => cart.totalItemCount);
     return IconButton(
-      tooltip: 'Cart ($count)',
+      tooltip: context.tr('discovery_cart_count', {'count': '$count'}),
       onPressed: () => Navigator.pushNamed(context, AppRoutes.cart),
       icon: Badge(
           isLabelVisible: count > 0,
