@@ -1,12 +1,12 @@
+import '../discovery_labels.dart';
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/craft_categories.dart';
 import '../../../../core/shared_models/product_model.dart';
 import '../../../../core/shared_models/artisan_profile_model.dart';
 import '../../../../core/widgets/empty_state_view.dart';
 import '../../../../core/widgets/loading_indicator.dart';
 import '../../data/datasources/discovery_remote_datasource.dart';
-import '../../data/discovery_filters.dart';
 import '../widgets/product_card.dart';
 import '../widgets/discovery_cart_action.dart';
 import 'product_details_screen.dart';
@@ -73,7 +73,7 @@ class _PublicArtisanProfileScreenState
       });
     } catch (_) {
       if (!mounted || request != _request) return;
-      setState(() => _error = 'Check your connection and try again.');
+      setState(() => _error = context.tr('discovery_retry_help'));
     } finally {
       if (mounted && request == _request) setState(() => _loading = false);
     }
@@ -85,22 +85,22 @@ class _PublicArtisanProfileScreenState
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-          title: const Text('Artisan Studio'),
+          title: Text(context.tr('discovery_profile_title')),
           actions: const [DiscoveryCartAction()]),
       body: _loading
-          ? const LoadingIndicator(message: 'Loading artisan studio...')
+          ? LoadingIndicator(message: context.tr('discovery_profile_loading'))
           : _error != null
               ? EmptyStateView(
                   icon: Icons.cloud_off,
-                  title: 'Unable to load artisan',
-                  description: _error!,
-                  actionButtonText: 'Retry',
+                  title: context.tr('discovery_profile_error'),
+                  description: context.tr('discovery_retry_help'),
+                  actionButtonText: context.tr('discovery_retry'),
                   onActionPressed: _load)
               : artisan == null
-                  ? const EmptyStateView(
+                  ? EmptyStateView(
                       icon: Icons.person_off_outlined,
-                      title: 'Artisan not found',
-                      description: 'This public studio is not available.')
+                      title: context.tr('discovery_profile_missing'),
+                      description: context.tr('discovery_profile_missing_help'))
                   : RefreshIndicator(
                       onRefresh: _load,
                       child: ListView(
@@ -128,7 +128,7 @@ class _PublicArtisanProfileScreenState
                               const SizedBox(height: 12),
                               Text(
                                   artisan.displayName.isEmpty
-                                      ? 'Artisan studio'
+                                      ? context.tr('discovery_profile_fallback')
                                       : artisan.displayName,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
@@ -136,42 +136,44 @@ class _PublicArtisanProfileScreenState
                                       fontWeight: FontWeight.bold)),
                               if (artisan.craftType.trim().isNotEmpty)
                                 Text(
-                                    CraftCategories.labelFor(
-                                        discoveryCategoryKey(
-                                            artisan.craftType)!),
+                                    discoveryCategoryLabel(
+                                        context, artisan.craftType),
                                     style: const TextStyle(
                                         color: AppColors.primary)),
                               if (artisan.location.isNotEmpty)
-                                Text(artisan.location),
+                                Text(discoveryOriginLabel(
+                                    context, artisan.location)),
                               if (artisan.verified)
-                                const Chip(
+                                Chip(
                                     avatar: Icon(Icons.verified,
                                         color: AppColors.accent),
-                                    label: Text('Verified artisan')),
+                                    label:
+                                        Text(context.tr('discovery_verified'))),
                             ]),
                           ),
                           const SizedBox(height: 24),
-                          const Text('Artisan Journey & Heritage',
+                          Text(context.tr('discovery_journey'),
                               style: TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 8),
                           Text(
                               artisan.about.isEmpty
-                                  ? 'This artisan has not added a story yet.'
+                                  ? context.tr('discovery_no_story')
                                   : artisan.about,
                               style: const TextStyle(
                                   height: 1.5, color: AppColors.textSecondary)),
                           const SizedBox(height: 24),
-                          Text('Workshop Masterpieces (${_products.length})',
+                          Text(
+                              context.tr('discovery_works',
+                                  {'count': '${_products.length}'}),
                               style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 12),
                           if (_products.isEmpty)
-                            const EmptyStateView(
+                            EmptyStateView(
                                 icon: Icons.storefront,
-                                title: 'No crafts listed yet',
-                                description:
-                                    'Check back for new creations from this artisan.')
+                                title: context.tr('discovery_no_listings'),
+                                description: context.tr('discovery_check_back'))
                           else
                             GridView.builder(
                               shrinkWrap: true,
