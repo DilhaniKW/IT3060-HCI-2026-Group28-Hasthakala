@@ -149,141 +149,82 @@ class _PageDots extends StatelessWidget {
   }
 }
 
-// picture area for each page, drawn with the brand colours
+// photo for each page with a small label on top
 class _IntroArt extends StatelessWidget {
   final int page;
   const _IntroArt({required this.page});
 
+  static const _photos = [
+    'assets/images/intro_pottery.jpg',
+    'assets/images/intro_mask.jpg',
+    'assets/images/intro_weaving.jpg',
+  ];
+  static const _chips = [
+    (Icons.spa_outlined, 'intro_chip1'),
+    (Icons.verified_rounded, 'intro_chip2'),
+    (Icons.local_shipping_outlined, 'intro_chip3'),
+  ];
+
   @override
   Widget build(BuildContext context) {
+    final chip = _chips[page];
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppColors.secondaryLight.withValues(alpha: 0.35),
-            AppColors.background,
-          ],
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // leaves in the corners, like the hi-fi decorations
-          Positioned(
-            top: 18,
-            left: 18,
-            child: Transform.rotate(
-              angle: -0.5,
-              child: Icon(Icons.eco, size: 56, color: AppColors.secondary.withValues(alpha: 0.25)),
-            ),
-          ),
-          Positioned(
-            bottom: 18,
-            right: 18,
-            child: Transform.rotate(
-              angle: 2.4,
-              child: Icon(Icons.eco, size: 64, color: AppColors.primary.withValues(alpha: 0.18)),
-            ),
-          ),
-          switch (page) {
-            0 => const _LogoArt(),
-            1 => const _TrustArt(),
-            _ => const _OrdersArt(),
-          },
-        ],
-      ),
-    );
-  }
-}
-
-class _LogoArt extends StatelessWidget {
-  const _LogoArt();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.18),
-            blurRadius: 40,
-            offset: const Offset(0, 16),
+            color: AppColors.primaryDark.withValues(alpha: 0.18),
+            blurRadius: 30,
+            offset: const Offset(0, 14),
           ),
         ],
       ),
-      child: Image.asset('assets/images/hasthakala_logo.png', width: 210),
-    );
-  }
-}
-
-class _TrustArt extends StatelessWidget {
-  const _TrustArt();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            shape: BoxShape.circle,
-            border: Border.all(color: AppColors.accent, width: 3),
-          ),
-          child: const Icon(Icons.verified_rounded, size: 84, color: AppColors.accent),
-        ),
-        const SizedBox(height: 18),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: List.generate(
-            5,
-            (_) => const Icon(Icons.star_rounded, color: AppColors.secondary, size: 30),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _OrdersArt extends StatelessWidget {
-  const _OrdersArt();
-
-  Widget _bubble(IconData icon, Color color) {
-    return Container(
-      width: 86,
-      height: 86,
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        shape: BoxShape.circle,
-        border: Border.all(color: color, width: 2.5),
-      ),
-      child: Icon(icon, size: 40, color: color),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _bubble(Icons.receipt_long_rounded, AppColors.primary),
-        const SizedBox(height: 14),
-        Row(
-          mainAxisSize: MainAxisSize.min,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(32),
+        child: Stack(
+          fit: StackFit.expand,
           children: [
-            _bubble(Icons.chat_bubble_outline_rounded, AppColors.secondaryDark),
-            const SizedBox(width: 22),
-            _bubble(Icons.local_shipping_outlined, AppColors.accent),
+            Image.asset(_photos[page], fit: BoxFit.cover),
+            // darker at the bottom so the label is easy to read
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    AppColors.textPrimary.withValues(alpha: 0.45),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 18,
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(chip.$1, size: 18, color: AppColors.accent),
+                      const SizedBox(width: 6),
+                      Text(context.tr(chip.$2),
+                          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 }
