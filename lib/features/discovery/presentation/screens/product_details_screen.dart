@@ -129,8 +129,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.black.withOpacity(0.06)),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
