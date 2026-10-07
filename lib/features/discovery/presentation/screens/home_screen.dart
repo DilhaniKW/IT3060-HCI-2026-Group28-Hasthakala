@@ -1,3 +1,5 @@
+import '../discovery_labels.dart';
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -96,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const DiscoveryCartAction(),
           const SizedBox(width: 4),
           IconButton(
-            tooltip: 'My profile',
+            tooltip: context.tr('discovery_my_profile'),
             onPressed: () => Navigator.pushNamed(context, '/profile'),
             icon: const CircleAvatar(
                 radius: 15,
@@ -150,13 +152,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           child: Row(
-                            children: const [
+                            children: [
                               Icon(Icons.search,
                                   size: 20, color: AppColors.primary),
                               SizedBox(width: 8),
                               Expanded(
                                 child: Text(
-                                  'Search pottery, masks, cane, brass...',
+                                  context.tr('discovery_home_search'),
                                   style: TextStyle(
                                     fontSize: 13,
                                     color: AppColors.textMuted,
@@ -200,7 +202,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       final category =
                           index == 0 ? null : CraftCategories.all[index - 1];
                       return CraftCategoryChip(
-                        label: category?.label ?? 'All Crafts',
+                        label: category == null
+                            ? context.tr('discovery_all_crafts')
+                            : discoveryCategoryLabel(context, category.key),
                         isSelected: index == 0,
                         onTap: () {
                           Navigator.push(
@@ -253,12 +257,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          children: const [
+                          children: [
                             Icon(Icons.auto_awesome,
                                 size: 14, color: AppColors.secondary),
                             SizedBox(width: 4),
                             Text(
-                              'RARE & HANDCRAFTED',
+                              context.tr('discovery_rare'),
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
@@ -269,8 +273,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         const SizedBox(height: 2),
-                        const Text(
-                          'Curated Masterpieces',
+                        Text(
+                          context.tr('discovery_curated'),
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -288,9 +292,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       },
                       child: Row(
-                        children: const [
+                        children: [
                           Text(
-                            'Explore all',
+                            context.tr('discovery_explore'),
                             style: TextStyle(
                               fontSize: 12.5,
                               fontWeight: FontWeight.bold,
@@ -311,23 +315,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // Product Grid / Loading State
                 if (provider.isLoading)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(40.0),
                     child: LoadingIndicator(
-                        message: 'Loading authentic crafts...'),
+                        message: context.tr('discovery_loading')),
                   )
                 else if (provider.errorMessage != null)
                   EmptyStateView(
                       icon: Icons.cloud_off,
-                      title: 'Unable to load crafts',
-                      description: 'Check your connection and try again.',
-                      actionButtonText: 'Retry',
+                      title: context.tr('discovery_load_error'),
+                      description: context.tr('discovery_retry_help'),
+                      actionButtonText: context.tr('discovery_retry'),
                       onActionPressed: provider.listenToFeaturedProducts)
                 else if (displayProducts.isEmpty)
-                  const EmptyStateView(
+                  EmptyStateView(
                       icon: Icons.storefront,
-                      title: 'No crafts yet',
-                      description: 'New artisan creations will appear here.')
+                      title: context.tr('discovery_empty'),
+                      description: context.tr('discovery_empty_help'))
                 else
                   GridView.builder(
                     shrinkWrap: true,
