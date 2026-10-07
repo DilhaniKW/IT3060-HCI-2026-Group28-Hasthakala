@@ -151,8 +151,8 @@ class _ProductCardState extends State<ProductCard> {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+ alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
