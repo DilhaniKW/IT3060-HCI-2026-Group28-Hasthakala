@@ -1,3 +1,4 @@
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -11,7 +12,9 @@ class FavoriteButton extends StatelessWidget {
     final favorites = context.watch<FavoritesProvider>();
     final selected = favorites.contains(productId);
     return IconButton(
-      tooltip: selected ? 'Remove from favorites' : 'Save to favorites',
+      tooltip: selected
+          ? context.tr('discovery_remove_favorite')
+          : context.tr('discovery_save_favorite'),
       isSelected: selected,
       icon: Icon(selected ? Icons.favorite : Icons.favorite_border,
           color: selected ? AppColors.primary : AppColors.textSecondary),
@@ -22,12 +25,13 @@ class FavoriteButton extends StatelessWidget {
               if (!context.mounted) return;
               if (!saved) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(favorites.error ??
-                      'Could not save favorites. Try again.'),
+                  content: Text(favorites.error != null
+                      ? context.tr('discovery_load_favorites_error')
+                      : context.tr('discovery_save_error')),
                   action: favorites.error == null
                       ? null
                       : SnackBarAction(
-                          label: 'Retry',
+                          label: context.tr('discovery_retry'),
                           onPressed: () => favorites
                               .setAccount(favorites.account, reload: true)),
                 ));
