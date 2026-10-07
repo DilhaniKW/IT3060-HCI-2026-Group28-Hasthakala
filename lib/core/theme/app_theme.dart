@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_typography.dart';
+import '../widgets/petal_background.dart';
 
 // Single shared theme for the whole app.
 class AppTheme {
@@ -26,10 +27,18 @@ class AppTheme {
       useMaterial3: true,
       fontFamily: fontFamily,
       colorScheme: scheme,
-      scaffoldBackgroundColor: AppColors.background,
+      // transparent so the petal background (added per page) shows through
+      scaffoldBackgroundColor: Colors.transparent,
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: PetalPageTransitionsBuilder(),
+          TargetPlatform.iOS: PetalPageTransitionsBuilder(),
+        },
+      ),
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.background,
+        backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
+        scrolledUnderElevation: 0,
         elevation: 0,
         centerTitle: false,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),

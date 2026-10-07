@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/tr.dart';
 import '../../../discovery/presentation/screens/public_artisan_profile_screen.dart';
+import '../widgets/profile_preview_card.dart';
+import '../widgets/status_screen.dart';
 
 // I05 Profile updated
 class ProfileUpdatedScreen extends StatelessWidget {
@@ -10,40 +12,18 @@ class ProfileUpdatedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Icon(Icons.check_circle, size: 64, color: AppColors.accent),
-              const SizedBox(height: 16),
-              const Text('Profile updated',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-              const SizedBox(height: 8),
-              const Text('Your artisan profile changes have been saved.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.textSecondary)),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('View My Profile'),
-              ),
-              const SizedBox(height: 10),
-              OutlinedButton(
-                onPressed: () => Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => PublicArtisanProfileScreen(artisanId: artisanId)),
-                ),
-                child: const Text('Preview Public Profile'),
-              ),
-            ],
-          ),
-        ),
+    return StatusScreen(
+      icon: Icons.check_rounded,
+      // shows the saved profile so the change is easy to see
+      header: ProfilePreviewCard(artisanId: artisanId),
+      title: context.tr('updated_title'),
+      message: context.tr('updated_body'),
+      primaryLabel: context.tr('view_my_profile'),
+      onPrimary: () => Navigator.pop(context),
+      secondaryLabel: context.tr('preview_public_profile'),
+      onSecondary: () => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => PublicArtisanProfileScreen(artisanId: artisanId)),
       ),
     );
   }

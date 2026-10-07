@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/tr.dart';
 import '../../../../core/utils/input_validators.dart';
 import '../state/auth_provider.dart';
+import '../widgets/auth_field.dart';
 import 'register_screen.dart';
 import 'reset_password_screen.dart';
 
@@ -20,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _hidePassword = true;
 
   @override
   void dispose() {
@@ -46,6 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Image.asset('assets/images/hasthakala_logo.png', width: 96),
+              const SizedBox(height: 24),
               const CircularProgressIndicator(color: AppColors.primary),
               const SizedBox(height: 16),
               Text(context.tr('signing_in'),
@@ -63,60 +65,37 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Form(
           key: _formKey,
-          child: ListView(
-            padding: const EdgeInsets.all(24),
+          child: CenteredFormLayout(
             children: [
-              const SizedBox(height: 12),
-              Center(child: Image.asset('assets/images/hasthakala_logo.png', width: 96)),
-              const SizedBox(height: 16),
+              Center(child: Image.asset('assets/images/hasthakala_logo.png', width: 104)),
+              const SizedBox(height: 20),
               Text(context.tr('welcome_back'),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w700)),
-              const SizedBox(height: 4),
+                  style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 6),
               Text(context.tr('sign_in_sub'),
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: AppColors.textSecondary)),
-              const SizedBox(height: 24),
-              if (auth.errorMessage != null)
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: AppColors.error.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.error_outline, color: AppColors.error, size: 20),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(auth.errorMessage!,
-                            style: const TextStyle(color: AppColors.error)),
-                      ),
-                    ],
-                  ),
-                ),
-              TextFormField(
+              const SizedBox(height: 28),
+              if (auth.errorMessage != null) _ErrorBanner(context.trMessage(auth.errorMessage)!),
+              AuthField(
+                label: context.tr('email'),
+                hint: context.tr('email_hint'),
+                icon: Icons.mail_outline_rounded,
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(labelText: context.tr('email')),
                 validator: InputValidators.validateEmail,
               ),
-              const SizedBox(height: 14),
-              TextFormField(
+              const SizedBox(height: 16),
+              AuthField(
+                label: context.tr('password'),
+                hint: context.tr('password_hint'),
+                icon: Icons.lock_outline_rounded,
                 controller: _passwordController,
-                obscureText: _hidePassword,
+                isPassword: true,
                 textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) => _signIn(auth),
-                decoration: InputDecoration(
-                  labelText: context.tr('password'),
-                  suffixIcon: IconButton(
-                    tooltip: context.tr(_hidePassword ? 'show_password' : 'hide_password'),
-                    icon: Icon(_hidePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                    onPressed: () => setState(() => _hidePassword = !_hidePassword),
-                  ),
-                ),
+                onSubmitted: (_) => _signIn(auth),
                 validator: InputValidators.validatePassword,
               ),
               Align(
@@ -133,8 +112,9 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 8),
               ElevatedButton(onPressed: () => _signIn(auth), child: Text(context.tr('sign_in'))),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(context.tr('new_here')),
                   TextButton(
@@ -150,6 +130,30 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _ErrorBanner extends StatelessWidget {
+  final String text;
+  const _ErrorBanner(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: AppColors.error.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.error_outline, color: AppColors.error, size: 20),
+          const SizedBox(width: 8),
+          Expanded(child: Text(text, style: const TextStyle(color: AppColors.error))),
+        ],
       ),
     );
   }
