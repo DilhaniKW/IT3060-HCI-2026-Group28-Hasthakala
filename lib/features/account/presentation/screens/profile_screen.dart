@@ -46,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          // artisan profile hub follows I05_HF_01 (no account header)
+          // artisan profile hub follows I05_01(no account header)
           if (!auth.isArtisanContext) ...[
             ProfileAvatarWidget(
               name: user?.displayName ?? '',

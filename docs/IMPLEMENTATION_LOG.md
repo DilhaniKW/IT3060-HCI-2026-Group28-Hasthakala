@@ -33,12 +33,12 @@ Started with interfaces I01,105,I13
 - Translations in lib/core/localization (see docs/TRANSLATION.md).
 - Plus Jakarta Sans font, app icon and launch screen.
 
-## 06-07 Oct - intro screen UI enhancement
+## 05-07 Oct - intro screen UI enhancement
 - Intro is now three pages you can swipe: discover crafts, verified artisans, order/chat/track.
 - Centred layout, page dots, Next / Get Started button, Skip in the same spot on every page.
 - Pictures drawn with the brand colours until we have the hi-fi images.
 
-## 07 Oct - I01 UI, part 2
+## 05-07 Oct - I01 UI, part 2
 - Welcome Back and Create Account: centred, labels above fields, live password checks, all text translated (including error messages).
 - Account Created, How will you start, You're all set / artisan setup, Reset Password, Check your email, Continue as,
   Checking access and Support access removed restyled and translated.

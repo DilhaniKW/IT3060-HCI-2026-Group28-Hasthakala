@@ -385,12 +385,12 @@ class AppStrings {
     },
     'artisan_started_sub': {
       'en': 'Next, let\'s complete your profile to showcase your crafts.',
-      'si': 'ඊළඟට, ඔබේ නිර්මාණ පෙන්වීමට පැතිකඩ සම්පූර්ණ කරමු.',
+      'si': 'ඊළඟට, ඔබේ නිර්මාණ පෙන්වීමට ප්‍රොෆයිල්/profile සම්පූර්ණ කරමු.',
       'ta': 'அடுத்து, உங்கள் கைவினைகளைக் காட்ட சுயவிவரத்தை நிறைவு செய்வோம்.',
     },
     'continue_profile': {
       'en': 'Continue to Profile',
-      'si': 'පැතිකඩට යන්න',
+      'si': 'පැතිකඩට/ප්‍රොෆයිල් යන්න',
       'ta': 'சுயவிவரத்துக்குச் செல்லவும்',
     },
     'reset_title': {
@@ -475,7 +475,7 @@ class AppStrings {
     },
     'check_profiles': {
       'en': 'Checking your profiles...',
-      'si': 'ඔබේ පැතිකඩ පරීක්ෂා කරමින්...',
+      'si': 'ඔබේ පැතිකඩ/ප්‍රොෆයිල් පරීක්ෂා කරමින්...',
       'ta': 'உங்கள் சுயவிவரங்களைச் சரிபார்க்கிறது...',
     },
     'check_workspace': {
