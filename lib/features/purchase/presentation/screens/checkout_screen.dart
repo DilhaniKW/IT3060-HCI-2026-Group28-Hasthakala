@@ -41,8 +41,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<CartProvider>();
-    final subtotal = cart.totalLkr > 0 ? cart.totalLkr : 2400.0;
-    const deliveryFee = 350.0;
+    final subtotal = cart.subtotalLkr;
+    final deliveryFee = cart.deliveryFeeLkr;
     final grandTotal = subtotal + deliveryFee;
 
     return Scaffold(
@@ -110,8 +110,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+ alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                     children: const [
                       Text(
                         'Item Summary',
@@ -274,7 +274,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
+                              Wrap(spacing: 4, runSpacing: 4,
                                 children: [
                                   Text(
                                     item['title'] as String,
@@ -364,8 +364,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+ alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                     children: [
                       const Text('Item Subtotal',
                           style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
@@ -374,8 +374,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+ alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                     children: const [
                       Text('Islandwide Artisan Courier',
                           style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
@@ -384,8 +384,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ],
                   ),
                   const Divider(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+ alignment: WrapAlignment.spaceBetween, spacing: 12, runSpacing: 8,
                     children: [
                       const Text(
                         'Total Payable',
@@ -408,7 +408,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ],
         ),
       ),
-      bottomSheet: Container(
+      bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -447,7 +447,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   Icon(Icons.lock_outline, size: 18, color: Colors.white),
                   SizedBox(width: 8),
                   Text(
-                    'Confirm & Place Heritage Order',
+                    'Review Order',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
