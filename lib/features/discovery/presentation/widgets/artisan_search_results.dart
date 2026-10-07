@@ -17,7 +17,7 @@ class ArtisanSearchResults extends StatelessWidget {
         builder: (context, _) {
           final results = provider.results;
           return Padding(
-            padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 8),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               SizedBox(
