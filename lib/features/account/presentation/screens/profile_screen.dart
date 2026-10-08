@@ -11,6 +11,7 @@ import '../widgets/profile_cover_header.dart';
 import '../widgets/profile_covers.dart';
 import '../../../../core/localization/tr.dart';
 import 'accept_support_invitation_screen.dart';
+import 'buyer_profile_screen.dart';
 import 'family_assistance_screen.dart';
 import 'language_selection_screen.dart';
 import 'my_artisan_profile_screen.dart';
@@ -62,6 +63,19 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final user = auth.currentUser;
+    if (auth.isBuyerContext && user != null) {
+      return BuyerProfileScreen(
+        user: user,
+        onSignOut: () => _confirmSignOut(context, auth),
+        onSwitchContext: auth.availableContextCount > 1
+            ? () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                auth.switchContext();
+              }
+            : null,
+      );
+    }
+
     final name = user?.displayName ?? '';
 
     Widget header;

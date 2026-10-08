@@ -1,65 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../config/routes/app_routes.dart';
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/localization/tr.dart';
 import '../../../../core/utils/currency_formatter.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/empty_state_view.dart';
 import '../state/cart_provider.dart';
 import '../widgets/cart_item_tile.dart';
+import 'checkout_screen.dart';
 
-/// Assigned to: DISSANAYAKE D. M. S. D. (Member 2)
-/// Feature: Buyer Purchase & Checkout (I06)
+/// Assigned to: DISSANAYAKE D. M. S. D.
 /// Branch: feature/buyer-purchase
 class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+  const CartScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(
-          context.tr('my_cart'),
-          style: const TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        centerTitle: false,
-      ),
+      appBar: CustomAppBar(
+          title: 'My Craft Cart', showBackButton: Navigator.canPop(context)),
       body: Consumer<CartProvider>(
         builder: (context, cart, _) {
           if (cart.cartItems.isEmpty) {
             return EmptyStateView(
               icon: Icons.shopping_bag_outlined,
-              title: context.tr('cart_empty_title'),
-              description: context.tr('cart_empty_desc'),
-              actionButtonText: context.tr('discover_crafts'),
-              onActionPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                  AppRoutes.home,
-                  (route) => false,
-                );
-              },
+              title: 'Your cart is empty',
+              description:
+                  'Explore traditional crafts and add authentic items to your basket.',
+              actionButtonText: 'Start Exploring',
+              onActionPressed: () => Navigator.pop(context),
             );
           }
 
           return Column(
             children: [
-              // Items List
               Expanded(
                 child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.all(16),
                   itemCount: cart.cartItems.length,
                   itemBuilder: (context, index) {
                     final item = cart.cartItems[index];
@@ -67,145 +44,90 @@ class CartScreen extends StatelessWidget {
                       item: item,
                       onQuantityChanged: (newQty) {
                         cart.updateQuantity(item.productId, newQty);
+                        if (newQty > 0 &&
+                            cart.quantityFor(item.productId) != newQty) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                                'You have reached the available stock limit.'),
+                          ));
+                        }
                       },
                       onRemove: () {
                         cart.removeItem(item.productId);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(context.tr('item_removed')),
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
                       },
                     );
                   },
                 ),
               ),
-
-              // Price Breakdown Box (bottom, sticky)
+              // Cart Summary Sheet
               Container(
                 padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: AppColors.surface,
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.06),
-                      blurRadius: 12,
-                      offset: const Offset(0, -4),
+                        color: Colors.black12,
+                        blurRadius: 10,
+                        offset: Offset(0, -2))
+                  ],
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Subtotal',
+                            style: TextStyle(color: AppColors.textSecondary)),
+                        Text(
+                          CurrencyFormatter.formatLKR(cart.subtotalLkr),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Domestic Delivery',
+                            style: TextStyle(color: AppColors.textSecondary)),
+                        Text(
+                          CurrencyFormatter.formatLKR(cart.deliveryFeeLkr),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                    const Divider(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Total Amount',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Text(
+                          CurrencyFormatter.formatLKR(cart.totalLkr),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    CustomButton(
+                      text:
+                          'Proceed to Checkout (${cart.totalItemCount} items)',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const CheckoutScreen()),
+                        );
+                      },
                     ),
                   ],
-                ),
-                child: SafeArea(
-                  top: false,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Subtotal
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            context.tr('subtotal'),
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                          Text(
-                            CurrencyFormatter.formatLKR(cart.subtotalLkr),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Islandwide Delivery (flat Rs. 450)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            context.tr('islandwide_delivery'),
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                          Text(
-                            CurrencyFormatter.formatLKR(cart.deliveryFeeLkr),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-
-                      // Artisan Packaging (flat Rs. 200)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            context.tr('artisan_packaging'),
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                          Text(
-                            CurrencyFormatter.formatLKR(cart.packagingFeeLkr),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        child: Divider(color: AppColors.border, height: 1),
-                      ),
-
-                      // Total Price (bold, larger)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            context.tr('total'),
-                            style: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textPrimary,
-                            ),
-                          ),
-                          Text(
-                            CurrencyFormatter.formatLKR(cart.totalLkr),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Action Button: Proceed to Checkout
-                      CustomButton(
-                        text: '${context.tr('proceed_to_checkout')} (${cart.totalItemCount})',
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(AppRoutes.checkout);
-                        },
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ],

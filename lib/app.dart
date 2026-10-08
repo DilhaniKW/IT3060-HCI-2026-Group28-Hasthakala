@@ -12,6 +12,7 @@ import 'features/account/presentation/state/onboarding_provider.dart';
 import 'features/artisan/presentation/state/artisan_dashboard_provider.dart';
 import 'features/artisan/presentation/state/artisan_orders_provider.dart';
 import 'features/discovery/presentation/state/discovery_provider.dart';
+import 'features/discovery/presentation/state/favorites_provider.dart';
 import 'features/purchase/presentation/state/cart_provider.dart';
 
 class HasthakalaApp extends StatelessWidget {
@@ -24,6 +25,13 @@ class HasthakalaApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => OnboardingProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProxyProvider<AuthProvider, FavoritesProvider>(
+          create: (_) => FavoritesProvider(),
+          update: (_, auth, favorites) {
+            favorites!.setAccount(auth.currentUser?.uid);
+            return favorites;
+          },
+        ),
         ChangeNotifierProvider(create: (_) => FamilySupportProvider()), // I13
         ChangeNotifierProvider(create: (_) => ArtisanProfileProvider()), // I05
         ChangeNotifierProvider(create: (_) => DiscoveryProvider()),
@@ -33,19 +41,19 @@ class HasthakalaApp extends StatelessWidget {
       ],
       child: Consumer<LanguageProvider>(
         builder: (context, language, _) => MaterialApp(
-        title: 'Hasthakala',
-        locale: language.locale,
-        supportedLocales: const [Locale('en'), Locale('si'), Locale('ta')],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        // AuthGate picks the first screen from the sign-in state.
-        home: const AuthGate(),
-        onGenerateRoute: RouteGenerator.generateRoute,
+          title: 'Hasthakala',
+          locale: language.locale,
+          supportedLocales: const [Locale('en'), Locale('si'), Locale('ta')],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          // AuthGate picks the first screen from the sign-in state.
+          home: const AuthGate(),
+          onGenerateRoute: RouteGenerator.generateRoute,
         ),
       ),
     );

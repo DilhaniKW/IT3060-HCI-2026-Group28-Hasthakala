@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../core/constants/app_colors.dart';
 
 /// High-Fidelity Verified Lab Matrix Screen matching Stitch Canvas specification
@@ -17,7 +18,7 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Verified Lab Matrix',
+          'Lab Report Preview',
           style: TextStyle(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.bold,
@@ -27,10 +28,15 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.share_outlined, color: AppColors.textPrimary),
-            onPressed: () {
+            icon:
+                const Icon(Icons.share_outlined, color: AppColors.textPrimary),
+            onPressed: () async {
+              await Clipboard.setData(const ClipboardData(
+                  text:
+                      'Hasthakala lab report preview. Sample data only; no product certificate is available.'));
+              if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Verification Certificate copied!')),
+                const SnackBar(content: Text('Preview note copied')),
               );
             },
           ),
@@ -41,6 +47,10 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+                'Sample report layout. These are not verified results for a selected product.',
+                style: TextStyle(color: AppColors.textSecondary)),
+            const SizedBox(height: 12),
             // Verified Header Banner
             Container(
               padding: const EdgeInsets.all(20),
@@ -105,8 +115,10 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
                     ],
                   ),
                   const Divider(color: Colors.white24, height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    spacing: 12,
+                    runSpacing: 8,
                     children: const [
                       Text(
                         'Registry ID: #HK-2026-8841',
@@ -191,17 +203,22 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             GridView.count(
-              crossAxisCount: 2,
+              crossAxisCount: MediaQuery.sizeOf(context).width < 360 ? 1 : 2,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 1.5,
+              childAspectRatio:
+                  MediaQuery.sizeOf(context).width < 360 ? 1.8 : 1.5,
               children: [
-                _buildMetricCard('Thermal Retention', '94.2%', Icons.thermostat),
-                _buildMetricCard('Lead & Cadmium Test', '0.00% (Pass)', Icons.sanitizer),
-                _buildMetricCard('Earthen Water Filter', 'A+ Grade', Icons.water_drop),
-                _buildMetricCard('Handmade Variation', 'Unique Pattern', Icons.fingerprint),
+                _buildMetricCard(
+                    'Thermal Retention', '94.2%', Icons.thermostat),
+                _buildMetricCard(
+                    'Lead & Cadmium Test', '0.00% (Pass)', Icons.sanitizer),
+                _buildMetricCard(
+                    'Earthen Water Filter', 'A+ Grade', Icons.water_drop),
+                _buildMetricCard(
+                    'Handmade Variation', 'Unique Pattern', Icons.fingerprint),
               ],
             ),
             const SizedBox(height: 24),
@@ -219,7 +236,7 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
                 ),
                 icon: const Icon(Icons.download, color: Colors.white),
                 label: const Text(
-                  'Download Official Lab PDF Certificate',
+                  'Certificate not available',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -228,7 +245,9 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('PDF Certificate downloaded successfully!')),
+                    const SnackBar(
+                        content: Text(
+                            'This is a sample report. No product certificate is available to download.')),
                   );
                 },
               ),
@@ -256,7 +275,8 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                style: const TextStyle(
+                    fontSize: 12, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 2),
               Text(
@@ -305,7 +325,8 @@ class VerifiedLabMatrixScreen extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             title,
-            style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+            style:
+                const TextStyle(fontSize: 11, color: AppColors.textSecondary),
           ),
           const SizedBox(height: 2),
           Text(
