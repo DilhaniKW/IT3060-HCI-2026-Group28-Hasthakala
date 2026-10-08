@@ -9,7 +9,6 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/empty_state_view.dart';
 import '../state/cart_provider.dart';
 import '../widgets/cart_item_tile.dart';
-import 'checkout_screen.dart';
 
 /// Assigned to: DISSANAYAKE D. M. S. D. (Member 2)
 /// Feature: Buyer Purchase & Checkout (I06)
@@ -26,7 +25,7 @@ class CartScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           context.tr('my_cart'),
@@ -46,7 +45,12 @@ class CartScreen extends StatelessWidget {
               title: context.tr('cart_empty_title'),
               description: context.tr('cart_empty_desc'),
               actionButtonText: context.tr('discover_crafts'),
-              onActionPressed: () => Navigator.pop(context),
+              onActionPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  AppRoutes.home,
+                  (route) => false,
+                );
+              },
             );
           }
 
@@ -197,13 +201,7 @@ class CartScreen extends StatelessWidget {
                       CustomButton(
                         text: '${context.tr('proceed_to_checkout')} (${cart.totalItemCount})',
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const CheckoutScreen(),
-                              settings: const RouteSettings(name: AppRoutes.checkout),
-                            ),
-                          );
+                          Navigator.of(context).pushNamed(AppRoutes.checkout);
                         },
                       ),
                     ],
