@@ -32,17 +32,6 @@ class LanguageSelectionScreen extends StatelessWidget {
       appBar: fromProfile ? AppBar() : null,
       body: Stack(
         children: [
-          // soft background shapes in the brand colours
-          Positioned(
-            top: -90,
-            right: -70,
-            child: _Blob(size: 240, color: AppColors.secondary.withValues(alpha: 0.12)),
-          ),
-          Positioned(
-            bottom: -110,
-            left: -80,
-            child: _Blob(size: 280, color: AppColors.primary.withValues(alpha: 0.10)),
-          ),
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(24),
@@ -82,16 +71,6 @@ class LanguageSelectionScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-class _Blob extends StatelessWidget {
-  final double size;
-  final Color color;
-  const _Blob({required this.size, required this.color});
-
-  @override
-  Widget build(BuildContext context) =>
-      Container(width: size, height: size, decoration: BoxDecoration(color: color, shape: BoxShape.circle));
 }
 
 class _LanguageCard extends StatelessWidget {

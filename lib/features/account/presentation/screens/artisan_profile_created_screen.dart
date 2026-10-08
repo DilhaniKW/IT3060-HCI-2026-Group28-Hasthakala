@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/tr.dart';
 import '../state/auth_provider.dart';
+import '../widgets/profile_preview_card.dart';
+import '../widgets/status_screen.dart';
 
 // I05 Artisan profile created (first-time artisan)
 class ArtisanProfileCreatedScreen extends StatelessWidget {
@@ -10,34 +12,16 @@ class ArtisanProfileCreatedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Icon(Icons.check_circle, size: 64, color: AppColors.accent),
-              const SizedBox(height: 16),
-              const Text('Artisan profile created!',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-              const SizedBox(height: 8),
-              const Text(
-                'Your profile is ready. You can now start showcasing your craft to buyers.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: context.read<AuthProvider>().finishArtisanSetup,
-                child: const Text('Continue'),
-              ),
-            ],
-          ),
-        ),
-      ),
+    final auth = context.read<AuthProvider>();
+    final uid = auth.currentUser?.uid;
+    return StatusScreen(
+      icon: Icons.check_rounded,
+      // preview of what users just made
+      header: uid == null ? null : ProfilePreviewCard(artisanId: uid),
+      title: context.tr('created_title'),
+      message: context.tr('created_body'),
+      primaryLabel: context.tr('continue'),
+      onPrimary: auth.finishArtisanSetup,
     );
   }
 }

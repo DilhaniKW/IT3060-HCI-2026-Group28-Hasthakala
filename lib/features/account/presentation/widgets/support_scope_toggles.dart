@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/localization/tr.dart';
 import '../../../../core/shared_models/support_models.dart';
 
 // permission toggles, used on Add Support User and Support User Details
@@ -15,47 +16,65 @@ class SupportScopeToggles extends StatelessWidget {
     return Column(
       children: [
         _ToggleRow(
-          title: 'Manage products',
-          subtitle: 'Add, edit and update products',
+          icon: Icons.inventory_2_outlined,
+          title: context.tr('perm_products'),
+          subtitle: context.tr('perm_products_sub'),
           value: scopes.products,
           onChanged: onChanged == null
               ? null
               : (v) => onChanged!(scopes.copyWith(products: v)),
         ),
         _ToggleRow(
-          title: 'Manage orders',
-          subtitle: 'View and update order status',
+          icon: Icons.receipt_long_outlined,
+          title: context.tr('perm_orders'),
+          subtitle: context.tr('perm_orders_sub'),
           value: scopes.orders,
           onChanged: onChanged == null
               ? null
               : (v) => onChanged!(scopes.copyWith(orders: v)),
         ),
         _ToggleRow(
-          title: 'Respond to customers',
-          subtitle: 'Reply to messages about orders',
+          icon: Icons.chat_bubble_outline,
+          title: context.tr('perm_messages'),
+          subtitle: context.tr('perm_messages_sub'),
           value: scopes.communication,
           onChanged: onChanged == null
               ? null
               : (v) => onChanged!(scopes.copyWith(communication: v)),
         ),
+        // always locked - only the owner can use these
         Container(
-          margin: const EdgeInsets.only(top: 4),
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
             color: AppColors.divider,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: AppColors.border),
           ),
-          child: const Row(
+          child: Row(
             children: [
-              Icon(Icons.lock_outline, size: 20, color: AppColors.textSecondary),
-              SizedBox(width: 10),
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: AppColors.textSecondary.withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Icon(Icons.lock_outline_rounded, color: AppColors.textSecondary),
+              ),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Sensitive account functions',
-                        style: TextStyle(fontWeight: FontWeight.w600)),
-                    Text('Owner only', style: TextStyle(color: AppColors.textSecondary)),
+                    Text(context.tr('perm_sensitive'),
+                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                    const SizedBox(height: 2),
+                    Text(context.tr('perm_owner_only'),
+                        style: const TextStyle(
+                            color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
+                    const SizedBox(height: 2),
+                    Text(context.tr('sensitive_note'),
+                        style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
                   ],
                 ),
               ),
@@ -68,12 +87,14 @@ class SupportScopeToggles extends StatelessWidget {
 }
 
 class _ToggleRow extends StatelessWidget {
+  final IconData icon;
   final String title;
   final String subtitle;
   final bool value;
   final ValueChanged<bool>? onChanged;
 
   const _ToggleRow({
+    required this.icon,
     required this.title,
     required this.subtitle,
     required this.value,
@@ -82,20 +103,55 @@ class _ToggleRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
+    final color = value ? AppColors.accent : AppColors.primary;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Material(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: SwitchListTile(
-        value: value,
-        onChanged: onChanged,
-        activeThumbColor: AppColors.onPrimary,
-        activeTrackColor: AppColors.accent,
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle, style: const TextStyle(color: AppColors.textSecondary)),
+        borderRadius: BorderRadius.circular(18),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(18),
+          // tapping the card does the same as tapping the switch
+          onTap: onChanged == null ? null : () => onChanged!(!value),
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(18),
+              border: Border.all(
+                  color: value ? AppColors.accent.withValues(alpha: 0.4) : AppColors.border),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: Icon(icon, color: color, size: 26),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                      const SizedBox(height: 2),
+                      Text(subtitle, style: const TextStyle(color: AppColors.textSecondary)),
+                    ],
+                  ),
+                ),
+                Switch(
+                  value: value,
+                  onChanged: onChanged,
+                  activeThumbColor: AppColors.onPrimary,
+                  activeTrackColor: AppColors.accent,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
