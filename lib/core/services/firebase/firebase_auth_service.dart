@@ -50,8 +50,7 @@ class FirebaseAuthService {
     }
   }
 
-  /// Plain-language messages for Firebase error codes (heuristic: help users
-  /// recognise, diagnose and recover from errors). Wording follows the I01 hi-fi.
+  // turns Firebase error codes into messages people can act on
   static String friendlyMessage(String code) {
     switch (code) {
       case 'invalid-credential':
