@@ -1200,6 +1200,68 @@ class AppStrings {
       'ta': 'தேவைப்பட்டால், குடும்ப உதவியில் "{feature}" அனுமதிக்குமாறு {artisan} இடம் கேளுங்கள்.',
     },
 
+    // ---- cart / purchase (I06) ----
+    'my_cart': {
+      'en': 'My Cart',
+      'si': 'මගේ කූඩය',
+      'ta': 'எனது வண்டி',
+    },
+    'cart_empty_title': {
+      'en': 'Your cart is empty',
+      'si': 'ඔබේ කූඩය හිස්ය',
+      'ta': 'உங்கள் வண்டி காலியாக உள்ளது',
+    },
+    'cart_empty_desc': {
+      'en': 'Discover authentic handmade crafts and add items to your basket.',
+      'si': 'සැබෑ අත්කම් නිර්මාණ සොයාගෙන ඔබේ කූඩයට එක් කරන්න.',
+      'ta': 'உண்மையான கைவினைப் பொருட்களைக் கண்டறிந்து உங்கள் படகில் சேர்க்கவும்.',
+    },
+    'discover_crafts': {
+      'en': 'Discover Authentic Crafts',
+      'si': 'සැබෑ අත්කම් සොයාගන්න',
+      'ta': 'உண்மையான கைவினைகளைக் கண்டறியவும்',
+    },
+    'verified': {
+      'en': 'Verified',
+      'si': 'සත්‍යාපිත',
+      'ta': 'சரிபார்க்கப்பட்டது',
+    },
+    'subtotal': {
+      'en': 'Subtotal',
+      'si': 'උප එකතුව',
+      'ta': 'உப மொத்தம்',
+    },
+    'islandwide_delivery': {
+      'en': 'Islandwide Delivery',
+      'si': 'දිවයින් පුරා බෙදාහැරීම',
+      'ta': 'நாடு තழுவிய விநியோகம்',
+    },
+    'artisan_packaging': {
+      'en': 'Artisan Packaging',
+      'si': 'ශිල්පී ඇසුරුම්කරණය',
+      'ta': 'கைவினைஞர் பேக்கேஜிங்',
+    },
+    'total': {
+      'en': 'Total',
+      'si': 'එකතුව',
+      'ta': 'மொத்தம்',
+    },
+    'proceed_to_checkout': {
+      'en': 'Proceed to Checkout',
+      'si': 'ගෙවීමට ඉදිරියට යන්න',
+      'ta': 'செக்அவுட்டுக்குச் செல்லவும்',
+    },
+    'remove_item': {
+      'en': 'Remove item',
+      'si': 'භාණ්ඩය ඉවත් කරන්න',
+      'ta': 'பொருளை அகற்று',
+    },
+    'item_removed': {
+      'en': 'Item removed from cart',
+      'si': 'කූඩයෙන් භාණ්ඩය ඉවත් කරන ලදී',
+      'ta': 'பொருள் வண்டியிலிருந்து நீக்கப்பட்டது',
+    },
+
     // ---- bottom navigation ----
     'nav_home': {'en': 'Home', 'si': 'මුල් පිටුව', 'ta': 'முகப்பு'},
     'nav_search': {'en': 'Search', 'si': 'සොයන්න', 'ta': 'தேடல்'},
