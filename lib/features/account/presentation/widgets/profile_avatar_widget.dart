@@ -6,17 +6,19 @@ class ProfileAvatarWidget extends StatelessWidget {
   final String? imageUrl;
   final String name;
   final double radius;
+  final VoidCallback? onCameraTap;
 
   const ProfileAvatarWidget({
     super.key,
     this.imageUrl,
     required this.name,
     this.radius = 48,
+    this.onCameraTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final avatar = Container(
       // light ring so the avatar stands out on the cover photo
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -38,6 +40,27 @@ class ProfileAvatarWidget extends StatelessWidget {
                 ),
               )
             : null,
+      ),
+    );
+
+    if (onCameraTap == null) return avatar;
+    return GestureDetector(
+      onTap: onCameraTap,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          avatar,
+          Positioned(
+            right: -2,
+            bottom: -2,
+            child: const CircleAvatar(
+              radius: 16,
+              backgroundColor: AppColors.primary,
+              child: const Icon(Icons.camera_alt,
+                  size: 16, color: AppColors.onPrimary),
+            ),
+          ),
+        ],
       ),
     );
   }
