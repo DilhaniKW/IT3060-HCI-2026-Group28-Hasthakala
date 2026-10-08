@@ -258,7 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.auto_awesome,
+                            Icon(Icons.handyman_outlined,
                                 size: 14, color: AppColors.secondary),
                             SizedBox(width: 4),
                             Text(
@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       onActionPressed: provider.listenToFeaturedProducts)
                 else if (displayProducts.isEmpty)
                   EmptyStateView(
-                      icon: Icons.storefront,
+                      icon: Icons.brush_outlined,
                       title: context.tr('discovery_empty'),
                       description: context.tr('discovery_empty_help'))
                 else
