@@ -1,6 +1,3 @@
-// Fixed textfor Member 2'sscreens: cart (I06), checkout (I07),
-// orders (I08) and the buyer side of order chat (I09).
-// Use with context.t
 const purchaseStrings = <String, Map<String, String>>{
   'my_cart': {
     'en': 'My Cart',
@@ -15,7 +12,8 @@ const purchaseStrings = <String, Map<String, String>>{
   'cart_empty_desc': {
     'en': 'You haven\'t added any authentic Sri Lankan handicrafts yet.',
     'si': 'ඔබ තවම සැබෑ ශ්‍රී ලාංකීය අත්කම් කිසිවක් එක් කර නැත.',
-    'ta': 'நீங்கள் இன்னும் உண்மையான இலங்கை கைவினைப் பொருட்கள் எதையும் சேர்க்கவில்லை.',
+    'ta':
+        'நீங்கள் இன்னும் உண்மையான இலங்கை கைவினைப் பொருட்கள் எதையும் சேர்க்கவில்லை.',
   },
   'discover_crafts': {
     'en': 'Discover Authentic Crafts',
@@ -118,9 +116,12 @@ const purchaseStrings = <String, Map<String, String>>{
     'ta': 'இலங்கையில் கையால் செய்யப்பட்டது',
   },
   'pur_handmade_text': {
-    'en': 'Every item is made by a local artisan, and your order goes straight to them.',
-    'si': 'සෑම භාණ්ඩයක්ම දේශීය ශිල්පියෙකු විසින් සාදන අතර, ඔබේ ඇණවුම කෙලින්ම ඔවුන් වෙත යයි.',
-    'ta': 'ஒவ்வொரு பொருளும் உள்ளூர் கைவினைஞரால் செய்யப்படுகிறது, உங்கள் ஆர்டர் நேரடியாக அவர்களுக்குச் செல்கிறது.',
+    'en':
+        'Every item is made by a local artisan, and your order goes straight to them.',
+    'si':
+        'සෑම භාණ්ඩයක්ම දේශීය ශිල්පියෙකු විසින් සාදන අතර, ඔබේ ඇණවුම කෙලින්ම ඔවුන් වෙත යයි.',
+    'ta':
+        'ஒவ்வொரு பொருளும் உள்ளூர் கைவினைஞரால் செய்யப்படுகிறது, உங்கள் ஆர்டர் நேரடியாக அவர்களுக்குச் செல்கிறது.',
   },
   'pur_handmade_badge': {
     'en': 'Handmade',
@@ -143,9 +144,12 @@ const purchaseStrings = <String, Map<String, String>>{
     'ta': 'பொருட்களின் உப மொத்தம்',
   },
   'pur_delivery_once': {
-    'en': 'Charged once for the whole order, even when items come from different workshops.',
-    'si': 'භාණ්ඩ විවිධ වැඩපොළවලින් පැමිණියත්, මුළු ඇණවුමටම එක් වරක් පමණක් අය කෙරේ.',
-    'ta': 'பொருட்கள் வெவ்வேறு பட்டறைகளிலிருந்து வந்தாலும், முழு ஆர்டருக்கும் ஒரு முறை மட்டுமே வசூலிக்கப்படும்.',
+    'en':
+        'Charged once for the whole order, even when items come from different workshops.',
+    'si':
+        'භාණ්ඩ විවිධ වැඩපොළවලින් පැමිණියත්, මුළු ඇණවුමටම එක් වරක් පමණක් අය කෙරේ.',
+    'ta':
+        'பொருட்கள் வெவ்வேறு பட்டறைகளிலிருந்து வந்தாலும், முழு ஆர்டருக்கும் ஒரு முறை மட்டுமே வசூலிக்கப்படும்.',
   },
   'pur_total_due': {
     'en': 'Total Due',
@@ -338,9 +342,11 @@ const purchaseStrings = <String, Map<String, String>>{
     'ta': 'வங்கிப் பரிமாற்றம்',
   },
   'pur_pay_bank_sub': {
-    'en': 'The artisan confirms your order and shares bank details in the order chat',
+    'en':
+        'The artisan confirms your order and shares bank details in the order chat',
     'si': 'ශිල්පියා ඇණවුම තහවුරු කර, ඇණවුම් කතාබහේ බැංකු විස්තර ලබා දෙයි',
-    'ta': 'கைவினைஞர் ஆர்டரை உறுதிசெய்து, ஆர்டர் உரையாடலில் வங்கி விவரங்களைப் பகிர்வார்',
+    'ta':
+        'கைவினைஞர் ஆர்டரை உறுதிசெய்து, ஆர்டர் உரையாடலில் வங்கி விவரங்களைப் பகிர்வார்',
   },
   'pur_no_card_title': {
     'en': 'No card details needed',
@@ -453,9 +459,11 @@ const purchaseStrings = <String, Map<String, String>>{
     'ta': 'வந்ததும் {amount} செலுத்துங்கள்',
   },
   'pur_bank_next': {
-    'en': 'Bank transfer - the artisan will share bank details in the order chat',
+    'en':
+        'Bank transfer - the artisan will share bank details in the order chat',
     'si': 'බැංකු මාරුව - ශිල්පියා ඇණවුම් කතාබහේ බැංකු විස්තර ලබා දෙයි',
-    'ta': 'வங்கிப் பரிமாற்றம் - கைவினைஞர் ஆர்டர் உரையாடலில் வங்கி விவரங்களைப் பகிர்வார்',
+    'ta':
+        'வங்கிப் பரிமாற்றம் - கைவினைஞர் ஆர்டர் உரையாடலில் வங்கி விவரங்களைப் பகிர்வார்',
   },
   'pur_estimated_delivery': {
     'en': 'Estimated delivery',
@@ -493,9 +501,12 @@ const purchaseStrings = <String, Map<String, String>>{
     'ta': 'ஆர்டரைச் செய்ய முடியவில்லை',
   },
   'pur_failed_network': {
-    'en': 'We could not reach the server. Nothing was ordered and no money was taken.',
-    'si': 'සේවාදායකයට සම්බන්ධ විය නොහැකි විය. කිසිවක් ඇණවුම් නොකළ අතර මුදල් අය නොකළා.',
-    'ta': 'சேவையகத்தை அடைய முடியவில்லை. எதுவும் ஆர்டர் செய்யப்படவில்லை, பணம் எடுக்கப்படவில்லை.',
+    'en':
+        'We could not reach the server. Nothing was ordered and no money was taken.',
+    'si':
+        'සේවාදායකයට සම්බන්ධ විය නොහැකි විය. කිසිවක් ඇණවුම් නොකළ අතර මුදල් අය නොකළා.',
+    'ta':
+        'சேவையகத்தை அடைய முடியவில்லை. எதுவும் ஆர்டர் செய்யப்படவில்லை, பணம் எடுக்கப்படவில்லை.',
   },
   'pur_failed_stock': {
     'en': 'Some items are no longer available: {items}',
@@ -533,14 +544,20 @@ const purchaseStrings = <String, Map<String, String>>{
     'ta': 'இது ஏன் நடந்தது?',
   },
   'pur_why_network': {
-    'en': 'Your phone lost its internet connection while the order was being sent. Check Wi-Fi or mobile data and try again.',
-    'si': 'ඇණවුම යවන අතරතුර ඔබේ දුරකථනයේ අන්තර්ජාල සම්බන්ධතාවය නැති විය. Wi-Fi හෝ ජංගම දත්ත පරීක්ෂා කර නැවත උත්සාහ කරන්න.',
-    'ta': 'ஆர்டர் அனுப்பும்போது உங்கள் தொலைபேசியின் இணைய இணைப்பு துண்டிக்கப்பட்டது. Wi-Fi அல்லது மொபைல் டேட்டாவைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.',
+    'en':
+        'Your phone lost its internet connection while the order was being sent. Check Wi-Fi or mobile data and try again.',
+    'si':
+        'ඇණවුම යවන අතරතුර ඔබේ දුරකථනයේ අන්තර්ජාල සම්බන්ධතාවය නැති විය. Wi-Fi හෝ ජංගම දත්ත පරීක්ෂා කර නැවත උත්සාහ කරන්න.',
+    'ta':
+        'ஆர்டர் அனுப்பும்போது உங்கள் தொலைபேசியின் இணைய இணைப்பு துண்டிக்கப்பட்டது. Wi-Fi அல்லது மொபைல் டேட்டாவைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.',
   },
   'pur_why_stock': {
-    'en': 'Each craft is handmade in small numbers. Another buyer may have bought the last one, or the artisan paused it. Remove it from your cart and try again.',
-    'si': 'සෑම අත්කමක්ම සුළු ප්‍රමාණයකින් සාදනු ලැබේ. වෙනත් ගැනුම්කරුවෙකු අවසාන එක මිලදී ගෙන හෝ ශිල්පියා එය නවතා තිබිය හැක. එය කූඩයෙන් ඉවත් කර නැවත උත්සාහ කරන්න.',
-    'ta': 'ஒவ்வொரு கைவினையும் சிறிய அளவில் செய்யப்படுகிறது. வேறொருவர் கடைசியானதை வாங்கியிருக்கலாம் அல்லது கைவினைஞர் அதை நிறுத்தியிருக்கலாம். அதை வண்டியிலிருந்து நீக்கி மீண்டும் முயற்சிக்கவும்.',
+    'en':
+        'Each craft is handmade in small numbers. Another buyer may have bought the last one, or the artisan paused it. Remove it from your cart and try again.',
+    'si':
+        'සෑම අත්කමක්ම සුළු ප්‍රමාණයකින් සාදනු ලැබේ. වෙනත් ගැනුම්කරුවෙකු අවසාන එක මිලදී ගෙන හෝ ශිල්පියා එය නවතා තිබිය හැක. එය කූඩයෙන් ඉවත් කර නැවත උත්සාහ කරන්න.',
+    'ta':
+        'ஒவ்வொரு கைவினையும் சிறிய அளவில் செய்யப்படுகிறது. வேறொருவர் கடைசியானதை வாங்கியிருக்கலாம் அல்லது கைவினைஞர் அதை நிறுத்தியிருக்கலாம். அதை வண்டியிலிருந்து நீக்கி மீண்டும் முயற்சிக்கவும்.',
   },
   'pur_try_again': {
     'en': 'Try Again',
@@ -835,7 +852,8 @@ const purchaseStrings = <String, Map<String, String>>{
   'pur_no_chats': {
     'en': 'No messages yet. Start a chat from one of your orders.',
     'si': 'තවම පණිවිඩ නැත. ඔබේ ඇණවුමකින් කතාබහක් අරඹන්න.',
-    'ta': 'இன்னும் செய்திகள் இல்லை. உங்கள் ஆர்டர் ஒன்றிலிருந்து உரையாடலைத் தொடங்குங்கள்.',
+    'ta':
+        'இன்னும் செய்திகள் இல்லை. உங்கள் ஆர்டர் ஒன்றிலிருந்து உரையாடலைத் தொடங்குங்கள்.',
   },
   'pur_no_chat_match': {
     'en': 'No chats match your search.',
@@ -853,9 +871,12 @@ const purchaseStrings = <String, Map<String, String>>{
     'ta': 'ஆர்டர் உரையாடல்கள்',
   },
   'pur_order_chats_text': {
-    'en': 'Every chat belongs to one of your orders, so the artisan always knows what you are asking about.',
-    'si': 'සෑම කතාබහක්ම ඔබේ ඇණවුමකට අයත් බැවින්, ඔබ අසන්නේ කුමක් ගැනදැයි ශිල්පියා සැමවිටම දනී.',
-    'ta': 'ஒவ்வொரு உரையாடலும் உங்கள் ஆர்டர் ஒன்றைச் சேர்ந்தது, எனவே நீங்கள் எதைப் பற்றிக் கேட்கிறீர்கள் என்பது கைவினைஞருக்கு எப்போதும் தெரியும்.',
+    'en':
+        'Every chat belongs to one of your orders, so the artisan always knows what you are asking about.',
+    'si':
+        'සෑම කතාබහක්ම ඔබේ ඇණවුමකට අයත් බැවින්, ඔබ අසන්නේ කුමක් ගැනදැයි ශිල්පියා සැමවිටම දනී.',
+    'ta':
+        'ஒவ்வொரு உரையாடலும் உங்கள் ஆர்டர் ஒன்றைச் சேர்ந்தது, எனவே நீங்கள் எதைப் பற்றிக் கேட்கிறீர்கள் என்பது கைவினைஞருக்கு எப்போதும் தெரியும்.',
   },
   'pur_chat_about': {
     'en': 'About order {ref}',
@@ -883,9 +904,12 @@ const purchaseStrings = <String, Map<String, String>>{
     'ta': 'செய்தி அனுப்பப்பட்டது',
   },
   'pur_sent_text': {
-    'en': '{name} will reply here. Artisans usually reply during working hours.',
-    'si': '{name} මෙහි පිළිතුරු දෙනු ඇත. ශිල්පීන් සාමාන්‍යයෙන් වැඩ කරන වේලාවේ පිළිතුරු දෙයි.',
-    'ta': '{name} இங்கே பதிலளிப்பார். கைவினைஞர்கள் பொதுவாக வேலை நேரத்தில் பதிலளிப்பார்கள்.',
+    'en':
+        '{name} will reply here. Artisans usually reply during working hours.',
+    'si':
+        '{name} මෙහි පිළිතුරු දෙනු ඇත. ශිල්පීන් සාමාන්‍යයෙන් වැඩ කරන වේලාවේ පිළිතුරු දෙයි.',
+    'ta':
+        '{name} இங்கே பதிலளிப்பார். கைவினைஞர்கள் பொதுவாக வேலை நேரத்தில் பதிலளிப்பார்கள்.',
   },
   'pur_today': {
     'en': 'Today',
