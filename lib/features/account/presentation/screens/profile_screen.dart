@@ -6,6 +6,7 @@ import '../state/auth_provider.dart';
 import '../widgets/profile_avatar_widget.dart';
 import '../../../../core/localization/tr.dart';
 import 'accept_support_invitation_screen.dart';
+import 'buyer_profile_screen.dart';
 import 'family_assistance_screen.dart';
 import 'language_selection_screen.dart';
 import 'my_artisan_profile_screen.dart';
@@ -20,9 +21,12 @@ class ProfileScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Sign out?'),
-        content: const Text('You will need to sign in again to access your account.'),
+        content: const Text(
+            'You will need to sign in again to access your account.'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx, false),
+              child: const Text('Cancel')),
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
@@ -40,6 +44,18 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final user = auth.currentUser;
+    if (auth.isBuyerContext && user != null) {
+      return BuyerProfileScreen(
+        user: user,
+        onSignOut: () => _confirmSignOut(context, auth),
+        onSwitchContext: auth.availableContextCount > 1
+            ? () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                auth.switchContext();
+              }
+            : null,
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -56,10 +72,12 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(user?.displayName ?? '',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             Text(user?.email ?? '',
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+                style: const TextStyle(
+                    color: AppColors.textSecondary, fontSize: 13)),
             const SizedBox(height: 24),
           ],
 
@@ -68,16 +86,20 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.person_outline,
               title: 'My Artisan Profile',
               subtitle: 'View and manage your public artisan information',
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const MyArtisanProfileScreen())),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const MyArtisanProfileScreen())),
             ),
           if (auth.isArtisanContext)
             _MenuCard(
               icon: Icons.people_alt_outlined,
               title: 'Family Assistance',
               subtitle: 'Manage authorised support',
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const FamilyAssistanceScreen())),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const FamilyAssistanceScreen())),
             ),
 
           // buyer can accept an invite to help an artisan
@@ -86,8 +108,10 @@ class ProfileScreen extends StatelessWidget {
               icon: Icons.handshake_outlined,
               title: 'Accept support invitation',
               subtitle: 'Help an artisan with their business using a code',
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const AcceptSupportInvitationScreen())),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const AcceptSupportInvitationScreen())),
             ),
 
           if (auth.isSupporterContext && auth.activeGrant != null)
@@ -105,7 +129,8 @@ class ProfileScreen extends StatelessWidget {
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => const LanguageSelectionScreen(fromProfile: true))),
+                    builder: (_) =>
+                        const LanguageSelectionScreen(fromProfile: true))),
           ),
           if (auth.availableContextCount > 1)
             _MenuCard(
