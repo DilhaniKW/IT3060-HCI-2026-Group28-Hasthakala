@@ -13,6 +13,7 @@ class CraftCatalogScreen extends StatefulWidget {
 
 class _CraftCatalogScreenState extends State<CraftCatalogScreen> {
   int _selectedFilterIndex = 0;
+  String _sort = 'curated';
 
   final List<String> _filters = [
     'All Catalogs',
@@ -76,7 +77,8 @@ class _CraftCatalogScreenState extends State<CraftCatalogScreen> {
       artisanId: 'artisan_nimali',
       artisanName: 'Nimali F.',
       title: 'Kitul Oil Coconut Shell Bowl',
-      description: 'Hand-polished coconut shell bowl treated with pure kitul oil.',
+      description:
+          'Hand-polished coconut shell bowl treated with pure kitul oil.',
       priceLkr: 1200.0,
       category: 'Woodcarving',
       materials: 'Coconut Shell',
@@ -92,10 +94,15 @@ class _CraftCatalogScreenState extends State<CraftCatalogScreen> {
   @override
   Widget build(BuildContext context) {
     final filteredList = _selectedFilterIndex == 0
-        ? _catalogProducts
+        ? _catalogProducts.toList()
         : _catalogProducts
             .where((p) => p.category == _filters[_selectedFilterIndex])
             .toList();
+
+    if (_sort == 'low')
+      filteredList.sort((a, b) => a.priceLkr.compareTo(b.priceLkr));
+    if (_sort == 'high')
+      filteredList.sort((a, b) => b.priceLkr.compareTo(a.priceLkr));
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -116,18 +123,25 @@ class _CraftCatalogScreenState extends State<CraftCatalogScreen> {
         ),
         centerTitle: true,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.tune, color: AppColors.textPrimary),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Filter catalog modal triggered!')),
-              );
-            },
+          PopupMenuButton<String>(
+            tooltip: 'Sort catalog',
+            icon: const Icon(Icons.sort, color: AppColors.primary),
+            initialValue: _sort,
+            onSelected: (value) => setState(() => _sort = value),
+            itemBuilder: (_) => const [
+              PopupMenuItem(value: 'curated', child: Text('Curated order')),
+              PopupMenuItem(value: 'low', child: Text('Price: low to high')),
+              PopupMenuItem(value: 'high', child: Text('Price: high to low')),
+            ],
           ),
         ],
       ),
       body: Column(
         children: [
+          const Padding(
+              padding: EdgeInsets.all(12),
+              child: Text('Sample collection',
+                  style: TextStyle(color: AppColors.textSecondary))),
           // Filter Chips
           SizedBox(
             height: 48,
@@ -141,12 +155,15 @@ class _CraftCatalogScreenState extends State<CraftCatalogScreen> {
                   onTap: () => setState(() => _selectedFilterIndex = index),
                   child: Container(
                     margin: const EdgeInsets.only(right: 8, top: 4, bottom: 4),
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       color: isSelected ? AppColors.primary : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: isSelected ? AppColors.primary : Colors.grey.shade300,
+                        color: isSelected
+                            ? AppColors.primary
+                            : Colors.grey.shade300,
                       ),
                     ),
                     child: Text(
@@ -154,7 +171,8 @@ class _CraftCatalogScreenState extends State<CraftCatalogScreen> {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
-                        color: isSelected ? Colors.white : AppColors.textPrimary,
+                        color:
+                            isSelected ? Colors.white : AppColors.textPrimary,
                       ),
                     ),
                   ),
@@ -166,23 +184,28 @@ class _CraftCatalogScreenState extends State<CraftCatalogScreen> {
 
           // Catalog Grid
           Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.68,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-              ),
-              itemCount: filteredList.length,
-              itemBuilder: (context, index) {
-                final product = filteredList[index];
-                return ProductCard(
-                  product: product,
-                  onTap: () => Navigator.pushNamed(context, '/product-details', arguments: product),
-                );
-              },
-            ),
+            child: filteredList.isEmpty
+                ? const Center(child: Text('No crafts in this category yet.'))
+                : GridView.builder(
+                    padding: const EdgeInsets.all(16),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.68,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                    ),
+                    itemCount: filteredList.length,
+                    itemBuilder: (context, index) {
+                      final product = filteredList[index];
+                      return ProductCard(
+                        product: product,
+                        onTap: () => Navigator.pushNamed(
+                            context, '/product-details',
+                            arguments: product),
+                      );
+                    },
+                  ),
           ),
         ],
       ),

@@ -1,3 +1,5 @@
+import 'discovery_strings.dart';
+
 // All fixed on-screen text in English, Sinhala and Tamil.
 // Use  in a widget with:  context.tr('sign_in')
 // Adding a new key here with all three languages; missing ones fall back to English.
@@ -6,6 +8,7 @@ class AppStrings {
   static const supported = ['en', 'si', 'ta'];
 
   static const Map<String, Map<String, String>> values = {
+    ...discoveryStrings,
     // ---- general ----
     'continue': {'en': 'Continue', 'si': 'ඉදිරියට', 'ta': 'தொடரவும்'},
     'skip': {'en': 'Skip', 'si': 'මඟ හරින්න', 'ta': 'தவிர்'},
@@ -44,11 +47,16 @@ class AppStrings {
     },
 
     // ---- intro ----
-    'get_started': {'en': 'Get Started', 'si': 'ආරම්භ කරන්න', 'ta': 'தொடங்குங்கள்'},
+    'get_started': {
+      'en': 'Get Started',
+      'si': 'ආරම්භ කරන්න',
+      'ta': 'தொடங்குங்கள்'
+    },
     'intro_title': {
       'en': 'Discover authentic handmade crafts and empower local artisans.',
       'si': 'සැබෑ අත්කම් නිර්මාණ සොයාගෙන දේශීය ශිල්පීන් සවිබල ගන්වන්න.',
-      'ta': 'உண்மையான கைவினைப் பொருட்களைக் கண்டறிந்து உள்ளூர் கைவினைஞர்களுக்கு வலுவூட்டுங்கள்.',
+      'ta':
+          'உண்மையான கைவினைப் பொருட்களைக் கண்டறிந்து உள்ளூர் கைவினைஞர்களுக்கு வலுவூட்டுங்கள்.',
     },
     'intro_line1': {
       'en': 'Unique stories. Real people.',
@@ -109,7 +117,11 @@ class AppStrings {
       'si': 'ඔබේ ගමන දිගටම කරගෙන යාමට පුරනය වන්න',
       'ta': 'உங்கள் பயணத்தைத் தொடர உள்நுழையவும்',
     },
-    'email': {'en': 'Email Address', 'si': 'විද්‍යුත් තැපැල් ලිපිනය', 'ta': 'மின்னஞ்சல் முகவரி'},
+    'email': {
+      'en': 'Email Address',
+      'si': 'විද්‍යුත් තැපැල් ලිපිනය',
+      'ta': 'மின்னஞ்சல் முகவரி'
+    },
     'password': {'en': 'Password', 'si': 'මුරපදය', 'ta': 'கடவுச்சொல்'},
     'show_password': {
       'en': 'Show password',
@@ -1255,7 +1267,8 @@ class AppStrings {
 
   static String get(String key, String lang) {
     final entry = values[key];
-    if (entry == null) return key; // shows the key so missing text is easy to spot
+    if (entry == null)
+      return key; // shows the key so missing text is easy to spot
     return entry[lang] ?? entry['en'] ?? key;
   }
 }

@@ -1,4 +1,11 @@
+import '../discovery_labels.dart';
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
+import '../widgets/product_purchase_bar.dart';
+import '../widgets/favorite_button.dart';
+import '../widgets/product_gallery.dart';
+import '../widgets/product_share.dart';
+import '../widgets/discovery_cart_action.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/shared_models/product_model.dart';
 import '../../../../core/utils/currency_formatter.dart';
@@ -16,17 +23,9 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  bool _isWishlisted = false;
-  int _selectedImageIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
-    final images = product.imageUrls.isNotEmpty
-        ? product.imageUrls
-        : [
-            'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&q=80&w=800'
-          ];
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -43,80 +42,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.9),
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary, size: 20),
+                  icon: const Icon(Icons.arrow_back,
+                      color: AppColors.textPrimary, size: 20),
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
             ),
             actions: [
-              CircleAvatar(
-                backgroundColor: Colors.white.withOpacity(0.9),
-                child: IconButton(
-                  icon: Icon(
-                    _isWishlisted ? Icons.favorite : Icons.favorite_border,
-                    color: _isWishlisted ? AppColors.primary : AppColors.textPrimary,
-                    size: 20,
-                  ),
-                  onPressed: () {
-                    setState(() => _isWishlisted = !_isWishlisted);
-                  },
-                ),
-              ),
+              const DiscoveryCartAction(),
+              FavoriteButton(productId: product.id),
               const SizedBox(width: 8),
               CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.9),
                 child: IconButton(
-                  icon: const Icon(Icons.share_outlined, color: AppColors.textPrimary, size: 20),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Craft link copied to clipboard!')),
-                    );
-                  },
+                  icon: const Icon(Icons.share_outlined,
+                      color: AppColors.textPrimary, size: 20),
+                  tooltip: context.tr('discovery_share_tooltip'),
+                  onPressed: () => showProductShare(context, product),
                 ),
               ),
               const SizedBox(width: 12),
             ],
             flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Image.network(
-                      images[_selectedImageIndex],
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: AppColors.surface,
-                        child: const Icon(Icons.brush, size: 60, color: AppColors.secondary),
-                      ),
-                    ),
-                  ),
-                  // Bottom Location Badge Overlay
-                  Positioned(
-                    bottom: 16,
-                    left: 16,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1C1917).withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.location_on, size: 12, color: AppColors.secondary),
-                          const SizedBox(width: 4),
-                          Text(
-                            'Craft Origin: ${product.district.isNotEmpty ? product.district : "Sri Lanka"}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              background: Padding(
+                  padding: const EdgeInsets.only(top: 80),
+                  child: ProductGallery(
+                      key: ValueKey(product.id), images: product.imageUrls)),
             ),
           ),
 
@@ -131,49 +82,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Badges Row
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          product.category.toUpperCase(),
-                          style: const TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.6,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColors.accent.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          children: const [
-                            Icon(Icons.verified, size: 12, color: AppColors.accent),
-                            SizedBox(width: 3),
-                            Text(
-                              'Verified Ancestral Lineage',
-                              style: TextStyle(
-                                color: AppColors.accent,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                  Chip(
+                      label: Text(
+                          discoveryCategoryLabel(context, product.category))),
                   const SizedBox(height: 12),
 
                   // Title & Rating
@@ -186,12 +97,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  Row(
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      const Icon(Icons.star, size: 16, color: AppColors.secondary),
+                      const Icon(Icons.star,
+                          size: 16, color: AppColors.secondary),
                       const SizedBox(width: 4),
                       Text(
-                        '${product.rating > 0 ? product.rating.toStringAsFixed(1) : "4.9"}',
+                        product.reviewCount > 0
+                            ? product.rating.toStringAsFixed(1)
+                            : context.tr('discovery_no_reviews'),
                         style: const TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
@@ -199,7 +114,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                       ),
                       Text(
-                        ' (${product.reviewCount > 0 ? product.reviewCount : 24} customer reviews)',
+                        product.reviewCount > 0
+                            ? context.tr('discovery_reviews',
+                                {'count': '${product.reviewCount}'})
+                            : '',
                         style: const TextStyle(
                           fontSize: 13,
                           color: AppColors.textSecondary,
@@ -217,14 +135,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.black.withOpacity(0.06)),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      spacing: 12,
+                      runSpacing: 8,
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'FAIR PRICE FOR ARTISAN',
+                            Text(
+                              context.tr('discovery_fair_price'),
                               style: TextStyle(
                                 fontSize: 9.5,
                                 fontWeight: FontWeight.bold,
@@ -244,17 +164,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
                           decoration: BoxDecoration(
                             color: const Color(0xFF264E36).withOpacity(0.1),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Row(
-                            children: const [
-                              Icon(Icons.inventory, size: 14, color: AppColors.accent),
+                            children: [
+                              Icon(Icons.inventory,
+                                  size: 14, color: AppColors.accent),
                               SizedBox(width: 4),
                               Text(
-                                'In Stock • Ready to ship',
+                                product.isAvailable && product.stockQuantity > 0
+                                    ? context.tr('discovery_in_stock')
+                                    : context.tr('discovery_out_stock'),
                                 style: TextStyle(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w600,
@@ -275,16 +199,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     decoration: BoxDecoration(
                       color: const Color(0xFFFAF2EE),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.border.withOpacity(0.6)),
+                      border:
+                          Border.all(color: AppColors.border.withOpacity(0.6)),
                     ),
                     child: Row(
                       children: [
                         CircleAvatar(
                           radius: 24,
                           backgroundColor: AppColors.primary.withOpacity(0.2),
-                          backgroundImage: const NetworkImage(
-                            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200',
-                          ),
+                          child: const Icon(Icons.person_outline),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -294,7 +217,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               Text(
                                 product.artisanName.isNotEmpty
                                     ? product.artisanName
-                                    : 'Sunil Kariyawasam',
+                                    : context.tr('discovery_meet_maker'),
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -303,7 +226,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                'Master Craftsman • ${product.district.isNotEmpty ? product.district : "Kelaniya"} Guild',
+                                product.district.isNotEmpty
+                                    ? discoveryOriginLabel(
+                                        context, product.district)
+                                    : context
+                                        .tr('discovery_unavailable_details'),
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: AppColors.textSecondary,
@@ -312,36 +239,38 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ],
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => PublicArtisanProfileScreen(
-                                  artisanId: product.artisanId.isNotEmpty
-                                      ? product.artisanId
-                                      : 'artisan_sunil',
-                                ),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            'View Studio',
+                        Flexible(
+                            child: TextButton(
+                          onPressed: product.artisanId.isEmpty
+                              ? null
+                              : () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          PublicArtisanProfileScreen(
+                                        artisanId: product.artisanId,
+                                      ),
+                                    ),
+                                  );
+                                },
+                          child: Text(
+                            context.tr('discovery_studio'),
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: AppColors.primary,
                             ),
                           ),
-                        ),
+                        )),
                       ],
                     ),
                   ),
                   const SizedBox(height: 20),
 
                   // Craft Story & Description
-                  const Text(
-                    'Craft Story & Heritage',
+                  Text(
+                    context.tr('discovery_story'),
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -352,7 +281,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   Text(
                     product.description.isNotEmpty
                         ? product.description
-                        : 'Handcrafted with traditional Sri Lankan techniques passed down through generations. Using 100% natural organic materials sourced directly from local rural communities.',
+                        : context.tr('discovery_no_description'),
                     style: const TextStyle(
                       fontSize: 14,
                       color: AppColors.textSecondary,
@@ -372,8 +301,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'SPECIFICATIONS & MATERIALS',
+                        Text(
+                          context.tr('discovery_specs'),
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
@@ -383,15 +312,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                         const SizedBox(height: 10),
                         _buildSpecRow(
-                          'Raw Materials',
+                          context.tr('discovery_materials'),
                           product.materials.isNotEmpty
                               ? product.materials
-                              : '100% Earthen Terracotta & Wild River Water',
+                              : context.tr('discovery_unavailable_details'),
                         ),
                         const Divider(height: 16),
-                        _buildSpecRow('Craft Technique', 'Traditional Hand-Wheel Pit Spin'),
+                        _buildSpecRow(context.tr('discovery_technique'),
+                            context.tr('discovery_unavailable_details')),
                         const Divider(height: 16),
-                        _buildSpecRow('Packaging', 'Insured Biodegradable Coir Box'),
+                        _buildSpecRow(context.tr('discovery_packaging'),
+                            context.tr('discovery_unavailable_details')),
                       ],
                     ),
                   ),
@@ -402,66 +333,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
         ],
       ),
-
-      // Bottom Actions Bar
-      bottomSheet: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.06),
-              blurRadius: 10,
-              offset: const Offset(0, -4),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${product.title} added to cart!'),
-                      backgroundColor: AppColors.accent,
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.shopping_bag_outlined, size: 18),
-                label: const Text('Add to Cart', style: TextStyle(fontWeight: FontWeight.bold)),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.primary,
-                  side: const BorderSide(color: AppColors.primary, width: 1.5),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Proceeding to Checkout...'),
-                      backgroundColor: AppColors.primary,
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.flash_on, size: 18),
-                label: const Text('Buy Now', style: TextStyle(fontWeight: FontWeight.bold)),
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: AppColors.onPrimary,
-                  backgroundColor: AppColors.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: ProductPurchaseBar(product: product),
     );
   }
 

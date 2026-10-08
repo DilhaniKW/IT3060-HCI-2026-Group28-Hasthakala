@@ -1,3 +1,4 @@
+import '../../../../core/localization/tr.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 
@@ -12,7 +13,8 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFFAF2EE),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border.withOpacity(0.5), width: 0.8),
+        border:
+            Border.all(color: AppColors.border.withOpacity(0.5), width: 0.8),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.02),
@@ -43,9 +45,9 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'Provenance Guarantee',
+                      context.tr('discovery_discover'),
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -54,7 +56,7 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
                     ),
                     SizedBox(height: 1),
                     Text(
-                      'Connecting you directly to master lineages',
+                      context.tr('discovery_discover_help'),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textSecondary,
@@ -70,24 +72,24 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
             icon: Icons.local_florist,
             iconBgColor: AppColors.secondary.withOpacity(0.15),
             iconColor: AppColors.secondary,
-            title: '100% Authentic Sri Lankan',
-            description: 'Certified indigenous craft lineages with certified raw materials.',
+            title: context.tr('discovery_meet'),
+            description: context.tr('discovery_meet_help'),
           ),
           const SizedBox(height: 8),
           _buildItem(
             icon: Icons.handshake,
             iconBgColor: AppColors.primary.withOpacity(0.15),
             iconColor: AppColors.primary,
-            title: 'Direct Fair Pay',
-            description: 'Zero middlemen. 88% of transaction values go straight to rural maker guilds.',
+            title: context.tr('discovery_local'),
+            description: context.tr('discovery_local_help'),
           ),
           const SizedBox(height: 8),
           _buildItem(
             icon: Icons.inventory_2,
             iconBgColor: AppColors.accent.withOpacity(0.15),
             iconColor: AppColors.accent,
-            title: 'Safe Insured Packaging',
-            description: 'Cushioned with biodegradable coir & banana fiber for flawless delivery.',
+            title: context.tr('discovery_check_details'),
+            description: context.tr('discovery_check_details_help'),
           ),
           const SizedBox(height: 12),
           GestureDetector(
@@ -101,17 +103,19 @@ class ProvenanceGuaranteeCard extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   Icon(Icons.science_outlined, size: 16, color: Colors.white),
                   SizedBox(width: 6),
-                  Text(
-                    'View Verified Lab Certificate',
+                  Flexible(
+                      child: Text(
+                    context.tr('discovery_sample_report'),
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
                     ),
-                  ),
+                  )),
                   SizedBox(width: 4),
                   Icon(Icons.chevron_right, size: 16, color: Colors.white),
                 ],

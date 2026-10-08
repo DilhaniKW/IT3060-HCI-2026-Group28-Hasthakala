@@ -100,8 +100,9 @@ class ArtisanReviewsScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        '48 Verified Reviews',
-                        style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                        '3 Sample Reviews',
+                        style: TextStyle(
+                            fontSize: 11, color: AppColors.textSecondary),
                       ),
                     ],
                   ),
@@ -114,11 +115,12 @@ class ArtisanReviewsScreen extends StatelessWidget {
                       children: const [
                         Text(
                           'Authenticity Rating',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13),
                         ),
                         SizedBox(height: 4),
                         Text(
-                          '100% Direct Payout Verified',
+                          'Review preview',
                           style: TextStyle(
                             fontSize: 12,
                             color: Color(0xFF264E36),
@@ -127,8 +129,9 @@ class ArtisanReviewsScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'All reviews are submitted by verified buyers who received genuine hand-crafted artifacts.',
-                          style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                          'Example feedback shown for this screen preview. Live artisan reviews are not connected yet.',
+                          style: TextStyle(
+                              fontSize: 11, color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -140,7 +143,7 @@ class ArtisanReviewsScreen extends StatelessWidget {
 
             // Reviews Header
             const Text(
-              'Verified Buyer Feedback',
+              'Sample Buyer Feedback',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
@@ -166,14 +169,19 @@ class ArtisanReviewsScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        spacing: 12,
+                        runSpacing: 8,
                         children: [
-                          Row(
+                          Wrap(
+                            spacing: 4,
+                            runSpacing: 4,
                             children: [
                               CircleAvatar(
                                 radius: 18,
-                                backgroundColor: AppColors.primary.withOpacity(0.15),
+                                backgroundColor:
+                                    AppColors.primary.withOpacity(0.15),
                                 child: Text(
                                   (r['name'] as String)[0],
                                   style: const TextStyle(
@@ -204,17 +212,21 @@ class ArtisanReviewsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Row(
+                          Wrap(
+                            spacing: 4,
+                            runSpacing: 4,
                             children: List.generate(
                               5,
-                              (i) => const Icon(Icons.star, color: Colors.amber, size: 14),
+                              (i) => const Icon(Icons.star,
+                                  color: Colors.amber, size: 14),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 10),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
                           color: AppColors.accent.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(6),
@@ -222,7 +234,8 @@ class ArtisanReviewsScreen extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.verified, size: 12, color: AppColors.accent),
+                            const Icon(Icons.verified,
+                                size: 12, color: AppColors.accent),
                             const SizedBox(width: 4),
                             Text(
                               r['verifiedItem'] as String,
