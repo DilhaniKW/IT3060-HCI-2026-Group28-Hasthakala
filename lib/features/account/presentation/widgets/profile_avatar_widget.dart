@@ -44,23 +44,25 @@ class ProfileAvatarWidget extends StatelessWidget {
     );
 
     if (onCameraTap == null) return avatar;
-    return GestureDetector(
-      onTap: onCameraTap,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          avatar,
-          Positioned(
-            right: -2,
-            bottom: -2,
-            child: const CircleAvatar(
-              radius: 16,
-              backgroundColor: AppColors.primary,
-              child: const Icon(Icons.camera_alt,
-                  size: 16, color: AppColors.onPrimary),
+    return Center(
+      child: GestureDetector(
+        onTap: onCameraTap,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            avatar,
+            Positioned(
+              right: -2,
+              bottom: -2,
+              child: const CircleAvatar(
+                radius: 16,
+                backgroundColor: AppColors.primary,
+                child: Icon(Icons.camera_alt,
+                    size: 16, color: AppColors.onPrimary),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
